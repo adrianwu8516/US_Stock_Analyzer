@@ -55,12 +55,31 @@ function dataAnalysis(){
   
 }
 
-function dataReport(){
-  
+function dataReport(noteLst, stockInfo){
+  if(stockInfo['price'] < stockInfo['priceLow']){
+    var str = "🏆 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於所有分析師的建議低標"
+  }else if(stockInfo['price'] < stockInfo['priceMid']){
+    var str = "🔥 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於分析師的建議均價"
+  }else if((stockInfo['price'] > stockInfo['priceMid']) && (stockInfo['price'] < stockInfo['priceHigh'])){
+    var str = "❗ " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於分析師的建議均價"
+  }else{
+    var str = "🆘 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師的最高價"
+  }
+  noteLst.push(str)
+  return noteLst
 }
 
-function dataCollection(url){
-  var url = 'https://www.webull.com/zh/quote/nasdaq-lk';
+function mailer(noteLst){
+  // Send Email Template
+  var title = "本日股票分析";
+  var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
+  htmlTemp.noteLst = noteLst
+  var htmlBody = htmlTemp.evaluate().getContent();
+  MailApp.sendEmail('adrianwu8516@gmail.com', title, '', {htmlBody:htmlBody})
+}
+
+function dataCollection(urlSymbol){
+  var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   xml = xml.replace(/<head>(.*?)<\/head>/, '')
            .replace(/<footer(.*?)<\/footer>/g, '')
@@ -85,6 +104,18 @@ function dataCollection(url){
   stockInfo['priceLow'] = parseFloat(analystPrice_lst[analystPrice_lst.length-1].replace( /^\D+/g, '').replace( "。", ''))
   stockInfo['priceHigh'] = parseFloat(analystPrice_lst[analystPrice_lst.length-2].replace( /^\D+/g, ''))
   stockInfo['priceMid']  = parseFloat(analystPrice_lst[analystPrice_lst.length-3].replace( /^\D+/g, ''))
-  Logger.log(stockInfo)
-  dataRecord(stockInfo)
+  //Logger.log(stockInfo)
+  
+  return stockInfo
+}
+
+function main(){
+  var urlList = ['nasdaq-lk', 'nasdaq-logi', 'nyse-ma', 'nyse-lmt', 'nasdaq-zm', 'nasdaq-pdd', 'nyse-ba', 'nyse-work', 'nyse-dal', 'nyse-baba', 'nasdaq-gwph', 'nyse-se', 'nasdaq-vnet'];
+  var noteLst = [];
+  for(var i in urlList){
+    var stockInfo = dataCollection(urlList[i])
+    dataRecord(stockInfo)
+    noteLst = dataReport(noteLst, stockInfo)
+  }
+  mailer(noteLst)
 }
