@@ -57,13 +57,13 @@ function dataAnalysis(){
 
 function dataReport(noteLst, stockInfo){
   if(stockInfo['price'] < stockInfo['priceLow']){
-    var str = "🏆 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於所有分析師的建議低標"
+    var str = "🏆 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於所有分析師的建議低標價格 " + stockInfo['priceLow'] + " 元"
   }else if(stockInfo['price'] < stockInfo['priceMid']){
-    var str = "🔥 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於分析師的建議均價"
+    var str = "🔥 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於分析師的建議均衡價格 " + stockInfo['priceMid'] + " 元"
   }else if((stockInfo['price'] > stockInfo['priceMid']) && (stockInfo['price'] < stockInfo['priceHigh'])){
-    var str = "❗ " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於分析師的建議均價"
+    var str = "❗ " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於分析師的建議均衡價格 " + stockInfo['priceMid'] + " 元"
   }else{
-    var str = "🆘 " + stockInfo['symbol'] + "股價目前 " + Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師的最高價"
+    var str = "🆘 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師的最高價格 " + stockInfo['priceHigh'] + " 元"
   }
   noteLst.push(str)
   return noteLst
@@ -110,7 +110,11 @@ function dataCollection(urlSymbol){
 }
 
 function main(){
-  var urlList = ['nasdaq-lk', 'nasdaq-logi', 'nyse-ma', 'nyse-lmt', 'nasdaq-zm', 'nasdaq-pdd', 'nyse-ba', 'nyse-work', 'nyse-dal', 'nyse-baba', 'nasdaq-gwph', 'nyse-se', 'nasdaq-vnet'];
+  var urlList = ['nasdaq-lk', 'nasdaq-logi', 'nyse-ma', 'nyse-lmt', 'nasdaq-zm', 
+                 'nasdaq-pdd', 'nyse-ba', 'nyse-work', 'nyse-dal', 'nyse-baba', 
+                 'nasdaq-gwph', 'nyse-se', 'nasdaq-vnet', 'nasdaq-nvda', 'nasdaq-jd', 
+                 'nasdaq-amd', 'nasdaq-msft', 'nasdaq-aapl', 'nyse-rtx', 'nyse-noc', 
+                 'nyse-shop', 'nasdaq-bynd', 'nyse-acb', 'nyse-gd'];
   var noteLst = [];
   for(var i in urlList){
     var stockInfo = dataCollection(urlList[i])
