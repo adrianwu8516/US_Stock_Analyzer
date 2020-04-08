@@ -56,16 +56,22 @@ function dataAnalysis(){
 }
 
 function dataReport(noteLst, stockInfo){
+  var subObj = {}
+  subObj['info'] = stockInfo
   if(stockInfo['price'] < stockInfo['priceLow']){
-    var str = "🏆 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於所有分析師的建議低標價格 " + stockInfo['priceLow'] + " 元"
+    subObj['sign'] = "🏆";
+    subObj['analysis'] = Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於低標 " + stockInfo['priceLow'] + " 元"
   }else if(stockInfo['price'] < stockInfo['priceMid']){
-    var str = "🔥 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於分析師的建議均衡價格 " + stockInfo['priceMid'] + " 元"
+    subObj['sign'] = "🔥";
+    subObj['analysis'] = Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於分析師均價 " + stockInfo['priceMid'] + " 元"
   }else if((stockInfo['price'] > stockInfo['priceMid']) && (stockInfo['price'] < stockInfo['priceHigh'])){
-    var str = "❗ " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於分析師的建議均衡價格 " + stockInfo['priceMid'] + " 元"
+    subObj['sign'] = "❗";
+    subObj['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於分析師均價 " + stockInfo['priceMid'] + " 元"
   }else{
-    var str = "🆘 " + stockInfo['symbol'] + "股價目前 " + stockInfo['price'] + " 元，"+ Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師的最高價格 " + stockInfo['priceHigh'] + " 元"
+    subObj['sign'] = "🆘";
+    subObj['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師最高價 " + stockInfo['priceHigh'] + " 元"
   }
-  noteLst.push(str)
+  noteLst.push(subObj)
   return noteLst
 }
 
@@ -75,7 +81,7 @@ function mailer(noteLst){
   var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
   htmlTemp.noteLst = noteLst
   var htmlBody = htmlTemp.evaluate().getContent();
-  MailApp.sendEmail('adrianwu8516@gmail.com', title, '', {htmlBody:htmlBody})
+  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com', title, '', {htmlBody:htmlBody})
 }
 
 function dataCollection(urlSymbol){
@@ -96,7 +102,7 @@ function dataCollection(urlSymbol){
   stockInfo['price'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div' ,document))
   stockInfo['delta'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[2]' ,document))
   stockInfo['value'] = getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div/div[2]]' ,document)
-  stockInfo['TTM'] = getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]]' ,document)
+  stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]]' ,document))
   stockInfo['analystPopularity'] = parseInt(getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/p' ,document).split('位')[0])
   stockInfo['analystAttitiude'] = getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/div' ,document)
   var analystPrice = getDataFromXpath('body/div/section/div[2]/div/div/section[2]/div[2]' ,document)
@@ -114,12 +120,13 @@ function main(){
                  'nasdaq-pdd', 'nyse-ba', 'nyse-work', 'nyse-dal', 'nyse-baba', 
                  'nasdaq-gwph', 'nyse-se', 'nasdaq-vnet', 'nasdaq-nvda', 'nasdaq-jd', 
                  'nasdaq-amd', 'nasdaq-msft', 'nasdaq-aapl', 'nyse-rtx', 'nyse-noc', 
-                 'nyse-shop', 'nasdaq-bynd', 'nyse-acb', 'nyse-gd'];
+                 'nyse-shop', 'nasdaq-bynd', 'nyse-acb', 'nyse-gd', 'nyse-spce'];
   var noteLst = [];
   for(var i in urlList){
     var stockInfo = dataCollection(urlList[i])
     dataRecord(stockInfo)
     noteLst = dataReport(noteLst, stockInfo)
+    //Logger.log(noteLst)
   }
   mailer(noteLst)
 }

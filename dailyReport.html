@@ -4,13 +4,48 @@
     <base target="_top">
   </head>
   <body>
-    <h2>您今天的股票觀察清單</h2>
-    <ul>
+    <h2>您今天的股票觀察清單</h2>  
+    <table style="height: 30px;" cellspacing="6">
+    <tbody>
+    <tr style="height: 30px;">
+    <td style="height: 30px; text-align: center;"><strong>指標</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>公司</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>收盤價</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>漲跌</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>滾動市盈率</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>分析</strong></td>
+    <td style="height: 30px; text-align: center;"><strong>分析師數</strong></td>
+    </tr>
     <? for(var i in noteLst){ ?>
-        <li><?= noteLst[i] ?></li>
+        <tr style="height: 20px;">
+        <td style="height: 20px; text-align: center;"> <?= noteLst[i]['sign'] ?> </td>
+        <td style="height: 20px; text-align: center;"><?= noteLst[i]['info']['companyName'] ?> ( <?= noteLst[i]['info']['symbol']?> )</td>
+        <td style="height: 20px; text-align: center;"><?= noteLst[i]['info']['price'] ?></td>
+        <? if (noteLst[i]['info']['delta'] > 0){ ?>
+            <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= noteLst[i]['info']['delta'] ?> %</span></strong></td>
+        <? }else if (noteLst[i]['info']['delta'] < 0){ ?>
+            <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= noteLst[i]['info']['delta'] ?> %</span></strong></td>
+        <? }else{ ?>
+            <td style="height: 20px; text-align: center;"><strong><?= noteLst[i]['info']['delta'] ?> %</strong></td>
+        <? }?>
+        <? if (noteLst[i]['info']['TTM'] > 0){ ?>
+            <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= noteLst[i]['info']['TTM'].toFixed(1) ?></span></strong></td>
+        <? }else if (noteLst[i]['info']['TTM'] < 0){ ?>
+            <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= noteLst[i]['info']['TTM'].toFixed(1) ?></span></strong></td>
+        <? }else{ ?>
+            <td style="height: 20px text-align: center;;"><strong><?= noteLst[i]['info']['TTM'].toFixed(1) ?></strong></td>
+        <? }?>
+        <td style="height: 20px; text-align: center;"><?= noteLst[i]['analysis'] ?></td>
+        <td style="height: 20px; text-align: center;"><?= noteLst[i]['info']['analystPopularity'] ?></td>
+        </tr>
     <? } ?>
-    </ul>
+    </tbody>
+    </table>
+    
+    <br><br>
     <p>謹慎理財，小心至上，股運亨通啦～！</p>
+    <br>
+    <p>滾動市盈率計算方式：當前總市值除以前面四個季度的總凈利潤。簡單點想，就是 TTM 要比 PE 更加準確一點，數據來得更新一些。</p>
   </body>
 </html>
 
