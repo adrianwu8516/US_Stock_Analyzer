@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>Google Charts</title>
+ 
+        <!-- load Google AJAX API -->
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+        
+            //load the Google Visualization API and the chart
+            google.load('visualization', '1', {'packages': ['corechart']});
+ 
+            //set callback
+            google.setOnLoadCallback (createChart);
+ 
+            //callback function
+            function createChart() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+ 
+                //define columns
+                dataTable.addColumn('string', '編號');
+                dataTable.addColumn('number', '數值');
+                dataTable.addColumn('number', '2倍');
+                dataTable.addColumn('number', '平方');
+                
+                //define rows of data
+                for(var i = 0 ; i <= 10 ; i++)
+                {
+                    dataTable.addRows([[String(i), i ,2*i, Math.pow(i, 2)]]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.LineChart (document.getElementById('chart'));
+                
+                //define options for visualization
+                var options = {width: 1027, 
+                               height: 768,
+                               title: '數值計算'};
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
+        </script> 
+    </head>
+ 
+    <body> 
+        <!--Div for our chart -->
+        <div id="chart"></div>
+    </body>
+</html>

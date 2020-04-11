@@ -80,10 +80,10 @@ function dataReport(noteObj, stockInfo){
 function mailer(noteObj){
   // Send Email Template
   var title = "本日股票分析";
-  var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
+  var htmlTemp = HtmlService.createTemplateFromFile('AJAXmail')//('dailyReport')
   htmlTemp.noteObj = noteObj
   var htmlBody = htmlTemp.evaluate().getContent();
-  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com', title, '', {htmlBody:htmlBody}) //
+  MailApp.sendEmail('adrianwu8516@gmail.com', title, '', {htmlBody:htmlBody}) //, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com
 }
 
 function dataCollection(urlSymbol, category){
@@ -124,20 +124,20 @@ function dataCollection(urlSymbol, category){
 
 function main(){
   // Stop if the market is closed!
-  var today = new Date();
-  if(today.getDay() < 2){Logger.log("Market Closed!");return;}
-  var todayString = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate()
-  if(['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26'].includes(todayString)){Logger.log("Holiday!");return;}
+//  var today = new Date();
+//  if(today.getDay() < 2){Logger.log("Market Closed!");return;}
+//  var todayString = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate()
+//  if(['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26'].includes(todayString)){Logger.log("Holiday!");return;}
   
   var Symbols = {
-    'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
-    'Internet Service':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-vnet'],
-    'Socail Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'],
-    'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
-    'National Defense':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
-    'Air Line':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
-    'GPU':['nasdaq-amd', 'nasdaq-nvda'],
-    'Cannabis':['nasdaq-gwph', 'nyse-acb'],
+//    'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
+//    'Internet Service':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-vnet'],
+//    'Socail Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'],
+//    'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
+//    'National Defense':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
+//    'Air Line':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
+//    'GPU':['nasdaq-amd', 'nasdaq-nvda'],
+//    'Cannabis':['nasdaq-gwph', 'nyse-acb'],
     'Hype':['nyse-spce', 'nasdaq-bynd','nasdaq-lk', 'nasdaq-sbux'],
     'Others':['nasdaq-logi', 'nasdaq-aapl']
   }
@@ -146,7 +146,7 @@ function main(){
   for (var cat in catList){
     for(var i in Symbols[catList[cat]]){
       var stockInfo = dataCollection(urlSymbol = Symbols[catList[cat]][i], category = catList[cat])
-      dataRecord(stockInfo)
+//      dataRecord(stockInfo)
       noteObj = dataReport(noteObj, stockInfo)
     }
   }
