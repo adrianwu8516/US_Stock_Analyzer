@@ -15,6 +15,7 @@
         <tbody>
         <tr style="height: 30px;">
         <td style="height: 30px; text-align: center;"><strong>指標</strong></td>
+        <td style="height: 30px; text-align: center;"><strong>線圖</strong></td>
         <td style="height: 30px; text-align: center;"><strong>公司</strong></td>
         <td style="height: 30px; text-align: center;"><strong>收盤價</strong></td>
         <td style="height: 30px; text-align: center;"><strong>52週最高</strong></td>
@@ -27,7 +28,8 @@
         <? for(var i in catInfo){ ?>
             <tr style="height: 20px;">
             <td style="height: 20px; text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
-            <td style="height: 20px; text-align: center;"><a href="<?catInfo[i]['url']?>"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
+            <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['companyName'] ?>(<?= catInfo[i]['symbol']?>)" target="_blank">📈</a></td>
+            <td style="height: 20px; text-align: center;"><a href="<?= catInfo[i]['url']?>" target="_blank"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
             <td style="height: 20px; text-align: center;"><?= catInfo[i]['price'] ?></td>
             <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
                 <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>

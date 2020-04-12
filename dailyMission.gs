@@ -51,11 +51,11 @@ function dataRecord(stockInfo){
   }
 }
 
-function dataAnalysis(){
+function dataAnalystPopularity(){
   
 }
 
-function dataReport(noteObj, stockInfo){
+function dataAnalystReport(noteObj, stockInfo){
   if(stockInfo['price'] < stockInfo['priceLow']){
     stockInfo['sign'] = "🏆";
     stockInfo['analysis'] = Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於低標 " + stockInfo['priceLow'] + " 元"
@@ -80,7 +80,7 @@ function dataReport(noteObj, stockInfo){
 function mailer(noteObj){
   // Send Email Template
   var title = "本日股票分析";
-  var htmlTemp = HtmlService.createTemplateFromFile('AJAXmail')//('dailyReport')
+  var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')//('dailyReport')
   htmlTemp.noteObj = noteObj
   var htmlBody = htmlTemp.evaluate().getContent();
   MailApp.sendEmail('adrianwu8516@gmail.com', title, '', {htmlBody:htmlBody}) //, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com
@@ -106,11 +106,12 @@ function dataCollection(urlSymbol, category){
   stockInfo['delta'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[2]' ,document))/100
   stockInfo['52weekHigh'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div/div[2]]' ,document).replace(',',''))
   stockInfo['52weekLow'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]]' ,document).replace(',',''))
-  stockInfo['value'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div/div[2]]' ,document))
-  stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]]' ,document))
+  stockInfo['value'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div/div[2]]' ,document).replace(',',''))
+  stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]]' ,document).replace(',',''))
   stockInfo['analystPopularity'] = parseInt(getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/p' ,document).split('位')[0])
   stockInfo['analystAttitiude'] = getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/div' ,document)
   stockInfo['url'] = url
+  Logger.log(stockInfo['url'])
   
   var analystPrice = getDataFromXpath('body/div/section/div[2]/div/div/section[2]/div[2]' ,document)
   var analystPrice_lst = analystPrice.split('，')
@@ -138,7 +139,7 @@ function main(){
 //    'Air Line':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
 //    'GPU':['nasdaq-amd', 'nasdaq-nvda'],
 //    'Cannabis':['nasdaq-gwph', 'nyse-acb'],
-    'Hype':['nyse-spce', 'nasdaq-bynd','nasdaq-lk', 'nasdaq-sbux'],
+    'Hype':['nyse-spce', 'nyse-ajrd', 'nyse-maxr', 'nasdaq-bynd','nasdaq-lk', 'nasdaq-sbux'],
     'Others':['nasdaq-logi', 'nasdaq-aapl']
   }
   var catList = Object.keys(Symbols)
@@ -147,7 +148,7 @@ function main(){
     for(var i in Symbols[catList[cat]]){
       var stockInfo = dataCollection(urlSymbol = Symbols[catList[cat]][i], category = catList[cat])
 //      dataRecord(stockInfo)
-      noteObj = dataReport(noteObj, stockInfo)
+      noteObj = dataAnalystReport(noteObj, stockInfo)
     }
   }
   //Logger.log(noteObj)

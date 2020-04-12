@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <title>Google Charts</title>
- 
+        <title>History Charts - <?= symbol ?></title>
+
         <!-- load Google AJAX API -->
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript">
@@ -18,17 +18,30 @@
  
                 //create data table object
                 var dataTable = new google.visualization.DataTable();
+                
+                var dateStr = '<?= date ?>';
+                var priceStr = '<?= price ?>';
+                var priceHighStr = '<?= priceHigh ?>';
+                var priceMidStr = '<?= priceMid ?>';
+                var priceLowStr = '<?= priceLow ?>';
+                var dateLst = [], priceLst = [], priceHighLst = [], priceMidLst = [], priceLowLst = [];
+                dateStr.split(',').forEach(element => dateLst.push(element))
+                priceStr.split(',').forEach(element => priceLst.push(parseFloat(element)))
+                priceHighStr.split(',').forEach(element => priceHighLst.push(parseFloat(element)))
+                priceMidStr.split(',').forEach(element => priceMidLst.push(parseFloat(element)))
+                priceLowStr.split(',').forEach(element => priceLowLst.push(parseFloat(element)))
  
                 //define columns
-                dataTable.addColumn('string', '編號');
-                dataTable.addColumn('number', '數值');
-                dataTable.addColumn('number', '2倍');
-                dataTable.addColumn('number', '平方');
+                dataTable.addColumn('string', '日期');
+                dataTable.addColumn('number', '價錢');
+                dataTable.addColumn('number', '分析師高價');
+                dataTable.addColumn('number', '分析師均價');
+                dataTable.addColumn('number', '分析師低價');
                 
                 //define rows of data
-                for(var i = 0 ; i <= 10 ; i++)
+                for(var i = 0 ; i <= 20 ; i++)
                 {
-                    dataTable.addRows([[String(i), i ,2*i, Math.pow(i, 2)]]);
+                    dataTable.addRows([[dateLst[i], priceLst[i], priceHighLst[i], priceMidLst[i], priceLowLst[i]]]);
                 } 
                 
                 //instantiate our chart object
