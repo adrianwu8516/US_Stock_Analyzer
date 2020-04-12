@@ -31,11 +31,13 @@
             <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['companyName'] ?>(<?= catInfo[i]['symbol']?>)" target="_blank">📈</a></td>
             <td style="height: 20px; text-align: center;"><a href="<?= catInfo[i]['url']?>" target="_blank"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
             <td style="height: 20px; text-align: center;"><?= catInfo[i]['price'] ?></td>
+            
             <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
                 <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>
             <? }else{ ?>
                 <td style="height: 20px; text-align: center;"><?= catInfo[i]['52weekHigh'] ?></td>
             <? }?>
+            
             <? if ((catInfo[i]['price'] - catInfo[i]['52weekLow'])/catInfo[i]['price'] < 0.05){ ?>
                 <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span></td>
             <? }else{ ?>
@@ -49,6 +51,7 @@
             <? }else{ ?>
                 <td style="height: 20px; text-align: center;"><strong><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</strong></td>
             <? }?>
+            
             <? if (catInfo[i]['TTM'] > 0){ ?>
                 <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['TTM'].toFixed(1) ?></span></strong></td>
             <? }else if (catInfo[i]['TTM'] < 0){ ?>
@@ -56,8 +59,23 @@
             <? }else{ ?>
                 <td style="height: 20px text-align: center;;"><strong><?= catInfo[i]['TTM'].toFixed(1) ?></strong></td>
             <? }?>
-            <td style="height: 20px; text-align: left;"><?= catInfo[i]['analysis'] ?></td>
-            <td style="height: 20px; text-align: center;"><?= catInfo[i]['analystPopularity'] ?></td>
+            
+            <? if (catInfo[i]['analysis'].includes("↗")){ ?>
+                <td style="height: 20px; text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+            <? }else if (catInfo[i]['analysis'].includes("↘")){ ?>
+                <td style="height: 20px; text-align: left;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: left;"><?= catInfo[i]['analysis'] ?></td>
+            <? }?>
+            
+            <? if (String(catInfo[i]['analystPopularity']).includes("↗")){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+            <? }else if (String(catInfo[i]['analystPopularity']).includes("↘")){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><?= catInfo[i]['analystPopularity'] ?></td>
+            <? }?>
+            
             </tr>
         <? } ?>
         </tbody>
