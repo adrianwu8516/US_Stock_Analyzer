@@ -70,39 +70,43 @@ function dataRecord(stockInfo){
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('A' + targetRow + ':M' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
+    stockDoc.getRange('A' + targetRow + ':O' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
   }else{
     stockDoc.insertRowBefore(2);
-    stockDoc.getRange('A2:M2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
+    stockDoc.getRange('A2:O2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
   }
 }
 
 function dataAnalystPopularity(noteObj, noteObjOld){
-  var symbolLst = Object.keys(noteObj)
-  for(var cat in symbolLst){
-    var stockLst = noteObj[symbolLst[cat]]
-    for(var no in stockLst){
+  var catLst = Object.keys(noteObj)
+  for(var catNo in catLst){
+    var catName = catLst[catNo]
+    var catObj = noteObj[catLst[catNo]]
+    var stockLst = Object.keys(catObj)
+    for(var stockNo in stockLst){
+      var stockName = stockLst[stockNo]
+      var stockInfo = catObj[stockName]
       try {
-        var newPopularity = stockLst[no]['analystPopularity']
-        var oldPopularity = noteObjOld[symbolLst[cat]][no]['analystPopularity']
+        var newPopularity = stockInfo['analystPopularity']
+        var oldPopularity = noteObjOld[catName][stockName]['analystPopularity']
         if(oldPopularity){
           if(newPopularity > oldPopularity){
-            noteObj[symbolLst[cat]][no]['analystPopularity'] = String(oldPopularity) + " ↗ " + String(newPopularity)
+            noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↗ " + String(newPopularity)
           }else if(newPopularity < oldPopularity){
-            noteObj[symbolLst[cat]][no]['analystPopularity'] = String(oldPopularity) + " ↘ " + String(newPopularity)
+            noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↘ " + String(newPopularity)
           }
         }
-        var newPriceMid = stockLst[no]['priceMid']
-        var oldPriceMid = noteObjOld[symbolLst[cat]][no]['priceMid']
+        var newPriceMid = stockInfo['priceMid']
+        var oldPriceMid = noteObjOld[catName][stockName]['priceMid']
         if(oldPriceMid){
           if(newPriceMid > oldPriceMid){
-            noteObj[symbolLst[cat]][no]['analysis'] = stockLst[no]['analysis'] + "，調高目標均價從 " + String(oldPriceMid) + " ↗ " + String(newPriceMid)
+            noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，調高目標均價從 " + String(oldPriceMid) + " ↗ " + String(newPriceMid)
           }else if(newPriceMid < oldPriceMid){
-            noteObj[symbolLst[cat]][no]['analysis'] = stockLst[no]['analysis'] + "，降低目標均價從 " + String(oldPriceMid) + " ↘ " + String(newPriceMid)
+            noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，降低目標均價從 " + String(oldPriceMid) + " ↘ " + String(newPriceMid)
           }
         }
       }catch (e) {
-        Logger.log(noteObj[symbolLst[cat]][no]['companyName'] + "is a new item")
+        Logger.log(noteObj[catName][stockName]['companyName'] + "is a new item")
       }
     }
   }
@@ -123,11 +127,9 @@ function dataAnalystReport(noteObj, stockInfo){
     stockInfo['sign'] = "🆘";
     stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師最高價 " + stockInfo['priceHigh'] + " 元"
   }
-  if (typeof noteObj[stockInfo['category']] == "undefined"){
-    noteObj[stockInfo['category']] = [stockInfo]
-  }else{
-    noteObj[stockInfo['category']].push(stockInfo)
-  }
+  
+  if (typeof noteObj[stockInfo['category']] == "undefined") noteObj[stockInfo['category']] = {};
+  noteObj[stockInfo['category']][stockInfo['symbol']] = stockInfo
   return noteObj
 }
 
@@ -137,10 +139,10 @@ function mailer(noteObj){
   var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
   htmlTemp.noteObj = noteObj
   var htmlBody = htmlTemp.evaluate().getContent();
-  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com', title, '', {htmlBody:htmlBody}) //
+  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com', title, '', {htmlBody:htmlBody})
 }
 
-function dataCollection(urlSymbol, category){
+function weBullDataCollection(urlSymbol, category){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   xml = xml.replace(/<head>(.*?)<\/head>/, '')
@@ -171,9 +173,12 @@ function dataCollection(urlSymbol, category){
   stockInfo['priceLow'] = parseFloat(analystPrice_lst[analystPrice_lst.length-1].replace( /^\D+/g, '').replace( "。", ''))
   stockInfo['priceHigh'] = parseFloat(analystPrice_lst[analystPrice_lst.length-2].replace( /^\D+/g, ''))
   stockInfo['priceMid']  = parseFloat(analystPrice_lst[analystPrice_lst.length-3].replace( /^\D+/g, ''))
-  //Logger.log(stockInfo)
-  
+
   return stockInfo
+}
+
+function caibaoshuoDataCollection(urlSymbol, category){
+  return;
 }
 
 function main(){
@@ -185,21 +190,24 @@ function main(){
   
   var Symbols = {
     'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
-    'Internet Service':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-vnet'],
-    'Socail Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'],
+    'Internet Service':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl'],
+    'Internet Service (China)':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-vnet'],
+    'Social Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'],
     'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
-    'National Defense':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
-    'Air Line':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
+    'Military Industry':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
+    'Airlines':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
+    'Travel':['nasdaq-bkng', 'nasdaq-expe'],
     'GPU':['nasdaq-amd', 'nasdaq-nvda'],
     'Cannabis':['nasdaq-gwph', 'nyse-acb'],
-    'Hype':['nyse-spce', 'nyse-ajrd', 'nyse-maxr', 'nasdaq-bynd','nasdaq-lk', 'nasdaq-sbux'],
-    'Others':['nasdaq-logi', 'nasdaq-aapl']
+    'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
+    'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux'],
+    'Hardware':['nasdaq-logi', 'nasdaq-roku', 'nasdaq-aapl']
   }
   var catList = Object.keys(Symbols)
   var noteObj = {};
   for (var cat in catList){
     for(var i in Symbols[catList[cat]]){
-      var stockInfo = dataCollection(urlSymbol = Symbols[catList[cat]][i], category = catList[cat])
+      var stockInfo = weBullDataCollection(urlSymbol = Symbols[catList[cat]][i], category = catList[cat])
       dataRecord(stockInfo)
       noteObj = dataAnalystReport(noteObj, stockInfo)
     }
