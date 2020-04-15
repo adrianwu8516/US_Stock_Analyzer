@@ -18,10 +18,11 @@ function getDataFromXpath(path, xmlDoc, target='text') {
         root = root.getChild(tag);
       }
     }
+    var target = (target == 'text')?  root.getText().replace(/\n| +|\.|,/g, '') : root.getAttribute(target).getValue()
   }catch (exception) {
     return;
   }
-  return (target == 'text')?  root.getText() : root.getAttribute(target).getValue()
+  return target
 }
 
 function onSearch(sheetName, searchString, searchTargetCol) {
@@ -70,10 +71,10 @@ function dataRecord(stockInfo){
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('A' + targetRow + ':O' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
+    stockDoc.getRange('A' + targetRow + ':P' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking']]]);
   }else{
     stockDoc.insertRowBefore(2);
-    stockDoc.getRange('A2:O2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow']]]);
+    stockDoc.getRange('A2:P2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking']]]);
   }
 }
 
@@ -173,6 +174,8 @@ function weBullDataCollection(urlSymbol, category){
   stockInfo['priceLow'] = parseFloat(analystPrice_lst[analystPrice_lst.length-1].replace( /^\D+/g, '').replace( "。", ''))
   stockInfo['priceHigh'] = parseFloat(analystPrice_lst[analystPrice_lst.length-2].replace( /^\D+/g, ''))
   stockInfo['priceMid']  = parseFloat(analystPrice_lst[analystPrice_lst.length-3].replace( /^\D+/g, ''))
+  
+  stockInfo['cbsRanking']  = dailyCBSRanking(urlSymbol)
 
   return stockInfo
 }
@@ -200,7 +203,7 @@ function main(){
     'GPU':['nasdaq-amd', 'nasdaq-nvda'],
     'Cannabis':['nasdaq-gwph', 'nyse-acb'],
     'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
-    'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux'],
+    'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux', 'nyse-xom', 'nyse-psx', 'nyse-cvx'],
     'Hardware':['nasdaq-logi', 'nasdaq-roku', 'nasdaq-aapl']
   }
   var catList = Object.keys(Symbols)

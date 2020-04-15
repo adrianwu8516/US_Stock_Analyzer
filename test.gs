@@ -7,34 +7,36 @@ function financialDataRecord(finInfo){
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
   var finReportId = finInfo['cbsYaer'] + '-' + finInfo['symbol'] 
   
-  var targetRow = onSearch(finDoc, finReportId, searchTargetCol=0)
+  var targetRow = onSearch(finDoc, finReportId, searchTargetCol=1)
   if(targetRow){
     targetRow += 1
     finDoc.getRange('A' + targetRow + ':AH' + targetRow).setValues([[
-      todayStr, finReportId, finDoc['cashRatio'], finDoc['cashRatioDetail'], finDoc['cashFlow'], finDoc['cashFlowDetail'], finDoc['ARTurnover'], finDoc['ARTurnoverDetail'], 
-      finDoc['growthMargin'], finDoc['growthMarginDetail'], finDoc['opearionExpenseRatio'], finDoc['opearionExpenseRatioDetail'], finDoc['profitMargin'], finDoc['profitMarginStatus'], finDoc['ROE'], finDoc['ROEDetail'], finDoc['EPSFlow'], finDoc['EPSFlowStatus'], 
-      finDoc['assetTurnover'], finDoc['assetTurnoverDetail'], finDoc['cashRatio2'], finDoc['cashRatio2Detail'], finDoc['ARTurnover2'], finDoc['ARTurnover2Status'], finDoc['inventoryTurnover'], finDoc['inventoryTurnoverDetail'], finDoc['bizCycle'], finDoc['bizCycleStatus'], 
-      finDoc['debtRatio'], finDoc['debtRatioDetail'], finDoc['longtermCashRatio'], finDoc['longtermCashDetail'], finDoc['currentRatio'], finDoc['currentRatioStatus']]]);
+      todayStr, finReportId, finInfo['cashRatio'], finInfo['cashRatioDetail'], finInfo['cashFlow'], finInfo['cashFlowDetail'], finInfo['ARTurnover'], finInfo['ARTurnoverDetail'], 
+      finInfo['growthMargin'], finInfo['growthMarginDetail'], finInfo['opearionExpenseRatio'], finInfo['opearionExpenseRatioDetail'], finInfo['profitMargin'], finInfo['profitMarginStatus'], finInfo['ROE'], finInfo['ROEDetail'], finInfo['EPSFlow'], finInfo['EPSFlowStatus'], 
+      finInfo['assetTurnover'], finInfo['assetTurnoverDetail'], finInfo['cashRatio2'], finInfo['cashRatio2Detail'], finInfo['ARTurnover2'], finInfo['ARTurnover2Status'], finInfo['inventoryTurnover'], finInfo['inventoryTurnoverDetail'], finInfo['bizCycle'], finInfo['bizCycleStatus'], 
+      finInfo['debtRatio'], finInfo['debtRatioDetail'], finInfo['longtermCashRatio'], finInfo['longtermCashDetail'], finInfo['currentRatio'], finInfo['currentRatioStatus']]]);
   }else{
-    finDoc.insertRowBefore(2);
-    finDoc.getRange('A' + targetRow + ':AH' + targetRow).setValues([[
-      todayStr, finReportId, finDoc['cashRatio'], finDoc['cashRatioDetail'], finDoc['cashFlow'], finDoc['cashFlowDetail'], finDoc['ARTurnover'], finDoc['ARTurnoverDetail'], 
-      finDoc['growthMargin'], finDoc['growthMarginDetail'], finDoc['opearionExpenseRatio'], finDoc['opearionExpenseRatioDetail'], finDoc['profitMargin'], finDoc['profitMarginStatus'], finDoc['ROE'], finDoc['ROEDetail'], finDoc['EPSFlow'], finDoc['EPSFlowStatus'], 
-      finDoc['assetTurnover'], finDoc['assetTurnoverDetail'], finDoc['cashRatio2'], finDoc['cashRatio2Detail'], finDoc['ARTurnover2'], finDoc['ARTurnover2Status'], finDoc['inventoryTurnover'], finDoc['inventoryTurnoverDetail'], finDoc['bizCycle'], finDoc['bizCycleStatus'], 
-      finDoc['debtRatio'], finDoc['debtRatioDetail'], finDoc['longtermCashRatio'], finDoc['longtermCashDetail'], finDoc['currentRatio'], finDoc['currentRatioStatus']]]);
+    finDoc.insertRowBefore(3);
+    finDoc.getRange('A3:AH3').setValues([[
+      todayStr, finReportId, finInfo['cashRatio'], finInfo['cashRatioDetail'], finInfo['cashFlow'], finInfo['cashFlowDetail'], finInfo['ARTurnover'], finInfo['ARTurnoverDetail'], 
+      finInfo['growthMargin'], finInfo['growthMarginDetail'], finInfo['opearionExpenseRatio'], finInfo['opearionExpenseRatioDetail'], finInfo['profitMargin'], finInfo['profitMarginStatus'], finInfo['ROE'], finInfo['ROEDetail'], finInfo['EPSFlow'], finInfo['EPSFlowStatus'], 
+      finInfo['assetTurnover'], finInfo['assetTurnoverDetail'], finInfo['cashRatio2'], finInfo['cashRatio2Detail'], finInfo['ARTurnover2'], finInfo['ARTurnover2Status'], finInfo['inventoryTurnover'], finInfo['inventoryTurnoverDetail'], finInfo['bizCycle'], finInfo['bizCycleStatus'], 
+      finInfo['debtRatio'], finInfo['debtRatioDetail'], finInfo['longtermCashRatio'], finInfo['longtermCashDetail'], finInfo['currentRatio'], finInfo['currentRatioStatus']]]);
   }
 }
 
-function caibaoshuoDataCollection(urlSymbol='nasdaq-bynd', category='Hype'){
-//  var signalUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1] + "/cbs_signal"
-//  var xml = UrlFetchApp.fetch(signalUrl).getContentText();
-//  xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
-//  var document = XmlService.parse(xml);
-//  //Logger.log(xml)
-//  for(var i=0; i<30; i++){
-//    var date = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[i].getChildren('td')[0].getText()
-//    var signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[i].getChildren('td')[1].getText().replace(/\n +/g, '')
-//  }
+function dailyCBSRanking(urlSymbol='nyse-baba'){
+  var signalUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1] + "/cbs_signal"
+  var xml = UrlFetchApp.fetch(signalUrl).getContentText();
+  xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
+  var document = XmlService.parse(xml);
+  for(var i=0; i<1; i++){
+    var signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[i].getChildren('td')[1].getText().replace(/\n +/g, '')
+  }
+  return signal
+}
+
+function caibaoshuoDataCollection(urlSymbol='nasdaq-bynd'){
   var finInfo = {}
   var financialStatusUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1]
   var xml = UrlFetchApp.fetch(financialStatusUrl).getContentText();
@@ -48,47 +50,50 @@ function caibaoshuoDataCollection(urlSymbol='nasdaq-bynd', category='Hype'){
     finInfo['cbsScore'] = cbsScoreLst[i].replace(/#annualCbsChartModal">/, '').replace(/<\/a>/, '').replace(/<span class="blurred span_l">/, '').replace(/<\/span>/, '')
     var document = XmlService.parse(xmlTable[i]);
     // Cash Analysis
-    finInfo['cashRatio'] = getDataFromXpath('tr/td/div/span' ,document).replace(/\n +/g, '')
+    finInfo['cashRatio'] = getDataFromXpath('tr/td/div/span' ,document)
     finInfo['cashRatioDetail'] = getDataFromXpath('tr/td/div/span' ,document, 'title')
-    finInfo['cashFlow'] = getDataFromXpath('tr/td/div/span[2]' ,document).replace(/\n +/g, '')
+    finInfo['cashFlow'] = getDataFromXpath('tr/td/div/span[2]' ,document)
     finInfo['cashFlowDetail'] = getDataFromXpath('tr/td/div/span[2]' ,document, 'title')
-    finInfo['ARTurnover'] = getDataFromXpath('tr/td/div/span[3]' ,document).replace(/\n +/g, '')
+    finInfo['ARTurnover'] = getDataFromXpath('tr/td/div/span[3]' ,document)
     finInfo['ARTurnoverDetail'] = getDataFromXpath('tr/td/div/span[3]' ,document, 'title')
     
     // Profitability
-    finInfo['growthMargin'] = getDataFromXpath('tr[2]/td/div/span' ,document).replace(/\n +/g, '')
+    finInfo['growthMargin'] = getDataFromXpath('tr[2]/td/div/span' ,document)
     finInfo['growthMarginDetail'] = getDataFromXpath('tr[2]/td/div/span' ,document, 'title')
-    finInfo['opearionExpenseRatio'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document).replace(/\n +/g, '')
+    finInfo['opearionExpenseRatio'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document)
     finInfo['opearionExpenseRatioDetail'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document, 'title')
-    finInfo['profitMargin'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document).replace(/\n +/g, '')
+    finInfo['profitMargin'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document)
     finInfo['profitMarginStatus'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document, 'title')
-    finInfo['ROE'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document).replace(/\n +/g, '')
+    finInfo['ROE'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document)
     finInfo['ROEDetail'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document, 'title')
-    finInfo['EPSFlow'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document).replace(/\n +/g, '')
+    finInfo['EPSFlow'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document)
     finInfo['EPSFlowStatus'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document, 'title')
     
     // Operation 
-    finInfo['assetTurnover'] = getDataFromXpath('tr[3]/td/div/span' ,document).replace(/\n +/g, '')
+    finInfo['assetTurnover'] = getDataFromXpath('tr[3]/td/div/span' ,document)
     finInfo['assetTurnoverDetail'] = getDataFromXpath('tr[3]/td/div/span' ,document, 'title')
-    finInfo['cashRatio2'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document).replace(/\n +/g, '')
+    finInfo['cashRatio2'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document)
     finInfo['cashRatio2Detail'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document, 'title')
-    finInfo['ARTurnover2'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document).replace(/\n +/g, '')
+    finInfo['ARTurnover2'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document)
     finInfo['ARTurnover2Status'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document, 'title')
-    finInfo['inventoryTurnover'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document).replace(/\n +/g, '')
+    finInfo['inventoryTurnover'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document)
     finInfo['inventoryTurnoverDetail'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document, 'title')
-    finInfo['bizCycle'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document).replace(/\n +/g, '')
+    finInfo['bizCycle'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document)
     finInfo['bizCycleStatus'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document, 'title')
     
     // Financial Structure 
-    finInfo['debtRatio'] = getDataFromXpath('tr[4]/td/div/span' ,document).replace(/\n +/g, '')
+    finInfo['debtRatio'] = getDataFromXpath('tr[4]/td/div/span' ,document)
     finInfo['debtRatioDetail'] = getDataFromXpath('tr[4]/td/div/span' ,document, 'title')
-    finInfo['longtermCashRatio'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document).replace(/\n +/g, '')
+    finInfo['longtermCashRatio'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document)
     finInfo['longtermCashDetail'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document, 'title')
     
     // Debt
-    finInfo['currentRatio'] = getDataFromXpath('tr[5]/td/span[1]' ,document).replace(/\n +/g, '')
+    finInfo['currentRatio'] = getDataFromXpath('tr[5]/td/span[1]' ,document)
     finInfo['currentRatioStatus'] = getDataFromXpath('tr[5]/td/span[1]' ,document, 'title')
-    Logger.log(finInfo)
     financialDataRecord(finInfo)
   }
+}
+
+function monthlyFinancialReportCheck(){
+  return
 }
