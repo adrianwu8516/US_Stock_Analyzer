@@ -1,9 +1,9 @@
-TEMPLATE_ID = '1QdGtbF0moLw9mpM1zx2CApLM8u7ZLMq0ScXgBSoPsHg';
+STOCK_TEMPLATE_ID = '1QdGtbF0moLw9mpM1zx2CApLM8u7ZLMq0ScXgBSoPsHg';
 STOCKFILE = DriveApp.getFolderById("1iT-sGcenNSFc9INVIJqLvkabo4q0UyVz")
     
-function getDataFromXpath(path, xmlDoc) {
+function getDataFromXpath(path, xmlDoc, target='text') {
   // Replacing tbody tag because app script doesnt understand.
-  path = path.replace("/html/","").replace("/tbody","","g");
+  path = path.replace("/html/","").replace("/tbody","");
   var tags = path.split("/");
   try {
     var root = xmlDoc.getRootElement();
@@ -21,7 +21,7 @@ function getDataFromXpath(path, xmlDoc) {
   }catch (exception) {
     return;
   }
-  return root.getText();
+  return (target == 'text')?  root.getText() : root.getAttribute(target).getValue()
 }
 
 function onSearch(sheetName, searchString, searchTargetCol) {
@@ -59,9 +59,9 @@ function readLog() {
 function dataRecord(stockInfo){
   var fileName = stockInfo['companyName'] + "(" + stockInfo['symbol'] + ")"
   if(DriveApp.getFilesByName(fileName).hasNext()){
-    documentId = DriveApp.getFilesByName(fileName).next().getId()
+    var documentId = DriveApp.getFilesByName(fileName).next().getId()
   }else{
-    var documentId = DriveApp.getFileById(TEMPLATE_ID).makeCopy(STOCKFILE).getId();
+    var documentId = DriveApp.getFileById(STOCK_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
   }
   var stockDoc = SpreadsheetApp.openById(documentId);
@@ -106,7 +106,7 @@ function dataAnalystPopularity(noteObj, noteObjOld){
           }
         }
       }catch (e) {
-        Logger.log(noteObj[catName][stockName]['companyName'] + "is a new item")
+        Logger.log(noteObj[catName][stockName]['companyName'] + " is a new item")
       }
     }
   }
@@ -160,10 +160,10 @@ function weBullDataCollection(urlSymbol, category){
   stockInfo['exchange'] = getDataFromXpath('body/div/section/div/div/div[2]/div/div/div/div[2]' ,document)
   stockInfo['price'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div' ,document).replace(',',''))
   stockInfo['delta'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[2]' ,document))/100
-  stockInfo['52weekHigh'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div/div[2]]' ,document).replace(',',''))
-  stockInfo['52weekLow'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]]' ,document).replace(',',''))
+  stockInfo['52weekHigh'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div/div[2]' ,document).replace(',',''))
+  stockInfo['52weekLow'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]' ,document).replace(',',''))
   stockInfo['value'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div/div[2]]' ,document).replace(',',''))
-  stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]]' ,document).replace(',',''))
+  stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]' ,document).replace(',',''))
   stockInfo['analystPopularity'] = parseInt(getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/p' ,document).split('位')[0])
   stockInfo['analystAttitiude'] = getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/div' ,document)
   stockInfo['url'] = url
