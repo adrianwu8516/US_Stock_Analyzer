@@ -25,7 +25,7 @@ function financialDataRecord(finInfo){
   }
 }
 
-function dailyCBSRanking(urlSymbol='nyse-baba'){
+function dailyCBSRanking(urlSymbol){
   var signalUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1] + "/cbs_signal"
   var xml = UrlFetchApp.fetch(signalUrl).getContentText();
   xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
@@ -36,7 +36,7 @@ function dailyCBSRanking(urlSymbol='nyse-baba'){
   return signal
 }
 
-function caibaoshuoDataCollection(urlSymbol='nasdaq-bynd'){
+function caibaoshuoDataCollection(urlSymbol){
   var finInfo = {}
   var financialStatusUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1]
   var xml = UrlFetchApp.fetch(financialStatusUrl).getContentText();
@@ -94,6 +94,16 @@ function caibaoshuoDataCollection(urlSymbol='nasdaq-bynd'){
   }
 }
 
-function monthlyFinancialReportCheck(){
-  return
+function monthlyFinancialReportCheck(symbols = SYMBOLS){
+  var catList = Object.keys(symbols)
+  for (var cat in catList){
+    for(var i in symbols[catList[cat]]){
+      try{
+        caibaoshuoDataCollection(symbols[catList[cat]][i])
+      }catch(e){
+        Logger.log(symbols[catList[cat]][i] + "Failed")
+        Logger.log(e)
+      }
+    }
+  }
 }
