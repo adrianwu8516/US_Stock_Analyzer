@@ -50,45 +50,45 @@ function caibaoshuoDataCollection(urlSymbol){
     finInfo['cbsScore'] = cbsScoreLst[i].replace(/#annualCbsChartModal">/, '').replace(/<\/a>/, '').replace(/<span class="blurred span_l">/, '').replace(/<\/span>/, '')
     var document = XmlService.parse(xmlTable[i]);
     // Cash Analysis
-    finInfo['cashRatio'] = getDataFromXpath('tr/td/div/span' ,document)
+    finInfo['cashRatio'] = getDataFromXpath('tr/td/div/span' ,document, removeDot=true)
     finInfo['cashRatioDetail'] = getDataFromXpath('tr/td/div/span' ,document, 'title')
-    finInfo['cashFlow'] = getDataFromXpath('tr/td/div/span[2]' ,document)
+    finInfo['cashFlow'] = getDataFromXpath('tr/td/div/span[2]' ,document, removeDot=true)
     finInfo['cashFlowDetail'] = getDataFromXpath('tr/td/div/span[2]' ,document, 'title')
-    finInfo['ARTurnover'] = getDataFromXpath('tr/td/div/span[3]' ,document)
+    finInfo['ARTurnover'] = getDataFromXpath('tr/td/div/span[3]' ,document, removeDot=true)
     finInfo['ARTurnoverDetail'] = getDataFromXpath('tr/td/div/span[3]' ,document, 'title')
     
     // Profitability
-    finInfo['growthMargin'] = getDataFromXpath('tr[2]/td/div/span' ,document)
+    finInfo['growthMargin'] = getDataFromXpath('tr[2]/td/div/span' ,document, removeDot=true)
     finInfo['growthMarginDetail'] = getDataFromXpath('tr[2]/td/div/span' ,document, 'title')
-    finInfo['opearionExpenseRatio'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document)
+    finInfo['opearionExpenseRatio'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document, removeDot=true)
     finInfo['opearionExpenseRatioDetail'] = getDataFromXpath('tr[2]/td/div/span[2]' ,document, 'title')
-    finInfo['profitMargin'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document)
+    finInfo['profitMargin'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document, removeDot=true)
     finInfo['profitMarginStatus'] = getDataFromXpath('tr[2]/td/div/span[3]' ,document, 'title')
-    finInfo['ROE'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document)
+    finInfo['ROE'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document, removeDot=true)
     finInfo['ROEDetail'] = getDataFromXpath('tr[2]/td/div/span[4]' ,document, 'title')
-    finInfo['EPSFlow'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document)
+    finInfo['EPSFlow'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document, removeDot=true)
     finInfo['EPSFlowStatus'] = getDataFromXpath('tr[2]/td/div/span[5]' ,document, 'title')
     
     // Operation 
-    finInfo['assetTurnover'] = getDataFromXpath('tr[3]/td/div/span' ,document)
+    finInfo['assetTurnover'] = getDataFromXpath('tr[3]/td/div/span' ,document, removeDot=true)
     finInfo['assetTurnoverDetail'] = getDataFromXpath('tr[3]/td/div/span' ,document, 'title')
-    finInfo['cashRatio2'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document)
+    finInfo['cashRatio2'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document, removeDot=true)
     finInfo['cashRatio2Detail'] = getDataFromXpath('tr[3]/td/div/span[2]' ,document, 'title')
-    finInfo['ARTurnover2'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document)
+    finInfo['ARTurnover2'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document, removeDot=true)
     finInfo['ARTurnover2Status'] = getDataFromXpath('tr[3]/td/div/span[3]' ,document, 'title')
-    finInfo['inventoryTurnover'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document)
+    finInfo['inventoryTurnover'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document, removeDot=true)
     finInfo['inventoryTurnoverDetail'] = getDataFromXpath('tr[3]/td/div/span[4]' ,document, 'title')
-    finInfo['bizCycle'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document)
+    finInfo['bizCycle'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document, removeDot=true)
     finInfo['bizCycleStatus'] = getDataFromXpath('tr[3]/td/div/span[5]' ,document, 'title')
     
     // Financial Structure 
-    finInfo['debtRatio'] = getDataFromXpath('tr[4]/td/div/span' ,document)
+    finInfo['debtRatio'] = getDataFromXpath('tr[4]/td/div/span' ,document, removeDot=true)
     finInfo['debtRatioDetail'] = getDataFromXpath('tr[4]/td/div/span' ,document, 'title')
-    finInfo['longtermCashRatio'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document)
+    finInfo['longtermCashRatio'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document, removeDot=true)
     finInfo['longtermCashDetail'] = getDataFromXpath('tr[4]/td/div/span[2]' ,document, 'title')
     
     // Debt
-    finInfo['currentRatio'] = getDataFromXpath('tr[5]/td/span[1]' ,document)
+    finInfo['currentRatio'] = getDataFromXpath('tr[5]/td/span[1]' ,document, removeDot=true)
     finInfo['currentRatioStatus'] = getDataFromXpath('tr[5]/td/span[1]' ,document, 'title')
     financialDataRecord(finInfo)
   }

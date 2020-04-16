@@ -16,7 +16,7 @@ SYMBOLS = {
   'Hardware':['nasdaq-logi', 'nasdaq-roku', 'nasdaq-aapl']
 }
 
-function getDataFromXpath(path, xmlDoc, target='text') {
+function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
   // Replacing tbody tag because app script doesnt understand.
   path = path.replace("/html/","").replace("/tbody","");
   var tags = path.split("/");
@@ -33,11 +33,12 @@ function getDataFromXpath(path, xmlDoc, target='text') {
         root = root.getChild(tag);
       }
     }
-    var target = (target == 'text')?  root.getText().replace(/\n| +|\.|,/g, '') : root.getAttribute(target).getValue()
+    var output = (target == 'text')?  root.getText().replace(/\n| +|,/g, '') : root.getAttribute(target).getValue()
+    if(removeDot) output = root.getText().replace(/\./g, '')
   }catch (exception) {
     return;
   }
-  return target
+  return output
 }
 
 function onSearch(sheetName, searchString, searchTargetCol) {
@@ -155,7 +156,7 @@ function mailer(noteObj){
   var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
   htmlTemp.noteObj = noteObj
   var htmlBody = htmlTemp.evaluate().getContent();
-  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com', title, '', {htmlBody:htmlBody})
+  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com', title, '', {htmlBody:htmlBody}) //
 }
 
 function weBullDataCollection(urlSymbol, category){
@@ -215,8 +216,12 @@ function main(symbols = SYMBOLS){
       noteObj = dataAnalystReport(noteObj, stockInfo)
     }
   }
+  
+  // Log Maintain
   var noteObjOld = JSON.parse(readLog())
   saveLog(JSON.stringify(noteObj))
+  
+  // More Function
   noteObj = dataAnalystPopularity(noteObj, noteObjOld)
   mailer(noteObj)
 }
