@@ -30,9 +30,7 @@ function dailyCBSRanking(urlSymbol){
   var xml = UrlFetchApp.fetch(signalUrl).getContentText();
   xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
   var document = XmlService.parse(xml);
-  for(var i=0; i<1; i++){
-    var signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[i].getChildren('td')[1].getText().replace(/\n +/g, '')
-  }
+  signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
   return signal
 }
 

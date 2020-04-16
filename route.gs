@@ -3,14 +3,15 @@ function doGet(e){
   if(e.queryString !==''){  
     switch(e.parameter.mode){
       case 'historyData': 
-        return e.parameter.symbol? historyChartController(e.parameter.symbol) : errorMessageController("Chart Not Found!!")
+        return e.parameter.symbol? historyChartController(e.parameter.symbol) : messageController("Chart Not Found!!")
       case 'historyCompare': 
-        Logger.log(e.parameter.symbols)
-        return e.parameter.symbols? historyCompareController(e.parameter.symbols) : errorMessageController("Chart Not Found!!")
+        return e.parameter.symbols? historyCompareController(e.parameter.symbols) : messageController("Chart Not Found!!")
+      case 'unsubscribe': 
+        return e.parameter.email? unsubscribeController(e.parameter.email) : messageController("No Such Email")
       default:
-        return errorMessageController("404 Page Not Found!!")
+        return messageController("404 Page Not Found!!")
     }
   }else{
-    return errorMessageController("404 Page Not Found!!")
+    return messageController("404 Page Not Found!!")
   }
 }

@@ -4,7 +4,7 @@ SYMBOLS = {
   'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
   'Internet Service':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl'],
   'Internet Service (China)':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-vnet'],
-  'Social Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'],
+  'Social Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'], 
   'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
   'Military Industry':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
   'Airlines':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
@@ -72,6 +72,13 @@ function readLog() {
   }
 }
 
+function fetchEmailList(){
+  var file = DriveApp.getFileById('11SUAu88gZe6k8vewnP-UOAmcNEZVXNEtHpKRWrKGYGg')
+  var Sheet = SpreadsheetApp.open(file)
+  var emailList = Sheet.getSheetValues(2, 2, Sheet.getLastRow()-1, 1)
+  emailList = emailList.toString().split(',')
+  return emailList
+}
 
 function dataRecord(stockInfo){
   var fileName = stockInfo['companyName'] + "(" + stockInfo['symbol'] + ")"
@@ -155,8 +162,16 @@ function mailer(noteObj){
   var title = "本日股票分析";
   var htmlTemp = HtmlService.createTemplateFromFile('dailyReport')
   htmlTemp.noteObj = noteObj
-  var htmlBody = htmlTemp.evaluate().getContent();
-  MailApp.sendEmail('adrianwu8516@gmail.com, drmanhattan1945@gmail.com, yengttt@gmail.com, h0100556910721@gmail.com', title, '', {htmlBody:htmlBody}) //
+  
+  var emailList = fetchEmailList()
+  
+  for(i in emailList){
+    var email = emailList[i]
+    htmlTemp.email = email
+    var htmlBody = htmlTemp.evaluate().getContent();
+    //MailApp.sendEmail('adrianwu8516@gmail.com', title, '', {htmlBody:htmlBody})
+    MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+  } 
 }
 
 function weBullDataCollection(urlSymbol, category){
@@ -219,7 +234,7 @@ function main(symbols = SYMBOLS){
   
   // Log Maintain
   var noteObjOld = JSON.parse(readLog())
-  saveLog(JSON.stringify(noteObj))
+//  saveLog(JSON.stringify(noteObj))
   
   // More Function
   noteObj = dataAnalystPopularity(noteObj, noteObjOld)

@@ -15,6 +15,22 @@ function weBullMultiple(symbolLst) {
   return;
 }
 
-
-  
-  
+function cbsRecord(symbol){
+  // Unfinished
+  var symbol = 'zm'
+  var file = DriveApp.getFileById('1B8Xv88I9eWcFc21dE4tRpV3m-Y8n4rsWJ78JDIJc63g')
+  var Sheet = SpreadsheetApp.open(file);
+  var today = new Date()
+  var index = (today.getFullYear() - 1) + '-' + symbol
+  var targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
+  if (!targetRow) {
+    index = (today.getFullYear() - 2) + '-' + symbol
+    targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
+  }
+  if(targetRow){
+    targetRow += 1
+    var finList = Sheet.getSheetValues(targetRow, 1, 1, 34)[0]
+  }else{
+    
+  }
+}
