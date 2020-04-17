@@ -25,14 +25,6 @@ function financialDataRecord(finInfo){
   }
 }
 
-function dailyCBSRanking(urlSymbol){
-  var signalUrl = "https://caibaoshuo.com/companies/" + urlSymbol.split('-')[1] + "/cbs_signal"
-  var xml = UrlFetchApp.fetch(signalUrl).getContentText();
-  xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
-  var document = XmlService.parse(xml);
-  signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
-  return signal
-}
 
 function caibaoshuoDataCollection(urlSymbol){
   var finInfo = {}

@@ -15,8 +15,8 @@ function weBullMultiple(symbolLst) {
   return;
 }
 
-function cbsRecord(symbol){
-  // Unfinished
+function cbsFinancialRecord(symbol){
+  // Unfinished Don't know what to do with financial reports
   var symbol = 'zm'
   var file = DriveApp.getFileById('1B8Xv88I9eWcFc21dE4tRpV3m-Y8n4rsWJ78JDIJc63g')
   var Sheet = SpreadsheetApp.open(file);

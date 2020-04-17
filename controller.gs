@@ -1,5 +1,5 @@
 function messageController(message){
-  var html_page = HtmlService.createTemplateFromFile('message')
+  var html_page = HtmlService.createTemplateFromFile('viewMessage')
   html_page.message = message
   return html_page
         .evaluate()
@@ -8,7 +8,7 @@ function messageController(message){
 }
 
 function historyChartController(symbol){
-  var html_page = HtmlService.createTemplateFromFile('historyChart')
+  var html_page = HtmlService.createTemplateFromFile('viewHistoryChart')
   html_page.symbol = symbol
   var Data = weBullSingle(symbol)
   html_page.date = Data[0]
@@ -23,12 +23,9 @@ function historyChartController(symbol){
 }
 
 function unsubscribeController(email){
-  var file = DriveApp.getFileById('11SUAu88gZe6k8vewnP-UOAmcNEZVXNEtHpKRWrKGYGg')
-  var Sheet = SpreadsheetApp.open(file)
-  Logger.log(email)
+  var Sheet = SpreadsheetApp.open(MAILFILE)
   var targetRow = onSearch(Sheet, searchString = email, searchTargetCol = 1)
-  Logger.log(targetRow)
-  var html_page = HtmlService.createTemplateFromFile('message')
+  var html_page = HtmlService.createTemplateFromFile('viewMessage')
   if(targetRow){
     targetRow += 1
     Sheet.deleteRow(targetRow);
