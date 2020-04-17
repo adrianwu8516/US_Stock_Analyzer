@@ -55,8 +55,10 @@ function dailyComparison(noteObj, noteObjOld){
   return noteObj
 }
 
-
 function dailyCBSRanking(stockName){
+  // CBS does not support financial companise
+  if(CBSMUSTFAIL.includes(stockName)) return ""
+  
   var signalUrl = "https://caibaoshuo.com/companies/" + stockName + "/cbs_signal"
   var xml = UrlFetchApp.fetch(signalUrl).getContentText();
   xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
@@ -64,6 +66,22 @@ function dailyCBSRanking(stockName){
   signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
   return signal
 }
+
+function CBSRetry(stockName){
+  var i = 1;
+  while(i < 2){
+    try{
+      var signal = dailyCBSRanking(stockName)
+      return signal
+    }catch(e){
+      Logger.log(e)
+      Logger.log(stockName + " : Redo Failed " + i)
+      i += 1
+    }
+  }
+  return ""
+}
+
 
 function collectDataFromCBS(){
   // Check if market closed
@@ -82,9 +100,7 @@ function collectDataFromCBS(){
       try{
         noteObj[catName][stockName]["cbsRanking"] = dailyCBSRanking(stockName)
       }catch(e){
-        Logger.log(e)
-        Logger.log(stockName + " : Failed")
-        noteObj[catName][stockName]["cbsRanking"] = ""
+        noteObj[catName][stockName]["cbsRanking"] = CBSRetry(stockName)
       }
       var stockInfo = catObj[stockName]
       dataRecord(stockInfo)
