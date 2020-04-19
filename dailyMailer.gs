@@ -6,10 +6,8 @@ function fetchEmailList(){
 }
 
 function mailer(){
-  
   // Check if market closed
-  var todayString = checkifClosed()
-  if(!todayString) return;
+  if(!checkifClosed()) return;  
   
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   

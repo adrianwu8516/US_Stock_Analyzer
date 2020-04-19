@@ -1,3 +1,5 @@
+CACHE = CacheService.getScriptCache();
+CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
 CBSMUSTFAIL = ['MA', 'V', 'PYPL']
 SYMBOLS = {
@@ -15,6 +17,7 @@ SYMBOLS = {
   'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux', 'nyse-xom', 'nyse-psx', 'nyse-cvx'],
   'Hardware':['nasdaq-logi', 'nasdaq-roku', 'nasdaq-aapl']
 }
+CATLIST = Object.keys(SYMBOLS)
 
 function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
   // Replacing tbody tag because app script doesnt understand.
