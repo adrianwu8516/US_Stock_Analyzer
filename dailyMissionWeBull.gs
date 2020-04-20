@@ -64,7 +64,7 @@ function getWeBullData(urlSymbol, category){
 
 function collectDataFromWeBull(symbols = SYMBOLS){
   // Check if market closed
-//  if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   
   var pool = []
   for (var catNo in CATLIST){

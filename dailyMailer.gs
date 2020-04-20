@@ -1,3 +1,17 @@
+function getTrackingGIF(email='adrian@dcard.cc', subject='美股分析早報') {
+  var imgURL = "https://ssl.google-analytics.com/collect?"
+    + "v=1&t=event"
+    + "&tid=" + GAACCOUNT
+    + "&z="   + Math.round((new Date()).getTime()/1000).toString()
+    + "&cid=" + Utilities.getUuid()
+    + "&ec=" + encodeURIComponent("Email Open")
+    + "&ea=" + encodeURIComponent(subject.replace(/'/g, ""))
+    + "&el=" + encodeURIComponent(email);
+  Logger.log("<img src='" + imgURL + "' width='1' height='1'/>")
+  return "<img src='" + imgURL + "' width='1' height='1'/>";
+}
+
+
 function fetchEmailList(){
   var Sheet = SpreadsheetApp.open(MAILFILE)
   var emailList = Sheet.getSheetValues(2, 2, Sheet.getLastRow()-1, 1)
@@ -7,7 +21,7 @@ function fetchEmailList(){
 
 function mailer(){
   // Check if market closed
-  //if(!checkifClosed()) return;  
+  if(!checkifClosed()) return;  
   
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   
@@ -25,6 +39,6 @@ function mailer(){
     htmlTemp.email = email
     Logger.log(String(email.hash()))
     var htmlBody = htmlTemp.evaluate().getContent();
-    //MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+    MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
   } 
 }

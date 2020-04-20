@@ -34,7 +34,7 @@ function cbsDataCollectUnit(symbol){
 
 function collectDataFromCBS(){
   // Check if market closed
-//  if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   
   var poolCache = CACHE.get("pool");
   Logger.log(poolCache)

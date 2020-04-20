@@ -1,6 +1,6 @@
 function dataRecordandProcess(symbols = SYMBOLS){
   // Check if market closed
-//  if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   
   // Record
   var logObj = {}
@@ -12,12 +12,11 @@ function dataRecordandProcess(symbols = SYMBOLS){
       var stockInfo = CACHE.get(symbol);
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
-        //dataRecord(stockInfo)
+        dataRecord(stockInfo)
         logObj[catName][symbol] = stockInfo
       }
     }
   }
-  Logger.log(logObj)
   
   // Process - compare the data with yesterday
   var logObjOld = JSON.parse(readLog("LoggerYesterday.txt"))

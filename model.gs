@@ -2,7 +2,6 @@ function weBullSingle(symbol, span=20) {
   var cacheName = symbol + '-history'
   var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
-    Logger.log("No Cache")
     var file = DriveApp.getFilesByName(symbol).next();
     var Sheet = SpreadsheetApp.open(file);
     var dateLst = [], priceLst = [], priceHighLst  = [], priceMidLst = [], priceLowLst = []
@@ -16,7 +15,6 @@ function weBullSingle(symbol, span=20) {
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
   }
-  Logger.log('process done')
   return stockHistoryData
 }
 
