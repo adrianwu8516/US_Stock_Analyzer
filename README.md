@@ -11,7 +11,8 @@
 4. ~~Use Cache to speedup data accessing~~
 5. 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
 6. ~~CBS 數據爬蟲的分散式架構，支援可憐的免費 GAS Server（5hr，研究加實作）~~
-7. 用戶行為追蹤 Log（3hr）
+7. 用戶行為追蹤 Log（3hr）<br>
+  https://www.labnol.org/code/19543-analytics-with-google-script
 8. 開信 Pixel （3hr，研究加實作）
 9. 跨語系支援（英語，日語）
 10. 其他的爬蟲加速研究與實作
