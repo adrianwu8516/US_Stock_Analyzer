@@ -8,7 +8,7 @@
 1. ~~CBS 爬資料失敗後的重試一次機制~~
 2. ~~Recoder 獨立於 CSB 處理流程之外，這樣可以另外開一個 Trigger 獨立處理，加快效率（2hr）~~
 3. ~~資安升級，用戶資料編碼（3hr）~~
-4. Use Cache to speedup data accessing
+4. ~~Use Cache to speedup data accessing~~
 5. 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
 6. ~~CBS 數據爬蟲的分散式架構，支援可憐的免費 GAS Server（5hr，研究加實作）~~
 7. 用戶行為追蹤 Log（3hr）
