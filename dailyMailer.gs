@@ -7,7 +7,7 @@ function fetchEmailList(){
 
 function mailer(){
   // Check if market closed
-  if(!checkifClosed()) return;  
+  //if(!checkifClosed()) return;  
   
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   
@@ -21,8 +21,10 @@ function mailer(){
   
   for(i in emailList){
     var email = emailList[i]
+    htmlTemp.hash = email.hash()
     htmlTemp.email = email
+    Logger.log(String(email.hash()))
     var htmlBody = htmlTemp.evaluate().getContent();
-    MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+    //MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
   } 
 }
