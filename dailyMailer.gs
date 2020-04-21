@@ -16,6 +16,7 @@ function fetchEmailList(){
   var Sheet = SpreadsheetApp.open(MAILFILE)
   var emailList = Sheet.getSheetValues(2, 2, Sheet.getLastRow()-1, 1)
   emailList = emailList.toString().split(',')
+  emailList = [...new Set(emailList)]; 
   return emailList
 }
 
@@ -33,11 +34,11 @@ function mailer(){
   //var emailList = fetchEmailList()
   var emailList = ['adrianwu8516@gmail.com']
   
+  Logger.log("Mail to: " + String(emailList))
   for(i in emailList){
     var email = emailList[i]
     htmlTemp.hash = email.hash()
     htmlTemp.email = email
-    Logger.log(String(email.hash()))
     var htmlBody = htmlTemp.evaluate().getContent();
     MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
   } 
