@@ -12,6 +12,6 @@ function doGet(e){
         return messageController("404 Page Not Found!!")
     }
   }else{
-    return messageController("404 Page Not Found!!")
+    return indexController()
   }
 }

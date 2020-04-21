@@ -66,6 +66,7 @@ function collectDataFromWeBull(symbols = SYMBOLS){
   // Check if market closed
   if(!checkifClosed()) return;
   
+  Logger.log("Today Handling: " + JSON.stringify(symbols))
   var pool = []
   for (var catNo in CATLIST){
     var catName = CATLIST[catNo]

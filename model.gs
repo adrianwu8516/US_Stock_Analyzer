@@ -11,7 +11,7 @@ function weBullSingle(symbol, span=20) {
     Sheet.getSheetValues(2, 12, span, 1).forEach(element => priceMidLst.push(parseFloat(element[0])||0))
     Sheet.getSheetValues(2, 13, span, 1).forEach(element => priceLowLst.push(parseFloat(element[0])||0))
     var stockHistoryData = [dateLst.reverse(), priceLst.reverse(), priceHighLst.reverse(), priceMidLst.reverse(), priceLowLst.reverse()]
-    CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME * 3)
+    CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
   }
@@ -20,6 +20,18 @@ function weBullSingle(symbol, span=20) {
 
 function weBullMultiple(symbolLst) {
   return;
+}
+
+function indexData(){
+  var cacheName = 'index'
+  var indexData = CACHE.get(cacheName);
+  if(!indexData){
+    var indexData = JSON.parse(readLog("LoggerMailer.txt"))
+    CACHE.put(cacheName, JSON.stringify(indexData), CACHELIFETIME)
+  }else{
+    indexData = JSON.parse(indexData)
+  }  
+  return indexData
 }
 
 function cbsFinancialRecord(symbol){

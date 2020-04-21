@@ -1,3 +1,7 @@
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
 function messageController(message){
   var html_page = HtmlService.createTemplateFromFile('viewMessage')
   html_page.message = message
@@ -6,6 +10,17 @@ function messageController(message){
         .addMetaTag('viewport', 'width=device-width, initial-scale=1')
         .setTitle("Error!!"); 
 }
+
+
+function indexController(){
+  var html_page = HtmlService.createTemplateFromFile('viewIndex')
+  html_page.noteObj = indexData()
+  return html_page
+        .evaluate()
+        .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+        .setTitle("Stock Analysis of Yesterday"); 
+}
+
 
 function historyChartController(symbol){
   var html_page = HtmlService.createTemplateFromFile('viewHistoryChart')
