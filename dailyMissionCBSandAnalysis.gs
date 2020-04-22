@@ -20,15 +20,15 @@ function getCBSRanking(stockName){
   return ""
 }
 
-function cbsDataCollectUnit(symbol){
-  Logger.log(symbol + ' Handling')
-  var stockInfoStr = CACHE.get(symbol)
+function cbsDataCollectUnit(stockSymbol){
+  Logger.log(stockSymbol + ' Handling')
+  var stockInfoStr = CACHE.get(stockSymbol)
   if (stockInfoStr != null){
     var stockInfo = JSON.parse(stockInfoStr)
-    stockInfo.cbsRanking = getCBSRanking(symbol)
-    CACHE.put(symbol, JSON.stringify(stockInfo), CACHELIFETIME)
+    stockInfo.cbsRanking = getCBSRanking(stockSymbol)
+    CACHE.put(stockSymbol, JSON.stringify(stockInfo), CACHELIFETIME)
   }else{
-    Logger.log(symbol + " data not found, Cannot start the CBS parsing!")
+    Logger.log(stockSymbol + " data not found, Cannot start the CBS parsing!")
   }
 }
 
@@ -41,9 +41,9 @@ function collectDataFromCBS(){
   if (poolCache != null) {
     var poolLst = poolCache.split(',')
     while(poolLst[0] != ""){
-      var symbol = poolLst.pop()
+      var stockSymbol = poolLst.pop()
       CACHE.put("pool", poolLst, CACHELIFETIME)
-      cbsDataCollectUnit(symbol)
+      cbsDataCollectUnit(stockSymbol)
       collectDataFromCBS()
       poolLst = [""]
     }

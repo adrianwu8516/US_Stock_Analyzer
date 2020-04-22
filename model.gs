@@ -1,8 +1,8 @@
-function weBullSingle(symbol, span=20) {
-  var cacheName = symbol + '-history'
+function weBullSingle(stockSymbol, span=20) {
+  var cacheName = stockSymbol + '-history'
   var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
-    var file = DriveApp.getFilesByName(symbol).next();
+    var file = DriveApp.getFilesByName(stockSymbol).next();
     var Sheet = SpreadsheetApp.open(file);
     var dateLst = [], priceLst = [], priceHighLst  = [], priceMidLst = [], priceLowLst = []
     Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.push(element[0]))
@@ -34,16 +34,16 @@ function indexData(){
   return indexData
 }
 
-function cbsFinancialRecord(symbol){
+function cbsFinancialRecord(stockSymbol){
   // Unfinished Don't know what to do with financial reports
-  var symbol = 'zm'
+  var stockSymbol = 'zm'
   var file = DriveApp.getFileById('1B8Xv88I9eWcFc21dE4tRpV3m-Y8n4rsWJ78JDIJc63g')
   var Sheet = SpreadsheetApp.open(file);
   var today = new Date()
-  var index = (today.getFullYear() - 1) + '-' + symbol
+  var index = (today.getFullYear() - 1) + '-' + stockSymbol
   var targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
   if (!targetRow) {
-    index = (today.getFullYear() - 2) + '-' + symbol
+    index = (today.getFullYear() - 2) + '-' + stockSymbol
     targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
   }
   if(targetRow){

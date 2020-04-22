@@ -84,14 +84,14 @@ function caibaoshuoDataCollection(urlSymbol){
   }
 }
 
-function monthlyFinancialReportCheck(symbols = SYMBOLS){
-  var catList = Object.keys(symbols)
+function monthlyFinancialReportCheck(stockSymbols = STOCK_SYMBOLS){
+  var catList = Object.keys(stockSymbols)
   for (var cat in catList){
-    for(var i in symbols[catList[cat]]){
+    for(var i in stockSymbols[catList[cat]]){
       try{
-        caibaoshuoDataCollection(symbols[catList[cat]][i])
+        caibaoshuoDataCollection(stockSymbols[catList[cat]][i])
       }catch(e){
-        Logger.log(symbols[catList[cat]][i] + "Failed")
+        Logger.log(stockSymbols[catList[cat]][i] + "Failed")
         Logger.log(e)
       }
     }
