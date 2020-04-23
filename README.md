@@ -12,6 +12,7 @@
 * 跨語系支援（英語，日語）
 * 其他的爬蟲加速研究與實作
 * Index Page and better view with Google Site
+* Cache refresh in the morning with the mailer
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
