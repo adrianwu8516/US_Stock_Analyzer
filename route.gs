@@ -9,7 +9,7 @@ function doGet(e){
       case 'unsubscribe': 
         return (e.parameter.email && e.parameter.password) ? unsubscribeController(e.parameter.email, e.parameter.password) : messageController("No Such Email")
       default:
-        return messageController("404 Page Not Found!!")
+        return indexController()
     }
   }else{
     return indexController()

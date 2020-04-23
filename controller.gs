@@ -18,7 +18,8 @@ function indexController(){
   return html_page
         .evaluate()
         .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-        .setTitle("Stock Analysis of Yesterday"); 
+        .setTitle("Stock Analysis of Yesterday")
+        .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 
