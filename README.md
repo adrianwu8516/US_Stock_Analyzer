@@ -13,6 +13,7 @@
 * 其他的爬蟲加速研究與實作
 * Index Page and better view with Google Site
 * Cache refresh in the morning with the mailer
+* Fixing trigger cannot run with the right variable issue
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
