@@ -12,7 +12,7 @@
 * 跨語系支援（英語，日語）
 * 其他的爬蟲加速研究與實作
 * Index Page and better view with Google Site
-* Cache refresh in the morning with the mailer
+
 * Fixing trigger cannot run with the right variable issue
 
 ### Done tickets 
@@ -21,3 +21,4 @@
 * ~~資安升級，用戶資料編碼（3hr）~~
 * ~~Use Cache to speedup data accessing~~
 * ~~CBS 數據爬蟲的分散式架構，支援可憐的免費 GAS Server（5hr，研究加實作）~~
+* ~~Cache refresh in the morning with the mailer~~
