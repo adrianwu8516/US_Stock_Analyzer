@@ -27,7 +27,6 @@ function loadStockList(){
   return html_page.evaluate().getContent();
 }
 
-
 function historyChartController(stockSymbol){
   var html_page = HtmlService.createTemplateFromFile('viewHistoryChart')
   html_page.stockSymbol = stockSymbol
