@@ -13,6 +13,7 @@
 * 其他的爬蟲加速研究與實作
 * Asynchronous page loading
 * Fixing trigger cannot run with the right variable issue
+* Better front end view with bootstrap and Vue.js
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
