@@ -1,0 +1,92 @@
+<? var category = Object.keys(noteObj) ?>
+<? for(var cat in category){ ?>
+        <? var catInfo = noteObj[category[cat]] ?>
+        <h2><?= category[cat] ?></h2>
+        <div  class="container-fluid" style="overflow-x:auto;">
+        <table class="table table-hover" style="height: 30px; width:100%;" cellspacing="6">
+        <tbody>
+        <tr style="height: 30px;">
+          <th scope="col" style="height: 30px; text-align: center;"><strong>指標</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>線圖</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>財報</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>公司</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>收盤價</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>52週最高</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>52週最低</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>漲跌</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>滾動市盈率</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>分析</strong></th>
+          <th scope="col" style="height: 30px; text-align: center;"><strong>分析師數</strong></th>
+        </tr>
+        <? for(var i in catInfo){ ?>
+            <tr style="height: 20px;">
+            <td style="height: 20px; text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
+            <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['companyName'] ?>(<?= catInfo[i]['symbol']?>)" target="_blank">📈</a></td>
+            
+            <? if (catInfo[i]['cbsRanking'] == '过热'){ ?>
+                <td style="height: 20px; text-align: center;"><a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a></td>
+            <? }else if (catInfo[i]['cbsRanking'] == '中等'){ ?>
+                <td style="height: 20px; text-align: center;"><a style="color: #FCCC79;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">中等</a></td>
+            <? }else if (catInfo[i]['cbsRanking'] == '低价'){ ?>
+                <td style="height: 20px; text-align: center;"><a style="color: #8FD17F;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">偏低</a></td>
+            <? }else if (catInfo[i]['cbsRanking'] == '低估'){ ?>
+                <td style="height: 20px; text-align: center;"><a style="color: #3D9CFF;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">低估</a></td>
+            <? }else if (catInfo[i]['cbsRanking'] == '观望'){ ?>
+                <td style="height: 20px; text-align: center;"><a style="color: #999999;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">觀望</a></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><?=catInfo[i]['cbsRanking']?></td>
+            <? }?>
+            
+            <td style="height: 20px; text-align: center;"><a href="<?= catInfo[i]['url']?>" target="_blank"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
+            <td style="height: 20px; text-align: center;"><?= catInfo[i]['price'] ?></td>
+            
+            <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
+                <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><?= catInfo[i]['52weekHigh'] ?></td>
+            <? }?>
+            
+            <? if ((catInfo[i]['price'] - catInfo[i]['52weekLow'])/catInfo[i]['price'] < 0.05){ ?>
+                <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><?= catInfo[i]['52weekLow'] ?></td>
+            <? }?>
+            
+            <? if (catInfo[i]['delta'] > 0){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+            <? }else if (catInfo[i]['delta'] < 0){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><strong><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</strong></td>
+            <? }?>
+            
+            <? if (catInfo[i]['TTM'] > 0){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['TTM'].toFixed(1) ?></span></strong></td>
+            <? }else if (catInfo[i]['TTM'] < 0){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= catInfo[i]['TTM'].toFixed(1) ?></span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px text-align: center;;"><strong><?= catInfo[i]['TTM'].toFixed(1) ?></strong></td>
+            <? }?>
+            
+            <? if (catInfo[i]['analysis'].includes("↗")){ ?>
+                <td style="height: 20px; text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+            <? }else if (catInfo[i]['analysis'].includes("↘")){ ?>
+                <td style="height: 20px; text-align: left;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: left;"><?= catInfo[i]['analysis'] ?></td>
+            <? }?>
+            
+            <? if (String(catInfo[i]['analystPopularity']).includes("↗")){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+            <? }else if (String(catInfo[i]['analystPopularity']).includes("↘")){ ?>
+                <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+            <? }else{ ?>
+                <td style="height: 20px; text-align: center;"><?= catInfo[i]['analystPopularity'] ?></td>
+            <? }?>
+            
+            </tr>
+        <? } ?>
+        </tbody>
+        </table>
+        </div>
+<?}?>

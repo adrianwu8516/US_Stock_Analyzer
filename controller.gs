@@ -14,12 +14,17 @@ function messageController(message){
 
 function indexController(){
   var html_page = HtmlService.createTemplateFromFile('viewIndex')
-  html_page.noteObj = indexData()
   return html_page
         .evaluate()
         .addMetaTag('viewport', 'width=device-width, initial-scale=1')
         .setTitle("Stock Analysis of Yesterday")
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function loadStockList(){
+  var html_page = HtmlService.createTemplateFromFile('viewStockList')
+  html_page.noteObj = indexData()
+  return html_page.evaluate().getContent();
 }
 
 
