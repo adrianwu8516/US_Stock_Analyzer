@@ -62,26 +62,16 @@ function getWeBullData(urlSymbol, category){
   }
 }
 
-function collectDataFromWeBull(stockSymbols = STOCK_SYMBOLS){
+function collectDataFromWeBull(){
   // Check if market closed
   if(!checkifClosed()) return;
-  Logger.log(stockSymbols)
-  Logger.log(CATLIST)
-  Logger.log("Today Handling: " + JSON.stringify(stockSymbols))
+  Logger.log("Today Handling: " + JSON.stringify(STOCK_SYMBOLS))
   var pool = []
   for (var catNo in CATLIST){
-    Logger.log("CATLIST[catNo]")
-    Logger.log(CATLIST[catNo])
     var catName = CATLIST[catNo]
-    for(var i in stockSymbols[catName]){
-      Logger.log("stockSymbols[catName][i]")
-      Logger.log(stockSymbols[catName][i])
-      var stockInfo = getWeBullData(urlSymbol = stockSymbols[catName][i], category = catName)
-      Logger.log("stockInfo1")
-      Logger.log(stockInfo)
+    for(var i in STOCK_SYMBOLS[catName]){
+      var stockInfo = getWeBullData(urlSymbol = STOCK_SYMBOLS[catName][i], category = catName)
       stockInfo = weBullAnalystMark(stockInfo)
-      Logger.log("stockInfo2")
-      Logger.log(stockInfo)
       CACHE.put(stockInfo.symbol, JSON.stringify(stockInfo), CACHELIFETIME); // Cached for 3 hrs
       pool.push(stockInfo.symbol)
     }

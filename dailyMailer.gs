@@ -25,6 +25,7 @@ function mailer(){
   if(!checkifClosed()) return;  
   
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
+  CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
   
   // Send Email Template
   var title = "美股分析早報";

@@ -1,4 +1,4 @@
-function dataRecordandProcess(stockSymbols = STOCK_SYMBOLS){
+function dataRecordandProcess(){
   // Check if market closed
   if(!checkifClosed()) return;
   
@@ -7,8 +7,8 @@ function dataRecordandProcess(stockSymbols = STOCK_SYMBOLS){
   for (var catNo in CATLIST){
     var catName = CATLIST[catNo]
     if (typeof logObj[catName] == "undefined") logObj[catName] = {}
-    for(var i in stockSymbols[catName]){
-      var stockSymbol = stockSymbols[catName][i].split('-')[1].toUpperCase()
+    for(var i in STOCK_SYMBOLS[catName]){
+      var stockSymbol = STOCK_SYMBOLS[catName][i].split('-')[1].toUpperCase()
       var stockInfo = CACHE.get(stockSymbol);
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
