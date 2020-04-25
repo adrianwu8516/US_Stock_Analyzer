@@ -11,9 +11,7 @@
 * 開信 Pixel （3hr，研究加實作）
 * 跨語系支援（英語，日語）
 * 其他的爬蟲加速研究與實作
-* Asynchronous page loading
-* Fixing trigger cannot run with the right variable issue
-* Better front end view with bootstrap and Vue.js
+* Better front end view with Vue.js
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
@@ -23,3 +21,6 @@
 * ~~CBS 數據爬蟲的分散式架構，支援可憐的免費 GAS Server（5hr，研究加實作）~~
 * ~~Cache refresh in the morning with the mailer~~
 * ~~Index Page and better view with Google Site~~
+* ~~Better front end view with bootstrap~~
+* ~~Asynchronous page loading~~
+* ~~Fixing trigger cannot run with the right variable issue~~
