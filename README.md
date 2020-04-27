@@ -12,6 +12,7 @@
 * 跨語系支援（英語，日語）
 * 其他的爬蟲加速研究與實作
 * Better front end view with Vue.js
+* Parse EPS and EPS Estimation data and build related model
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
