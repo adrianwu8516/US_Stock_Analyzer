@@ -1,6 +1,8 @@
 # US Stock Analyzer
 
-透過 Google Apps Script，每天從各大網站上面擷取美國股市資料，並且整理過後，於早晨推送美股分析日報的一個開源服務。
+透過 Google Apps Script (GAS)，每天從各大網站上面擷取美國股市資料，並且整理過後，於早晨推送美股分析日報的一個開源服務。並且藉由 GAS 的 HtmlService 結合 Google Site 達成輕鬆股票網站架設。
+
+網站服務請見此（[點我！](https://sites.google.com/view/us-stock-today/home)）
 
 ![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/StructureMap/US%20Stock%20Analysis-Project%20Structure.png)
 
