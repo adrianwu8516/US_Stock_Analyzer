@@ -1,12 +1,14 @@
 # US Stock Analyzer
 
+### Project Introduction
 透過 Google Apps Script (GAS)，每天從各大網站上面擷取美國股市資料，並且整理過後，於早晨推送美股分析日報的一個開源服務。並且藉由 GAS 的 HtmlService 結合 Google Site 達成輕鬆股票網站架設。
 
 網站服務請見此（[點我！](https://sites.google.com/view/us-stock-today/home)）
 
+### Project Structure
 ![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/StructureMap/US%20Stock%20Analysis-Project%20Structure.png)
 
-### 待處理的工作事項：
+### Pending tickets：
 * 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
 * 用戶行為追蹤 Log（3hr）<br>
   https://www.labnol.org/code/19543-analytics-with-google-script
