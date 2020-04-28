@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_self">
+    <?!= include('viewHeader') ?>
+    <title>股票觀察列表</title>
+  </head>
+  <body>
+    <h1>您今天的股票觀察清單</h1>  
+    <div id = "loading">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-grow" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      // The code in this function runs when the page is loaded.
+      $(function() {
+        google.script.run.withSuccessHandler(show).loadStockList();
+      });
+      function show(htmlPart) {
+        var content = $('#loading');
+        content.empty();
+        content.append(htmlPart);
+      }
+    </script>
+  </body>
+</html>
+
+
+    

@@ -7,11 +7,11 @@ function doGet(e){
       case 'historyCompare': 
         return e.parameter.symbols? historyCompareController(e.parameter.symbols) : messageController("Chart Not Found!!")
       case 'unsubscribe': 
-        return e.parameter.email? unsubscribeController(e.parameter.email) : messageController("No Such Email")
+        return (e.parameter.email && e.parameter.password) ? unsubscribeController(e.parameter.email, e.parameter.password) : messageController("No Such Email")
       default:
-        return messageController("404 Page Not Found!!")
+        return indexController()
     }
   }else{
-    return messageController("404 Page Not Found!!")
+    return indexController()
   }
 }

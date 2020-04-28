@@ -1,9 +1,12 @@
+CACHE = CacheService.getScriptCache();
+CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
 CBSMUSTFAIL = ['MA', 'V', 'PYPL']
-SYMBOLS = {
+STOCK_SYMBOLS = {
   'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
   'Internet Service':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl'],
   'Internet Service (China)':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-vnet'],
+  'Video Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku'],
   'Social Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'], 
   'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
   'Military Industry':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
@@ -12,9 +15,11 @@ SYMBOLS = {
   'GPU':['nasdaq-amd', 'nasdaq-nvda'],
   'Cannabis':['nasdaq-gwph', 'nyse-acb'],
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
-  'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux', 'nyse-xom', 'nyse-psx', 'nyse-cvx'],
-  'Hardware':['nasdaq-logi', 'nasdaq-roku', 'nasdaq-aapl']
+  'Energy Company':['nyse-xom', 'nyse-psx', 'nyse-cvx'],
+  'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux'],
+  'Hardware':['nasdaq-logi', 'nasdaq-aapl']
 }
+CATLIST = Object.keys(STOCK_SYMBOLS)
 
 function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
   // Replacing tbody tag because app script doesnt understand.
