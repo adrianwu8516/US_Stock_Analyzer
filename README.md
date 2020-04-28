@@ -9,6 +9,11 @@
 ![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/StructureMap/US%20Stock%20Analysis-Project%20Structure.png)
 
 ### Pending tickets：
+* Parse EPS and EPS Estimation data and build related model
+* Add more information into HisChart, like volumn, CBS signal, and make it more stylish
+* Add a rendering function to make the site work smoother
+* Seperate Email view with Website view
+* Multi stock comparison
 * 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
 * 用戶行為追蹤 Log（3hr）<br>
   https://www.labnol.org/code/19543-analytics-with-google-script
@@ -16,7 +21,7 @@
 * 跨語系支援（英語，日語）
 * 其他的爬蟲加速研究與實作
 * Better front end view with Vue.js
-* Parse EPS and EPS Estimation data and build related model
+
 
 ### Done tickets 
 * ~~CBS 爬資料失敗後的重試一次機制~~
