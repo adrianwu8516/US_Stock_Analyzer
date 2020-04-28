@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
+        <base target="_self">
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163968177-1"></script>
         <script>
@@ -59,7 +60,7 @@
                 //define options for visualization
                 var options = {width: 1027, 
                                height: 768,
-                               title: '數值計算'};
+                               title: '分析師目標價'};
  
                 //draw our chart
                 chart.draw(dataTable, options); 
@@ -69,9 +70,9 @@
  
     <body> 
         <!--Div for our chart -->
+        <h3 style="text-align:center"><?= stockSymbol ?></h3>
         <div class="text-center">
-          <h3 style="text-align:center"><?= stockSymbol ?></h3>
-          <div id="chart"></div>
+          <div id="chart" align='center'></div>
         </div>
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTNV6M4"
