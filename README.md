@@ -2,7 +2,7 @@
 
 透過 Google Apps Script，每天從各大網站上面擷取美國股市資料，並且整理過後，於早晨推送美股分析日報的一個開源服務。
 
-![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/US%20Stock%20Analysis.png?raw=true)
+![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/StructureMap/US%20Stock%20Analysis-Project%20Structure.png)
 
 ### 待處理的工作事項：
 * 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
