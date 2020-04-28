@@ -11,8 +11,8 @@
 ### Pending tickets：
 * Parse EPS and EPS Estimation data and build related model
 * Add more information into HisChart, like volumn, CBS signal, and make it more stylish
-* Add a rendering function to make the site work smoother
 * Seperate Email view with Website view
+* Routes refactor
 * Multi stock comparison
 * 用戶可自訂義股票觀察清單（含選擇界面等等，Mailer Function 的升級版本）(10hr)
 * 用戶行為追蹤 Log（3hr）<br>
@@ -34,3 +34,4 @@
 * ~~Better front end view with bootstrap~~
 * ~~Asynchronous page loading~~
 * ~~Fixing trigger cannot run with the right variable issue~~
+* ~~Add a rendering function to make the site work smoother~~
