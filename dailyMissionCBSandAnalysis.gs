@@ -26,6 +26,7 @@ function cbsDataCollectUnit(stockSymbol){
   if (stockInfoStr != null){
     var stockInfo = JSON.parse(stockInfoStr)
     stockInfo.cbsRanking = getCBSRanking(stockSymbol)
+    stockSymbol = stockSymbol.split('-')[0] // In case some stock symbol might looks like RDS-A
     CACHE.put(stockSymbol, JSON.stringify(stockInfo), CACHELIFETIME)
   }else{
     Logger.log(stockSymbol + " data not found, Cannot start the CBS parsing!")

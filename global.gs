@@ -15,7 +15,7 @@ STOCK_SYMBOLS = {
   'GPU':['nasdaq-amd', 'nasdaq-nvda'],
   'Cannabis':['nasdaq-gwph', 'nyse-acb'],
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
-  'Energy Company':['nyse-xom', 'nyse-psx', 'nyse-cvx'],
+  'Energy Company':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a'],
   'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux'],
   'Hardware':['nasdaq-logi', 'nasdaq-aapl']
 }

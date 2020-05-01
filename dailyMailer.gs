@@ -32,8 +32,8 @@ function mailer(){
   var htmlTemp = HtmlService.createTemplateFromFile('viewDailyReport')
   htmlTemp.noteObj = noteObj
   
-  //var emailList = fetchEmailList()
-  var emailList = ['adrianwu8516@gmail.com']
+  var emailList = fetchEmailList()
+  //var emailList = ['adrianwu8516@gmail.com']
   
   Logger.log("Mail to: " + String(emailList))
   for(i in emailList){
