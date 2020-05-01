@@ -44,10 +44,10 @@ function dataRecord(stockInfo){
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('A' + targetRow + ':P' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking']]]);
+    stockDoc.getRange('A' + targetRow + ':T' + targetRow).setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], stockInfo['tickerRT'], stockInfo['rating'], stockInfo['rating'], stockInfo['forecastEps']]]);
   }else{
     stockDoc.insertRowBefore(2);
-    stockDoc.getRange('A2:P2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking']]]);
+    stockDoc.getRange('A2:T2').setValues([[todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], stockInfo['tickerRT'], stockInfo['rating'], stockInfo['rating'], stockInfo['forecastEps']]]);
   }
 }
 

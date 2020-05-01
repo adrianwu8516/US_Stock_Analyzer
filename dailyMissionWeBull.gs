@@ -22,41 +22,36 @@ function getWeBullData(urlSymbol, category){
   while(retry < 3){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
-      xml = xml.replace(/<head>(.*?)<\/head>/, '')
-      .replace(/<footer(.*?)<\/footer>/g, '')
-      .replace(/<script(.*?)<\/script>/g, '')
-      .replace(/style=\"(.*?)\"/g, '')
-      .replace(/class=\"(.*?)\"/g, '')
-      .replace(/src=\"(.*?)\"/g, '')
-      .replace(/<input(.*?)>/g, '')
-      .replace(/<img(.*?)>/g, '')
-      var document = XmlService.parse(xml);
+      var xmlRating = xml.match(/{rating:([\s\S]*?)}]}}/g)[0]
+      var ratingJSON = JSON.parse(xmlRating.replace(/\./g, '0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
+      var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
+      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/\./g, '0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
       var stockInfo = {};
       stockInfo['category'] = category
-      stockInfo['symbol'] = getDataFromXpath('body/div/section/div/div/div[2]/div/div/h1' ,document)
-      stockInfo['companyName'] = getDataFromXpath('body/div/section/div/div/div[2]/div/div/div/div' ,document)
-      stockInfo['exchange'] = getDataFromXpath('body/div/section/div/div/div[2]/div/div/div/div[2]' ,document)
-      stockInfo['price'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div' ,document).replace(',',''))
-      stockInfo['delta'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div/div[3]/div[2]/div/div[2]/div[2]' ,document))/100
-      stockInfo['52weekHigh'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div/div[2]' ,document).replace(',',''))
-      stockInfo['52weekLow'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]' ,document).replace(',',''))
-      stockInfo['value'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div/div[2]]' ,document).replace(',',''))
-      stockInfo['TTM'] = parseFloat(getDataFromXpath('body/div/section/div/div/div[2]/div[2]/div/div[5]/div[2]/div[2]' ,document).replace(',',''))
-      stockInfo['analystPopularity'] = parseInt(getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/p' ,document).split('位')[0])
-      stockInfo['analystAttitiude'] = getDataFromXpath('body/div/section/div[2]/div/div/section/div[2]/div/div' ,document)
+      stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol
+      stockInfo['companyName'] = tickerRTJSON.tickerRT.name
+      stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
+      stockInfo['price'] = tickerRTJSON.tickerRT.close
+      stockInfo['delta'] = parseFloat(tickerRTJSON.tickerRT.changeRatio * 100)
+      stockInfo['volumn'] = parseFloat(tickerRTJSON.tickerRT.volume)
+      stockInfo['52weekHigh'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkHigh)
+      stockInfo['52weekLow'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkLow)
+      stockInfo['value'] = parseFloat(tickerRTJSON.tickerRT.marketValue / (10 ** 8))
+      stockInfo['TTM'] = parseFloat(tickerRTJSON.tickerRT.peTtm)
+      stockInfo['analystPopularity'] = ratingJSON.rating.ratingAnalysisTotals
+      stockInfo['analystAttitiude'] = ratingJSON.rating.ratingAnalysis
       stockInfo['url'] = url
-      
-      var analystPrice = getDataFromXpath('body/div/section/div[2]/div/div/section[2]/div[2]' ,document)
-      var analystPrice_lst = analystPrice.split('，')
-      stockInfo['priceLow'] = parseFloat(analystPrice_lst[analystPrice_lst.length-1].replace( /^\D+/g, '').replace( "。", ''))
-      stockInfo['priceHigh'] = parseFloat(analystPrice_lst[analystPrice_lst.length-2].replace( /^\D+/g, ''))
-      stockInfo['priceMid']  = parseFloat(analystPrice_lst[analystPrice_lst.length-3].replace( /^\D+/g, ''))
-      
+      stockInfo['priceLow'] = ratingJSON.targetPrice.low
+      stockInfo['priceHigh'] = ratingJSON.targetPrice.high
+      stockInfo['priceMid']  = ratingJSON.targetPrice.mean
+      stockInfo['tickerRT'] = tickerRTJSON.tickerRT
+      stockInfo['rating'] = ratingJSON.rating
+      stockInfo['targetPrice'] = ratingJSON.targetPrice
+      stockInfo['forecastEps'] = ratingJSON.forecastEps
       return stockInfo
-      
     }catch(e){
       Logger.log(e)
-      Logger.log(stockName + " : WeBull parse failed " + retry)
+      Logger.log(urlSymbol + " : WeBull parse failed " + retry)
       retry += 1
     }
   }
