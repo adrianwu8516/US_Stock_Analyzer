@@ -13,6 +13,10 @@ function dataRecordandProcess(){
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
         dataRecord(stockInfo)
+        delete stockInfo.tickerRT; // In case the cache might be too large to load
+        delete stockInfo.rating;
+        delete stockInfo.targetPrice;
+        delete stockInfo.forecastEps;
         logObj[catName][stockSymbol] = stockInfo
       }
     }

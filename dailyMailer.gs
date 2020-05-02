@@ -1,3 +1,4 @@
+// Implementing
 function getTrackingGIF(email='adrian@dcard.cc', subject='美股分析早報') {
   var imgURL = "https://ssl.google-analytics.com/collect?"
     + "v=1&t=event"

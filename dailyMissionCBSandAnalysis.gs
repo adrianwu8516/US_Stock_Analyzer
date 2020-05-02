@@ -25,7 +25,7 @@ function cbsDataCollectUnit(stockSymbol){
   var stockInfoStr = CACHE.get(stockSymbol)
   if (stockInfoStr != null){
     var stockInfo = JSON.parse(stockInfoStr)
-    stockInfo.cbsRanking = getCBSRanking(stockSymbol)
+    stockInfo.cbsRanking = getCBSRanking(stockSymbol.replace(' ', '.'))
     stockSymbol = stockSymbol.split('-')[0] // In case some stock symbol might looks like RDS-A
     CACHE.put(stockSymbol, JSON.stringify(stockInfo), CACHELIFETIME)
   }else{

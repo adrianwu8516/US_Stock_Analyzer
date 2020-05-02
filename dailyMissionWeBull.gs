@@ -23,16 +23,16 @@ function getWeBullData(urlSymbol, category){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
       var xmlRating = xml.match(/{rating:([\s\S]*?)}]}}/g)[0]
-      var ratingJSON = JSON.parse(xmlRating.replace(/\./g, '0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
+      var ratingJSON = JSON.parse(xmlRating.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
       var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
-      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/\./g, '0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
+      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
       var stockInfo = {};
       stockInfo['category'] = category
       stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol
-      stockInfo['companyName'] = tickerRTJSON.tickerRT.name
+      stockInfo['companyName'] = (tickerRTJSON.tickerRT.name).replace(/ |0|,/g, '')
       stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
-      stockInfo['price'] = tickerRTJSON.tickerRT.close
-      stockInfo['delta'] = parseFloat(tickerRTJSON.tickerRT.changeRatio * 100)
+      stockInfo['price'] = parseFloat(tickerRTJSON.tickerRT.close)
+      stockInfo['delta'] = parseFloat(tickerRTJSON.tickerRT.changeRatio)
       stockInfo['volumn'] = parseFloat(tickerRTJSON.tickerRT.volume)
       stockInfo['52weekHigh'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkHigh)
       stockInfo['52weekLow'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkLow)

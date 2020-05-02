@@ -17,14 +17,16 @@
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript">
         
-            //load the Google Visualization API and the chart
-            google.load('visualization', '1', {'packages': ['corechart']});
+            // Load the Visualization API and the controls package.
+            google.charts.load('current', {'packages':['corechart', 'controls']});
  
-            //set callback
-            google.setOnLoadCallback (createChart);
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawDashboard);
  
-            //callback function
-            function createChart() {
+            // Callback that creates and populates a data table,
+            // instantiates a dashboard, a range slider and a pie chart,
+            // passes in the data and draws it.
+            function drawDashboard() {
  
                 //create data table object
                 var dataTable = new google.visualization.DataTable();
@@ -34,6 +36,9 @@
                 var priceHighStr = '<?= priceHigh ?>';
                 var priceMidStr = '<?= priceMid ?>';
                 var priceLowStr = '<?= priceLow ?>';
+                console.log(priceLowStr)
+                Logger.log(priceLowStr)
+                var pettm = '<?= priceLow ?>';
                 var dateLst = [], priceLst = [], priceHighLst = [], priceMidLst = [], priceLowLst = [];
                 dateStr.split(',').forEach(element => dateLst.push(element))
                 priceStr.split(',').forEach(element => priceLst.push(parseFloat(element)))
@@ -74,9 +79,5 @@
         <div class="text-center">
           <div id="chart" align='center'></div>
         </div>
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTNV6M4"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
     </body>
 </html>
