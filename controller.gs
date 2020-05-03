@@ -15,6 +15,7 @@ function loadStockList(){
 function historyChartController(stockSymbol){
   var data = weBullSingle(stockSymbol)
   data.stockSymbol = stockSymbol
+  Logger.log(data)
   return render('viewHistoryChart', data)
 }
 
@@ -36,5 +37,8 @@ function unsubscribeController(email, hash){
 
 // Not Finished
 function historyCompareController(stockSymbols){
-  return render('historyChart', {'data':weBullMultiple(stockSymbols)})
+  var data = weBullMultiple(stockSymbols.split(','))
+  //data.stockSymbols = stockSymbols
+  Logger.log(data)
+  return render('viewCompareChart', {'data':data})
 }

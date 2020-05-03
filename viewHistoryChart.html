@@ -111,8 +111,8 @@
                 
                 //define columns
                 dataTable.addColumn('string', '季度');
-                dataTable.addColumn('number', '預估值');
-                dataTable.addColumn('number', '實際值');
+                dataTable.addColumn('number', '預估');
+                dataTable.addColumn('number', '實際');
                 
                 //define rows of data
                 for(var i = 0 ; i < 5 ; i++)
@@ -128,8 +128,8 @@
                 //define options for visualization
                 var options = {
                      seriesType: 'bars',
-                     chartArea: {'height': '90%', 'width': '100%'},
-                     colors:['#7898e1','#76da91']
+                     chartArea: {'height': '90%', 'width': '57%'},
+                     colors:['#76da91', '#7898e1']
                 };
  
                 //draw our chart
@@ -162,6 +162,10 @@
                       <td><?=tickerRTObj.bps?></td>
                     </tr>
                     <tr>
+                      <th scope="row">PB</th>
+                      <td><?=tickerRTObj.pb?></td>
+                    </tr>
+                    <tr>
                       <th scope="row">PS</th>
                       <td><?=tickerRTObj.ps?></td>
                     </tr>
@@ -170,12 +174,12 @@
                       <td><?=tickerRTObj.pe?></td>
                     </tr>
                     <tr>
-                      <th scope="row">Indicated PE</th>
-                      <td><?=tickerRTObj.indicatedPe?></td>
-                    </tr>
-                    <tr>
                       <th scope="row">PE TTM</th>
                       <td><?=tickerRTObj.peTtm?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Indicated PE</th>
+                      <td><?=tickerRTObj.indicatedPe?></td>
                     </tr>
                     <tr>
                       <th scope="row">EPS</th>
@@ -185,10 +189,7 @@
                       <th scope="row">EPS TTM</th>
                       <td><?=tickerRTObj.epsTtm?></td>
                     </tr>
-                    <tr>
-                      <th scope="row">PB</th>
-                      <td><?=tickerRTObj.pb?></td>
-                    </tr>
+                    
                   </tbody>
                 </table>
             </div>

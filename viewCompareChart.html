@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <base target="_self">
+        <?!= include('viewHeader') ?>
+        
+        <title>Compare Charts</title>
+        <!-- load Google AJAX API -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            
+            // Unfinished!!!!!
+            google.load('visualization', '1', {'packages': ['corechart']});
+            google.setOnLoadCallback(drawPriceChart);
+            //callback function
+            function drawPriceChart() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                
+                var dataObj = JSON.parse('<?= JSON.stringify(data) ?>');
+                var keyLst = '<?= Object.keys(data) ?>'.split(',');
+                console.log(dataObj);
+                console.log(keyLst);
+                console.log(keyLst[1]);
+                console.log(dataObj[keyLst[1]].date);
+                
+                //define columns
+                dataTable.addColumn('string', '日期');
+                for(var no in keyLst){
+                    dataTable.addColumn('number', keyLst[no]);
+                    console.log(keyLst[no]);
+                }
+                //define rows of data
+                for(var i = 0 ; i < 20 ; i++){
+                    var rowLst = []
+                    for(var no in keyLst){
+                        if(no==0) rowLst.push(dataObj[keyLst[no]].date[i])
+                        rowLst.push(dataObj[keyLst[no]].price[i])
+                    }
+                    console.log(rowLst)
+                    dataTable.addRows([rowLst]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.LineChart (document.getElementById('chart'));
+                
+                //define options for visualization
+                var options = {
+                     //chartArea: {'height': '90%', 'width': '57%'}//,
+                     //colors:['#76da91', '#7898e1']
+                };
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
+        </script> 
+        
+    </head>
+ 
+    <body> 
+       <div id="dashboard_div" align='center'>
+          <div id="chart"  style="height: 500px;"></div>
+        </div>
+    </body>
+</html>

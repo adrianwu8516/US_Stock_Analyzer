@@ -19,7 +19,6 @@ function weBullSingle(stockSymbol, span=20) {
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
       'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0]
     }
-    Logger.log(stockHistoryData)
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
@@ -27,8 +26,13 @@ function weBullSingle(stockSymbol, span=20) {
   return stockHistoryData
 }
 
-function weBullMultiple(symbolLst) {
-  return;
+function weBullMultiple(symbolLst, span=20) {
+  var dataPack = {}
+  for(var i in symbolLst){
+    var stockSymbol = symbolLst[i]
+    dataPack[stockSymbol] = weBullSingle(stockSymbol, span)
+  }
+  return dataPack;
 }
 
 function indexData(){
