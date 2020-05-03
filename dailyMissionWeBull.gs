@@ -44,10 +44,10 @@ function getWeBullData(urlSymbol, category){
       stockInfo['priceLow'] = ratingJSON.targetPrice.low
       stockInfo['priceHigh'] = ratingJSON.targetPrice.high
       stockInfo['priceMid']  = ratingJSON.targetPrice.mean
-      stockInfo['tickerRT'] = tickerRTJSON.tickerRT
-      stockInfo['rating'] = ratingJSON.rating
-      stockInfo['targetPrice'] = ratingJSON.targetPrice
-      stockInfo['forecastEps'] = ratingJSON.forecastEps
+      stockInfo['tickerRT'] = JSON.stringify(tickerRTJSON.tickerRT)
+      stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
+      stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
+      stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
       return stockInfo
     }catch(e){
       Logger.log(e)

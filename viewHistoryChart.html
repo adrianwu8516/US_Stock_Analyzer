@@ -2,19 +2,12 @@
 <html>
     <head>
         <base target="_self">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163968177-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'UA-163968177-1');
-        </script>
-
+        <?!= include('viewHeader') ?>
+        
         <title>History Charts - <?= stockSymbol ?></title>
-
+        
         <!-- load Google AJAX API -->
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
         
             // Load the Visualization API and the controls package.
@@ -31,53 +24,233 @@
                 //create data table object
                 var dataTable = new google.visualization.DataTable();
                 
-                var dateStr = '<?= date ?>';
-                var priceStr = '<?= price ?>';
-                var priceHighStr = '<?= priceHigh ?>';
-                var priceMidStr = '<?= priceMid ?>';
-                var priceLowStr = '<?= priceLow ?>';
-                console.log(priceLowStr)
-                Logger.log(priceLowStr)
-                var pettm = '<?= priceLow ?>';
-                var dateLst = [], priceLst = [], priceHighLst = [], priceMidLst = [], priceLowLst = [];
-                dateStr.split(',').forEach(element => dateLst.push(element))
-                priceStr.split(',').forEach(element => priceLst.push(parseFloat(element)))
-                priceHighStr.split(',').forEach(element => priceHighLst.push(parseFloat(element)))
-                priceMidStr.split(',').forEach(element => priceMidLst.push(parseFloat(element)))
-                priceLowStr.split(',').forEach(element => priceLowLst.push(parseFloat(element)))
- 
+                var dateLst = '<?= date ?>'.replace(/年|月/g, '-').replace(/日/g, '').split(',')
+                var priceLst = '<?= price ?>'.split(',').map(Number)
+                var priceHighLst = '<?= priceHigh ?>'.split(',').map(Number)
+                var priceMidLst = '<?= priceMid ?>'.split(',').map(Number)
+                var priceLowLst = '<?= priceLow ?>'.split(',').map(Number)
+                var pettmLst = '<?= pettm ?>'.split(',').map(Number)
+
                 //define columns
-                dataTable.addColumn('string', '日期');
+                dataTable.addColumn('date', '日期');
                 dataTable.addColumn('number', '價錢');
                 dataTable.addColumn('number', '分析師高價');
                 dataTable.addColumn('number', '分析師均價');
                 dataTable.addColumn('number', '分析師低價');
+                dataTable.addColumn('number', '滾動市盈率');
                 
                 //define rows of data
                 for(var i = 0 ; i <= 20 ; i++)
                 {
-                    dataTable.addRows([[dateLst[i], priceLst[i], priceHighLst[i], priceMidLst[i], priceLowLst[i]]]);
+                    dataTable.addRows([[new Date(dateLst[i]), parseFloat(priceLst[i]), parseFloat(priceHighLst[i]), parseFloat(priceMidLst[i]), parseFloat(priceLowLst[i]), parseFloat(pettmLst[i])]]);
+                } 
+                // Create a dashboard.
+                var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+                
+                // Create a price chart, passing some options
+                var priceChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'priceChart_div',
+                  'view': {'columns': [0, 1, 2, 3, 4]},
+                  'options': {
+                      chartArea: {'height': '80%', 'width': '60%'},
+                      title: '價格趨勢',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#76da91'}, 2:{color: '#38cb7d'}, 3:{color: '#76da91'} }
+                  }
+                });
+                
+                // Create a financial report chart, passing some options
+                var financialReportChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'financialReporChart_div',
+                  'view': {'columns': [0, 5]},
+                  'options': {
+                      chartArea: {'height': '30%', 'width': '60%'},
+                      title: '估值趨勢',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#38cb7d'} }
+                  }
+                });
+                
+                // Create a date slider, passing some options
+                var priceSlider = new google.visualization.ControlWrapper({
+                  'controlType': 'ChartRangeFilter',
+                  'containerId': 'filter_div',
+                  'options': { 'filterColumnIndex': 0,
+                               'ui': { 'chartType': 'AreaChart', 
+                                       'chartView': { 'columns': [0, 1] },
+                                       'chartOptions': {
+                                           'chartArea': {'width': '60%'},
+                                           'hAxis': { 'baselineColor': 'none', format:'MMM d', gridlines: { color: 'transparent' } },
+                                           'legend': {'position': 'none'}
+                                        },
+                                        'minRangeSize': 86400000
+                               }
+                             }
+                });
+
+                dashboard.bind(priceSlider, [priceChart, financialReportChart]);
+                dashboard.draw(dataTable);
+
+            }
+            google.load('visualization', '1', {'packages': ['corechart']});
+            google.setOnLoadCallback(drawEPSChart);
+            //callback function
+            function drawEPSChart() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                var forecastEpsLst = JSON.parse(<?=forecastEps?>).points
+                
+                //define columns
+                dataTable.addColumn('string', '季度');
+                dataTable.addColumn('number', '預估值');
+                dataTable.addColumn('number', '實際值');
+                
+                //define rows of data
+                for(var i = 0 ; i < 5 ; i++)
+                {
+                    var obj = forecastEpsLst[i]
+                    if(!obj.valueActual) obj.valueActual = 0
+                    dataTable.addRows([[obj.xAxis, obj.valueForecast, obj.valueActual]]);
                 } 
                 
                 //instantiate our chart object
-                var chart = new google.visualization.LineChart (document.getElementById('chart'));
+                var chart = new google.visualization.ComboChart (document.getElementById('chart'));
                 
                 //define options for visualization
-                var options = {width: 1027, 
-                               height: 768,
-                               title: '分析師目標價'};
+                var options = {
+                     seriesType: 'bars',
+                     chartArea: {'height': '90%', 'width': '100%'},
+                     colors:['#7898e1','#76da91']
+                };
  
                 //draw our chart
                 chart.draw(dataTable, options); 
             }
         </script> 
+        
     </head>
  
     <body> 
         <!--Div for our chart -->
         <h3 style="text-align:center"><?= stockSymbol ?></h3>
-        <div class="text-center">
-          <div id="chart" align='center'></div>
+        <br>
+        <? var tickerRTObj = JSON.parse(tickerRT) ?>
+        <? var ratingObj = JSON.parse(rating)?>
+        <? var targetPriceObj = JSON.parse(targetPrice)?>
+        <div class="container">
+        <div class="row">
+            <div class="col">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">財務指標</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">BPS</th>
+                      <td><?=tickerRTObj.bps?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">PS</th>
+                      <td><?=tickerRTObj.ps?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">PE</th>
+                      <td><?=tickerRTObj.pe?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Indicated PE</th>
+                      <td><?=tickerRTObj.indicatedPe?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">PE TTM</th>
+                      <td><?=tickerRTObj.peTtm?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">EPS</th>
+                      <td><?=tickerRTObj.eps?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">EPS TTM</th>
+                      <td><?=tickerRTObj.epsTtm?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">PB</th>
+                      <td><?=tickerRTObj.pb?></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">市場指標</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">市值</th>
+                      <td><?=(parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>億</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">本日交易量</th>
+                      <td><?=(parseFloat(tickerRTObj.volume)/(10 ** 4)).toFixed(1)?>萬</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">10日平均交易量</th>
+                      <td><?=(parseFloat(tickerRTObj.avgVol10D)/(10 ** 4)).toFixed(1)?>萬</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3月平均交易量</th>
+                      <td><?=(parseFloat(tickerRTObj.avgVol3M)/(10 ** 4)).toFixed(1)?>萬</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">換手率</th>
+                      <td><?=tickerRTObj.turnoverRate?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">波動率</th>
+                      <td><?=tickerRTObj.vibrateRatio?></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">EPS預估</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><div id="chart" align='center' style="height: 250px;"></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
         </div>
+        
+        <div id="dashboard_div" align='center'>
+          <div id="priceChart_div"   style="height: 290px;"></div>
+          <div id="financialReporChart_div"   style="height: 290px;"></div>
+          <div id="filter_div"  style="height: 100px;"></div>
+        </div>
+        
+        </div>
+        
     </body>
 </html>

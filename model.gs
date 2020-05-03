@@ -4,13 +4,22 @@ function weBullSingle(stockSymbol, span=20) {
   if(!stockHistoryData){
     var file = DriveApp.getFilesByName(stockSymbol).next();
     var Sheet = SpreadsheetApp.open(file);
-    var dateLst = [], priceLst = [], priceHighLst  = [], priceMidLst = [], priceLowLst = []
+    var dateLst = [], priceLst = [], pettmLst = [], priceHighLst  = [], priceMidLst = [], priceLowLst = []
     Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.push(element[0]))
     Sheet.getSheetValues(2, 5, span, 1).forEach(element => priceLst.push(parseFloat(element[0])||0))
     Sheet.getSheetValues(2, 11, span, 1).forEach(element => priceHighLst.push(parseFloat(element[0])||0))
     Sheet.getSheetValues(2, 12, span, 1).forEach(element => priceMidLst.push(parseFloat(element[0])||0))
     Sheet.getSheetValues(2, 13, span, 1).forEach(element => priceLowLst.push(parseFloat(element[0])||0))
-    var stockHistoryData = [dateLst.reverse(), priceLst.reverse(), priceHighLst.reverse(), priceMidLst.reverse(), priceLowLst.reverse()]
+    Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.push(parseFloat(element[0])||0))
+    var stockHistoryData = {
+      'date': dateLst.reverse(), 'price': priceLst.reverse(), 'priceHigh': priceHighLst.reverse(), 
+      'priceMid': priceMidLst.reverse(), 'priceLow': priceLowLst.reverse(),'pettm': pettmLst.reverse(), 
+      'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 
+      'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
+      'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
+      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0]
+    }
+    Logger.log(stockHistoryData)
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)

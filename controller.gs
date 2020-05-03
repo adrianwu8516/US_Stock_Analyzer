@@ -13,8 +13,9 @@ function loadStockList(){
 }
 
 function historyChartController(stockSymbol){
-  var Data = weBullSingle(stockSymbol)
-  return render('viewHistoryChart', {'stockSymbol': stockSymbol, 'date': Data[0], 'price': Data[1], 'priceHigh':Data[2], 'priceMid':Data[3], 'priceLow':Data[4]})
+  var data = weBullSingle(stockSymbol)
+  data.stockSymbol = stockSymbol
+  return render('viewHistoryChart', data)
 }
 
 function unsubscribeController(email, hash){
