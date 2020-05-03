@@ -33,5 +33,5 @@
 * ~~Asynchronous page loading~~
 * ~~Fixing trigger cannot run with the right variable issue~~
 * ~~Add a rendering function to make the site work smoother~~
-* ~~Parse EPS and EPS Estimation data and build related model
-* ~~Add more information into HisChart, like volumn, CBS signal, and make it more stylish
+* ~~Parse EPS and EPS Estimation data and build related model~~
+* ~~Add more information into HisChart, like volumn, CBS signal, and make it more stylish~~
