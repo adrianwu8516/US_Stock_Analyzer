@@ -9,6 +9,7 @@
 ![Structure Concept](https://github.com/kkmanwilliam/US_Stock_Analyzer/blob/master/StructureMap/US%20Stock%20Analysis-Project%20Structure.png)
 
 ### Pending tickets：
+* Structuralize the code into RoR style
 * Multi stock comparison
 * Seperate Email view with Website view
 * Routes refactor
