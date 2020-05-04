@@ -1,13 +1,13 @@
 function messageController(message){
-  return render('viewMessage', {'message':message})
+  return render('view/message', {'message':message})
 }
 
 function indexController(){
-  return render('viewIndex')
+  return render('view/index')
 }
 
 function loadStockList(){
-  var html_page = HtmlService.createTemplateFromFile('viewStockList')
+  var html_page = HtmlService.createTemplateFromFile('view/stockList')
   html_page.noteObj = indexData()
   return html_page.evaluate().getContent();
 }
@@ -16,7 +16,7 @@ function historyChartController(stockSymbol){
   var data = weBullSingle(stockSymbol)
   data.stockSymbol = stockSymbol
   Logger.log(data)
-  return render('viewHistoryChart', data)
+  return render('view/historyChart', data)
 }
 
 function unsubscribeController(email, hash){
@@ -26,12 +26,12 @@ function unsubscribeController(email, hash){
     targetRow += 1
     if (hash == (Sheet.getSheetValues(targetRow, 2, 1, 1)[0][0]).hash()){
       Sheet.deleteRow(targetRow);
-      return render('viewMessage', {'message':(email + " has been removed from email list!!")})
+      return render('view/message', {'message':(email + " has been removed from email list!!")})
     }else{
-      return render('viewMessage', {'message':"You're not authorized to do this!"})
+      return render('view/message', {'message':"You're not authorized to do this!"})
     }
   }else{
-    return render('viewMessage', {'message':"Can't find the email: " + email})
+    return render('view/message', {'message':"Can't find the email: " + email})
   } 
 }
 
@@ -40,5 +40,5 @@ function historyCompareController(stockSymbols){
   var data = weBullMultiple(stockSymbols.split(','))
   //data.stockSymbols = stockSymbols
   Logger.log(data)
-  return render('viewCompareChart', {'data':data})
+  return render('view/compareChart', {'data':data})
 }
