@@ -12,9 +12,11 @@
         
             // Load the Visualization API and the controls package.
             google.charts.load('current', {'packages':['corechart', 'controls']});
+            //google.load('visualization', '1', {'packages': ['corechart']});
  
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(drawDashboard);
+            google.charts.setOnLoadCallback(drawEPSChart);
  
             // Callback that creates and populates a data table,
             // instantiates a dashboard, a range slider and a pie chart,
@@ -100,8 +102,8 @@
                 dashboard.draw(dataTable);
 
             }
-            google.load('visualization', '1', {'packages': ['corechart']});
-            google.setOnLoadCallback(drawEPSChart);
+            
+           
             //callback function
             function drawEPSChart() {
  

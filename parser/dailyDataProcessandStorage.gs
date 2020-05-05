@@ -36,7 +36,7 @@ function dataRecordandProcess(){
 
 
 function dataRecord(stockInfo){
-  var fileName = stockInfo['companyName'] + "(" + stockInfo['symbol'] + ")"
+  var fileName = "(" + stockInfo['symbol'] + ")"
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var documentId = DriveApp.getFilesByName(fileName).next().getId()
   }else{

@@ -29,7 +29,7 @@
         <? for(var i in catInfo){ ?>
             <tr style="height: 20px;">
             <td style="height: 20px; text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
-            <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['companyName'] ?>(<?= catInfo[i]['symbol']?>)" target="_blank">📈</a></td>
+            <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['symbol']?>" target="_blank">📈</a></td>
             
             <? if (catInfo[i]['cbsRanking'] == '过热'){ ?>
                 <td style="height: 20px; text-align: center;"><a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a></td>

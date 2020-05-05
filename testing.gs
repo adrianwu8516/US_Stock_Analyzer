@@ -37,3 +37,10 @@ function getWeBullDataTesting(urlSymbol="nasdaq-wix", category="testing"){
 function removeCache(){
   CACHE.remove('index');
 }
+
+function test(){
+  var files = DriveApp.getFilesByName("VNET")
+  while(files.hasNext()){
+    Logger.log(files.next().getName())
+  }
+}
