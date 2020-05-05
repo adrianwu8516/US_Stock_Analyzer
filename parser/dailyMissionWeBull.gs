@@ -28,7 +28,7 @@ function getWeBullData(urlSymbol, category){
       var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
       var stockInfo = {};
       stockInfo['category'] = category
-      stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol
+      stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol.replace(/ /g, '-')
       stockInfo['companyName'] = (tickerRTJSON.tickerRT.name).replace(/ |0|,/g, '')
       stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
       stockInfo['price'] = parseFloat(tickerRTJSON.tickerRT.close)

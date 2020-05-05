@@ -30,11 +30,11 @@ function mailer(){
   
   // Send Email Template
   var title = "美股分析早報";
-  var htmlTemp = HtmlService.createTemplateFromFile('viewDailyReport')
+  var htmlTemp = HtmlService.createTemplateFromFile('view/dailyReport')
   htmlTemp.noteObj = noteObj
   
-  //var emailList = fetchEmailList()
-  var emailList = ['adrianwu8516@gmail.com']
+  var emailList = fetchEmailList()
+  //var emailList = ['adrianwu8516@gmail.com']
   
   Logger.log("Mail to: " + String(emailList))
   for(i in emailList){
