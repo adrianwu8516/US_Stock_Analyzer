@@ -3,21 +3,29 @@ CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
 CBSMUSTFAIL = ['MA', 'V', 'PYPL']
 STOCK_SYMBOLS = {
-  'E-commerce':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
-  'Internet Service':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl'],
-  'Internet Service (China)':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-vnet'],
-  'Video Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku'],
-  'Social Network Service':['nyse-twtr', 'nyse-snap', 'nasdaq-fb'], 
-  'Advertisement and Sales':['nyse-crm', 'nasdaq-ttd'],
-  'Military Industry':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
-  'Airlines':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
-  'Travel':['nasdaq-bkng', 'nasdaq-expe'],
-  'GPU':['nasdaq-amd', 'nasdaq-nvda'],
-  'Cannabis':['nasdaq-gwph', 'nyse-acb'],
-  'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
-  'Energy Company':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a'],
-  'Hype':['nasdaq-bynd','nasdaq-tsla', 'nasdaq-lk', 'nasdaq-sbux'],
-  'Hardware':['nasdaq-logi', 'nasdaq-aapl']
+  '電商':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix'],
+  '網路':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl', 'nasdaq-mtch'],
+  '網路(中國)':['nyse-se', 'nyse-baba', 'nasdaq-ntes', 'nasdaq-bidu', 'nasdaq-vnet'],
+  '串流':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
+  '社群':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins'], 
+  '廣告':['nyse-crm', 'nasdaq-ttd', 'nyse-hubs'],
+  '國防':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
+  '航空':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
+  '爨光':['nasdaq-bkng', 'nasdaq-expe', 'nasdaq-trip', 'nasdaq-mar', 'nyse-hlt'],
+  '晶片':['nasdaq-amd', 'nasdaq-nvda', 'nasdaq-intc', 'nasdaq-avgo'],
+  '大麻':['nasdaq-gwph', 'nyse-acb', 'nyse-cgc', 'nasdaq-tlry'],
+  '太空':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
+  '能源':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a'],
+  '硬體':['nasdaq-logi', 'nasdaq-aapl'],
+  '電信':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
+  '服飾':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb'], 
+  '遊戲':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo'],
+  '餐飲':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-lk', 'nasdaq-sbux', 'nasdaq-bynd'], 
+  '運動':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
+  '減肥':['nyse-hlf', 'nasdaq-ww', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
+  '奢侈品':['nyse-tif', 'nyse-lb', 'nyse-tpr'],
+  '零售':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby'],
+  '汽車':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm']
 }
 CATLIST = Object.keys(STOCK_SYMBOLS)
 

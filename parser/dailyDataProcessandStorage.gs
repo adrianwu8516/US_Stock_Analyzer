@@ -8,14 +8,11 @@ function dataRecordandProcess(){
     var catName = CATLIST[catNo]
     if (typeof logObj[catName] == "undefined") logObj[catName] = {}
     for(var i in STOCK_SYMBOLS[catName]){
-      Logger.log(STOCK_SYMBOLS[catName][i])
       var stockSymbol = STOCK_SYMBOLS[catName][i].split(/-(.+)/)[1].toUpperCase()
-      Logger.log(stockSymbol)
-      return 
       var stockInfo = CACHE.get(stockSymbol);
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
-        Logger.log("Recording?: " + stockSymbol)
+        Logger.log("Recording: " + stockSymbol)
         dataRecord(stockInfo)
         delete stockInfo.tickerRT; // In case the cache might be too large to load
         delete stockInfo.rating;

@@ -38,9 +38,22 @@ function removeCache(){
   CACHE.remove('index');
 }
 
-function test(){
-  var files = DriveApp.getFilesByName("VNET")
+function fileFixingScript(){
+  var files = DriveApp.getFolderById('1iT-sGcenNSFc9INVIJqLvkabo4q0UyVz').getFiles()
   while(files.hasNext()){
-    Logger.log(files.next().getName())
+    var file = files.next()
+    if(file.getName().includes('(') && !file.getName().includes('技') && !file.getName().includes('電')){
+       var fileName = file.getName().replace('(', '').replace(')', '')
+       var newFile = DriveApp.getFilesByName(fileName).next()
+       Logger.log(file.getName())
+       Logger.log(newFile.getName())
+       var value = SpreadsheetApp.openById(file.getId()).getRange('A2:T4').getValues();
+       var targetFile = SpreadsheetApp.openById(newFile.getId())
+       targetFile.insertRowBefore(2)
+       targetFile.insertRowBefore(2)
+       targetFile.insertRowBefore(2)
+       targetFile.getRange('A2:T4').setValues(value);
+    }
   }
 }
+
