@@ -34,9 +34,6 @@ function getWeBullDataTesting(urlSymbol="nasdaq-wix", category="testing"){
   return
 }
 
-function removeCache(){
-  CACHE.remove('index');
-}
 
 function fileFixingScript(){
   var files = DriveApp.getFolderById('1iT-sGcenNSFc9INVIJqLvkabo4q0UyVz').getFiles()
