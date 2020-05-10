@@ -32,6 +32,29 @@
                 var priceMidLst = '<?= priceMid ?>'.split(',').map(Number)
                 var priceLowLst = '<?= priceLow ?>'.split(',').map(Number)
                 var pettmLst = '<?= pettm ?>'.split(',').map(Number)
+                var open = '<?= open ?>'.split(',').map(Number)
+                var high = '<?= high ?>'.split(',').map(Number)
+                var close = '<?= close ?>'.split(',').map(Number)
+                var low = '<?= low ?>'.split(',').map(Number)
+                var volume = '<?= volume ?>'.split(',').map(Number)
+                var avgVol10D = '<?= avgVol10D ?>'.split(',').map(Number)
+                var avgVol3M = '<?= avgVol3M ?>'.split(',').map(Number)
+                var turnoverRate = '<?= turnoverRate ?>'.split(',').map(Number)
+                var vibrateRatio = '<?= vibrateRatio ?>'.split(',').map(Number)
+                var pe = '<?= pe ?>'.split(',').map(Number)
+                var forwardPe = '<?= forwardPe ?>'.split(',').map(Number)
+                var indicatedPe = '<?= indicatedPe ?>'.split(',').map(Number)
+                var peTtm = '<?= peTtm ?>'.split(',').map(Number)
+                var eps = '<?= eps ?>'.split(',').map(Number)
+                var epsTtm = '<?= epsTtm ?>'.split(',').map(Number)
+                var pb = '<?= pb ?>'.split(',').map(Number)
+                var ps = '<?= ps ?>'.split(',').map(Number)
+                var ratingAnalysisTotals = '<?= ratingAnalysisTotals ?>'.split(',').map(Number)
+                var underPerform = '<?= underPerform ?>'.split(',').map(Number)
+                var buy = '<?= buy ?>'.split(',').map(Number)
+                var sell = '<?= sell ?>'.split(',').map(Number)
+                var strongBuy = '<?= strongBuy ?>'.split(',').map(Number)
+                var hold = '<?= hold ?>'.split(',').map(Number)
 
                 //define columns
                 dataTable.addColumn('date', '日期');
@@ -39,12 +62,39 @@
                 dataTable.addColumn('number', '分析師高價');
                 dataTable.addColumn('number', '分析師均價');
                 dataTable.addColumn('number', '分析師低價');
-                dataTable.addColumn('number', '滾動市盈率');
+                dataTable.addColumn('number', '滾動市盈率');// Test
+                
+                dataTable.addColumn('number', '成交量');
+                dataTable.addColumn('number', '10日成交量均線');
+                dataTable.addColumn('number', '3月成交量均線');
+                dataTable.addColumn('number', '換手率');
+                dataTable.addColumn('number', '波動率');
+                
+                dataTable.addColumn('number', 'PE');
+                dataTable.addColumn('number', '預測PE');
+                dataTable.addColumn('number', '滾動PE');
+                dataTable.addColumn('number', 'indicatedPE');
+                dataTable.addColumn('number', 'EPS');
+                dataTable.addColumn('number', '滾動EPS');
+                dataTable.addColumn('number', '市淨率');
+                dataTable.addColumn('number', '市銷率');
+                
+                dataTable.addColumn('number', '分析師總數');
+                dataTable.addColumn('number', '賣出');
+                dataTable.addColumn('number', '落後大盤');
+                dataTable.addColumn('number', '持有');
+                dataTable.addColumn('number', '買進');
+                dataTable.addColumn('number', '強力買進');
                 
                 //define rows of data
                 for(var i = 0 ; i <= 20 ; i++)
                 {
-                    dataTable.addRows([[new Date(dateLst[i]), parseFloat(priceLst[i]), parseFloat(priceHighLst[i]), parseFloat(priceMidLst[i]), parseFloat(priceLowLst[i]), parseFloat(pettmLst[i])]]);
+                    dataTable.addRows([[
+                        new Date(dateLst[i]), priceLst[i], priceHighLst[i], priceMidLst[i], priceLowLst[i], pettmLst[i], //0-5
+                        volume[i], avgVol10D[i], avgVol3M[i], turnoverRate[i], vibrateRatio[i], //6-10
+                        pe[i], forwardPe[i], indicatedPe[i], peTtm[i], eps[i], epsTtm[i], pb[i], ps[i], //11-18
+                        ratingAnalysisTotals[i], sell[i], underPerform[i], hold[i], buy[i], strongBuy[i] // 19-24
+                    ]]);
                 } 
                 // Create a dashboard.
                 var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
@@ -69,9 +119,9 @@
                 var financialReportChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'financialReporChart_div',
-                  'view': {'columns': [0, 5]},
+                  'view': {'columns': [0, 5, 11, 12, 13, 14]},
                   'options': {
-                      chartArea: {'height': '30%', 'width': '60%'},
+                      chartArea: {'height': '60%', 'width': '60%'},
                       title: '估值趨勢',
                       crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
                       focusTarget: 'category',
@@ -81,13 +131,44 @@
                   }
                 });
                 
+                
+                var pbpsChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'pbpsChart_div',
+                  'view': {'columns': [0, 17, 18]},
+                  'options': {
+                      chartArea: {'height': '60%', 'width': '60%'},
+                      title: '市淨，市銷率',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#38cb7d'} }
+                  }
+                });
+                
+                var analystChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'analystChart_div',
+                  'view': {'columns': [0, 20, 21, 22, 23, 24]},
+                  'options': {
+                      chartArea: {'height': '60%', 'width': '60%'},
+                      title: '分析師評級',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#38cb7d'} }
+                  }
+                });
+                
                 // Create a date slider, passing some options
-                var priceSlider = new google.visualization.ControlWrapper({
+                var volumnSlider = new google.visualization.ControlWrapper({
                   'controlType': 'ChartRangeFilter',
                   'containerId': 'filter_div',
                   'options': { 'filterColumnIndex': 0,
                                'ui': { 'chartType': 'AreaChart', 
-                                       'chartView': { 'columns': [0, 1] },
+                                       'chartView': { 'columns': [0, 6, 7, 8] },
                                        'chartOptions': {
                                            'chartArea': {'width': '60%'},
                                            'hAxis': { 'baselineColor': 'none', format:'MMM d', gridlines: { color: 'transparent' } },
@@ -98,7 +179,7 @@
                              }
                 });
 
-                dashboard.bind(priceSlider, [priceChart, financialReportChart]);
+                dashboard.bind(volumnSlider, [priceChart, financialReportChart, pbpsChart, analystChart]);
                 dashboard.draw(dataTable);
 
             }
@@ -249,8 +330,11 @@
         
         <div id="dashboard_div" align='center'>
           <div id="priceChart_div"   style="height: 290px;"></div>
-          <div id="financialReporChart_div"   style="height: 290px;"></div>
-          <div id="filter_div"  style="height: 100px;"></div>
+          <div id="filter_div"  style="height: 80px;"></div>
+          <div id="financialReporChart_div"   style="height: 150px;"></div>
+          <div id="pbpsChart_div"   style="height: 150px;"></div>
+          <div id="analystChart_div"   style="height: 150px;"></div>
+          
         </div>
         
         </div>
