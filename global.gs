@@ -5,7 +5,7 @@ CBSMUSTFAIL = ['MA', 'V', 'PYPL']
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay'],
   'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl', 'nasdaq-mtch', 'nyse-net'],
-  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-kc'],
+  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet'], //, 'nasdaq-kc'
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins'], 
   'AdTech':['nyse-crm', 'nasdaq-ttd', 'nyse-hubs', 'nyse-omc'],
@@ -17,7 +17,7 @@ STOCK_SYMBOLS = {
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a'],
   'Hardware':['nasdaq-logi', 'nasdaq-aapl'],
-  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo'], //, 'nasdaq-mtbc'
+  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo'], //, 'otcmkts-lvmuy'
   'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes'],
