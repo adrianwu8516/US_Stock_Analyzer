@@ -7,7 +7,7 @@ function doGet(e){
       case 'compare': 
         return e.parameter.symbols? historyCompareController(e.parameter.symbols) : messageController("Chart Not Found!!")
       case 'unsubscribe': 
-        return (e.parameter.email && e.parameter.password) ? unsubscribeController(e.parameter.email, e.parameter.password) : messageController("No Such Email")
+        return (e.parameter.email && e.parameter.id) ? unsubscribeController(e.parameter.email, e.parameter.id) : messageController("No Such Email or ID")
       default:
         return indexController()
     }

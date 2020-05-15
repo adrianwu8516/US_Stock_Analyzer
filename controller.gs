@@ -21,17 +21,13 @@ function historyChartController(stockSymbol){
 
 function unsubscribeController(email, hash){
   var Sheet = SpreadsheetApp.open(MAILFILE)
-  var targetRow = onSearch(Sheet, searchString = email, searchTargetCol = 1)
+  var targetRow = onSearch(Sheet, searchString = hash, searchTargetCol = 2)
   if(targetRow){
     targetRow += 1
-    if (hash == (Sheet.getSheetValues(targetRow, 2, 1, 1)[0][0]).hash()){
-      Sheet.deleteRow(targetRow);
-      return render('view/message', {'message':(email + " has been removed from email list!!")})
-    }else{
-      return render('view/message', {'message':"You're not authorized to do this!"})
-    }
+    Sheet.deleteRow(targetRow);
+    return render('view/message', {'message':(email + " has been removed from email list!!")})
   }else{
-    return render('view/message', {'message':"Can't find the email: " + email})
+    return render('view/message', {'message':"Can't find the email: " + email + " or your id is wrong!"})
   } 
 }
 
