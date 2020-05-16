@@ -1,13 +1,13 @@
 CACHE = CacheService.getScriptCache();
 CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
-CBSMUSTFAIL = ['MA', 'V', 'PYPL']
+CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM']
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay'],
-  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-zm', 'nyse-work', 'nasdaq-msft', 'nasdaq-pypl', 'nasdaq-mtch', 'nyse-net', 'nyse-twlo'],
-  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-kc'], 
+  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo'],
+  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet'], //, 'nasdaq-kc'
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
-  'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins'], 
+  'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch'], 
   'AdTech':['nyse-crm', 'nasdaq-ttd', 'nyse-hubs', 'nyse-omc'],
   'Military':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
   'Airlines':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],

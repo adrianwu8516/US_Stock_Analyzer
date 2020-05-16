@@ -25,7 +25,7 @@ function personalContent(email, noteObj){
   
   var title = "美股分析早報";
   var htmlTemp = HtmlService.createTemplateFromFile('view/dailyReport')
-  var targetLst = ['EC', 'Internet', 'Internet-China', 'Streaming', 'SNS', 'Airlines', 'Traveling', 'Energy', 'Hardware', 'IC']
+  var targetLst = ['EC', 'Internet', 'Internet-China', 'Streaming', 'SNS', 'Airlines', 'Traveling', 'Energy', 'Hardware']
   
   var personalOutput = {}
   for(i in targetLst){
@@ -49,8 +49,8 @@ function mailer(){
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
   
-  var emailList = fetchEmailList()
-  //var emailList = ['adrianwu8516@gmail.com']
+  //var emailList = fetchEmailList()
+  var emailList = ['adrianwu8516@gmail.com']
   
   // Send Email Template
   for(i in emailList){
