@@ -21,6 +21,27 @@ function fetchEmailList(){
   return emailList
 }
 
+function personalContent(email, noteObj){
+  
+  var title = "美股分析早報";
+  var htmlTemp = HtmlService.createTemplateFromFile('view/dailyReport')
+  var targetLst = ['EC', 'Internet', 'Internet-China', 'Streaming', 'SNS', 'Airlines', 'Traveling', 'Energy', 'Hardware', 'IC']
+  
+  var personalOutput = {}
+  for(i in targetLst){
+    var catName = targetLst[i]
+    personalOutput[catName] = noteObj[catName]
+  }
+  
+  htmlTemp.noteObj = personalOutput
+  htmlTemp.hash = email.hash()
+  htmlTemp.email = email
+  var htmlBody = htmlTemp.evaluate().getContent();
+  
+  Logger.log("Mail to: " + email)
+  MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+}
+
 function mailer(){
   // Check if market closed
   if(!checkifClosed()) return;  
@@ -28,20 +49,12 @@ function mailer(){
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
   
-  // Send Email Template
-  var title = "美股分析早報";
-  var htmlTemp = HtmlService.createTemplateFromFile('view/dailyReport')
-  htmlTemp.noteObj = noteObj
-  
   //var emailList = fetchEmailList()
   var emailList = ['adrianwu8516@gmail.com']
   
-  Logger.log("Mail to: " + String(emailList))
+  // Send Email Template
   for(i in emailList){
     var email = emailList[i]
-    htmlTemp.hash = email.hash()
-    htmlTemp.email = email
-    var htmlBody = htmlTemp.evaluate().getContent();
-    MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+    personalContent(email, noteObj)
   } 
 }

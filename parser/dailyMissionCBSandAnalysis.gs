@@ -1,7 +1,7 @@
 function getCBSRanking(stockName){
   // CBS does not support financial companise
   if(CBSMUSTFAIL.includes(stockName)) return ""
-  
+  var sleepDurationSec = 0.5
   var retry = 1
   while(retry < 6){
     try{
@@ -14,6 +14,7 @@ function getCBSRanking(stockName){
     }catch(e){
       Logger.log(e)
       Logger.log(stockName + " : CBS parse failed " + retry)
+      Utilities.sleep(sleepDurationSec * 1000 * retry)
       retry  += 1
     }
   }
