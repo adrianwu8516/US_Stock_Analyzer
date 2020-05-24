@@ -62,14 +62,29 @@ function weBullMultiple(symbolLst, span=20) {
 }
 
 function weBullETFSingle(etfSymbol='SQQQ', span=20) {
-  var file = DriveApp.getFilesByName(etfSymbol).next();
-  var Sheet = SpreadsheetApp.open(file);
-  var dateLst = [], priceLst = []
-  Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
-  Sheet.getSheetValues(2, 3, span, 1).forEach(element => priceLst.unshift(JSON.parse(element[0])||0))
-  Logger.log(dateLst)
-  Logger.log(priceLst)
-  return
+  var cacheName = etfSymbol + '-history'
+  var etfHistoryData = CACHE.get(cacheName);
+  if(!etfHistoryData){
+    var file = DriveApp.getFilesByName(etfSymbol).next();
+    var Sheet = SpreadsheetApp.open(file);
+    var dateLst = [], tickerObj = {"close":[]}
+    Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
+    Sheet.getSheetValues(2, 3, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
+    var etfHistoryData = {
+      'date': dateLst, 
+      'price': tickerObj.close,
+      'tickerRTJSON':Sheet.getSheetValues(2, 3, 1, 1)[0], 
+      'briefJSON': Sheet.getSheetValues(2, 4, 1, 1)[0], 
+      'bonusBrief': Sheet.getSheetValues(2, 5, 1, 1)[0], 
+      'assetsStructure': Sheet.getSheetValues(2, 6, 1, 1)[0], 
+      'ratioDistrs': Sheet.getSheetValues(2, 7, 1, 1)[0], 
+      'frontDistrs': Sheet.getSheetValues(2, 8, 1, 1)[0]
+    }
+    CACHE.put(cacheName, JSON.stringify(etfHistoryData), CACHELIFETIME)
+  }else{
+    etfHistoryData = JSON.parse(etfHistoryData)
+  }
+  return etfHistoryData
 }
 
 function indexData(){

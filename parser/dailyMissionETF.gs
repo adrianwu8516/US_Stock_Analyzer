@@ -1,41 +1,43 @@
-function getWeBullETFData(urlSymbol = 'nasdaq-tlt'){
+function getWeBullETFData(urlSymbol = 'nysearca-mj'){
   Logger.log("Handling: " + urlSymbol)
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var retry = 1
   while(retry < 3){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
+      var etfInfo = {};
       
       var xmlTickerRT = xml.match(/tickerRT:({[\s\S]*?}),newsData/)[0].replace(/tickerRT:({[\s\S]*?}),newsData/, '$1')                 
       var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
+      etfInfo['symbol'] = tickerRTJSON.symbol
+      etfInfo['tickerRTJSON'] = tickerRTJSON
       
       var xmlBrief = xml.match(/fundBrief:[\s\S]*?,structs/g)[0]
       var briefJSON = JSON.parse(xmlBrief.replace(/fundBrief:([\s\S]*?),structs/g, '$1}').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
+      etfInfo['briefJSON'] = briefJSON
       
-      var bonusBrief = xml.match(/bonusBrief:\[[\s\S]*?\]/g)[0].replace(/bonusBrief:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace('},{', '}||{').split('||')
+      var bonusBriefLst = xml.match(/bonusBrief:\[[\s\S]*?\]/g)[0].replace(/bonusBrief:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+      etfInfo['bonusBrief'] = etfJSONArrange(bonusBriefLst)
       
-      var assetsStructure = xml.match(/assetsAnalysis:\[[\s\S]*?\]/g)[0].replace(/assetsAnalysis:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace('},{', '}||{').split('||')
+      var assetsStructureLst = xml.match(/assetsAnalysis:\[[\s\S]*?\]/g)[0].replace(/assetsAnalysis:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+      etfInfo['assetsStructure'] = etfJSONArrange(assetsStructureLst)
       
       if(xml.match(/ratioDistrs:\[[\s\S]*?\]/g)){
-        var ratioDistrs = xml.match(/ratioDistrs:\[[\s\S]*?\]/g)[0].replace(/ratioDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace('},{', '}||{').split('||')
+        var ratioDistrsLst = xml.match(/ratioDistrs:\[[\s\S]*?\]/g)[0].replace(/ratioDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+        etfInfo['ratioDistrs'] = etfJSONArrange(ratioDistrsLst)
       }else{
-        var ratioDistrs = ''
+        etfInfo['ratioDistrs'] = ''
       }
       
       if(xml.match(/frontDistrs:\[[\s\S]*?\]/g)){
-        var frontDistrs = xml.match(/frontDistrs:\[[\s\S]*?\]/g)[0].replace(/frontDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace('},{', '}||{').split('||')
+        var frontDistrsLst = xml.match(/frontDistrs:\[[\s\S]*?\]/g)[0].replace(/frontDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+        etfInfo['frontDistrs'] = etfJSONArrange(frontDistrsLst)
       }else{
-        var frontDistrs = ''
+        etfInfo['frontDistrs'] =  ''
       }
-
-      var etfInfo = {};
-      etfInfo['symbol'] = tickerRTJSON.symbol
-      etfInfo['tickerRTJSON'] = tickerRTJSON
-      etfInfo['briefJSON'] = briefJSON
-      etfInfo['bonusBrief'] = bonusBrief
-      etfInfo['assetsStructure'] = assetsStructure
-      etfInfo['ratioDistrs'] = ratioDistrs
-      etfInfo['frontDistrs'] = frontDistrs      
+//      Logger.log(etfInfo['bonusBrief'])
+//      Logger.log(JSON.stringify(etfInfo['bonusBrief']))
+      ETFDataRecord(etfInfo)
       return etfInfo
     }catch(e){
       Logger.log(e)
@@ -80,23 +82,36 @@ function collectETFDataFromWeBull(){
 function ETFDataRecord(etfInfo){
   var fileName = etfInfo['symbol']
   if(DriveApp.getFilesByName(fileName).hasNext()){
-    Logger.log("Found")
     var documentId = DriveApp.getFilesByName(fileName).next().getId()
   }else{
-    Logger.log("New File")
     var documentId = DriveApp.getFileById(ETF_TEMPLATE_ID).makeCopy(ETFFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
   }
-  Logger.log(documentId)
   var etfDoc = SpreadsheetApp.openById(documentId);
   today = new Date();
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
   var targetRow = onSearch(etfDoc, todayStr, searchTargetCol=0) 
   if(targetRow){
     targetRow += 1
-    etfDoc.getRange('A' + targetRow + ':H' + targetRow).setValues([[todayStr, etfInfo['symbol'], etfInfo['tickerRTJSON'], etfInfo['briefJSON'], etfInfo['bonusBrief'], etfInfo['assetsStructure'], etfInfo['ratioDistrs'], etfInfo['frontDistrs']]]);
+    etfDoc.getRange('A' + targetRow + ':H' + targetRow).setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs'])]]);
   }else{
     etfDoc.insertRowBefore(2);
-    etfDoc.getRange('A2:H2').setValues([[todayStr, etfInfo['symbol'], etfInfo['tickerRTJSON'], etfInfo['briefJSON'], etfInfo['bonusBrief'], etfInfo['assetsStructure'], etfInfo['ratioDistrs'], etfInfo['frontDistrs']]]);
+    etfDoc.getRange('A2:H2').setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs'])]]);
   }
+}
+
+
+function etfJSONArrange(lst){
+  var finalObj = {}
+  var keys = Object.keys(JSON.parse(lst[0]))
+  for(key_no in keys){
+    finalObj[keys[key_no]] = new Array
+  }
+  for(i in lst){
+    var jsonObj = JSON.parse(lst[i])
+    for(key_no in keys){
+      finalObj[keys[key_no]].push(jsonObj[keys[key_no]])
+    }
+  }
+  return finalObj
 }
