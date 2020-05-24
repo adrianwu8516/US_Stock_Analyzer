@@ -73,6 +73,20 @@ function indexData(){
   return indexData
 }
 
+function etfIndexData(){
+  var cacheName = 'etfIndex'
+  var etfIndexData = CACHE.get(cacheName);
+  if(!etfIndexData){
+    var etfIndexData = JSON.parse(readLog("ETFIndex.txt"))
+    CACHE.put(cacheName, JSON.stringify(etfIndexData), CACHELIFETIME)
+  }else{
+    etfIndexData = JSON.parse(etfIndexData)
+  }  
+  Logger.log(etfIndexData)
+  return etfIndexData
+}
+
+
 function cbsFinancialRecord(stockSymbol){
   // Unfinished Don't know what to do with financial reports
   var stockSymbol = 'zm'

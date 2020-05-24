@@ -1,0 +1,80 @@
+<? var category = Object.keys(noteObj) ?>
+
+
+<section id="tabs" class="project-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <? for(var cat in category){ ?>
+                                  <? if(cat == 0){?>
+                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#<?= category[cat] ?>" role="tab" aria-controls="nav-home" aria-selected="true"><?= category[cat] ?></a>
+                                  <?}else{ ?>
+                                    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#<?= category[cat] ?>" role="tab" aria-controls="nav-home" aria-selected="true"><?= category[cat] ?></a>
+                                  <?}?>
+                                <?}?>
+                             </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                          <? for(var cat in category){ ?>
+                            <? var catInfo = noteObj[category[cat]] ?>
+                            <div class="tab-pane fade  <? if(cat==0){?> show active <?} ?>" id="<?= category[cat] ?>" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <table class="table table-hover" cellspacing="0">
+                                  <tbody>
+                                    <tr style="height: 30px;">
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>線圖</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>標的</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>收盤價</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>漲跌</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>評級</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>Beta係數</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>股利</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>一年殖利率</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>年初至今報酬</strong></th>
+                                   </tr>
+                                   <? for(var i in catInfo){ ?>
+                                     <tr style="height: 20px;">
+                                       <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['symbol']?>" target="_blank">📈</a></td>
+   
+                                       <td style="height: 20px; text-align: center;"><a href="https://www.webull.com/quote/<?=i?>" target="_blank"><?= catInfo[i]['name'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
+                                       
+                                       <td style="height: 20px; text-align: center;"><?= catInfo[i]['close'] ?></td>
+            
+                                       <? if (catInfo[i]['changeRatio'] > 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= (catInfo[i]['changeRatio']* 100).toFixed(1) ?> %</span></strong></td>
+                                       <? }else if (catInfo[i]['changeRatio'] < 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= (catInfo[i]['changeRatio']* 100).toFixed(1) ?> %</span></strong></td>
+                                       <? }else{ ?>
+                                           <td style="height: 20px; text-align: center;"><strong>0.0 %</strong></td>
+                                       <? }?>
+                                       
+                                       <td style="height: 20px; text-align: center;"><?= catInfo[i]['rating'] ?></td>
+                                       
+                                       <td style="height: 20px; text-align: center;"><?= catInfo[i]['beta3Y'] ?></td>
+                                       
+                                       <td style="height: 20px; text-align: center;"><?= catInfo[i]['dividend'] ?></td>
+                                       
+                                       <td style="height: 20px; text-align: center;"><?= (catInfo[i]['yield1Y'] * 100).toFixed(1) ?> %</td>
+                                       
+                                       <? if (catInfo[i]['returnThisYear'] > 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= (catInfo[i]['returnThisYear']* 100).toFixed(1) ?> %</span></strong></td>
+                                       <? }else if (catInfo[i]['returnThisYear'] < 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= (catInfo[i]['returnThisYear']* 100).toFixed(1) ?> %</span></strong></td>
+                                       <? }else{ ?>
+                                           <td style="height: 20px; text-align: center;"><strong>0.0 %</strong></td>
+                                       <? }?>
+
+                                     </tr>
+                                   <? } ?>
+                                 </tbody>
+                               </table>
+                             </div>
+                          <?}?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+

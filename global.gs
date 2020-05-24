@@ -4,8 +4,8 @@ SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-2
 CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM']
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay'],
-  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo'],
-  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-iq', 'nasdaq-bili'], //, 'nasdaq-kc'
+  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo'],
+  'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-iq', 'nasdaq-bili'], //, 'nasdaq-kc'
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch'], 
   'AdTech':['nyse-crm', 'nasdaq-ttd', 'nyse-hubs', 'nyse-omc'],
@@ -17,14 +17,14 @@ STOCK_SYMBOLS = {
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b'],
   'Hardware':['nasdaq-logi', 'nasdaq-aapl'],
-  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-mrk', 'nyse-pfe', 'nyse-abt', 'nasdaq-mrna', 'nasdaq-drrx'],
+  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-mrk', 'nyse-pfe', 'nyse-abt', 'nasdaq-mrna', 'nasdaq-drrx', 'nasdaq-vygr'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo'], //, 'otcmkts-lvmuy'
-  'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo'],
-  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-lk', 'nasdaq-sbux', 'nasdaq-bynd'], 
+  'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
+  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-lk', 'nasdaq-sbux', 'nasdaq-bynd'], 
   'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
-  'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-low'],
+  'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nyse-chwy'],
   'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
   'Machinery':['nyse-de', 'nyse-cat', 'nyse-hon'],
@@ -33,7 +33,16 @@ STOCK_SYMBOLS = {
   'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci'],
   'Logistics':['nyse-ups', 'nyse-fdx']
 }
+
+ETF_LIST = {
+  'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
+  'US-Stock':['nasdaq-qqq', 'nysearca-mj', 'nysearca-vym', 'nysearca-xlk', 'nysearca-vnq', 'nysearca-sphd', 'nasdaq-ibb', 'nysearca-xlf'],
+  'Emerging-Markets':['nysearca-vwo', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'nysearca-ews', 'nysearca-iemg', 'nysearca-eem', 'nysearca-efa'],
+  'Bond':['nasdaq-tlt', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
+  'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-uso', 'nysearca-xle']
+}
 CATLIST = Object.keys(STOCK_SYMBOLS)
+ETFCATLIST = Object.keys(ETF_LIST)
 
 function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
   // Replacing tbody tag because app script doesnt understand.
@@ -81,19 +90,19 @@ function onSearch(sheetName, searchString, searchTargetCol) {
   }
 }
 
-function saveLog(contents, filename) {
-  var children = STOCKFILE.getFilesByName(filename);
+function saveLog(contents, filename, folder = STOCKFILE) {
+  var children = folder.getFilesByName(filename);
   var file = null;
   if (children.hasNext()) {
     file = children.next();
     file.setContent(contents);
   } else {
-    file = STOCKFILE.createFile(filename, contents);
+    file = folder.createFile(filename, contents);
   }
 }
 
-function readLog(filename) {
-  var children = STOCKFILE.getFilesByName(filename);
+function readLog(filename, folder = STOCKFILE) {
+  var children = folder.getFilesByName(filename);
   var file = null;
   if (children.hasNext()) {
     file = children.next();

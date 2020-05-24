@@ -8,10 +8,14 @@ function doGet(e){
         return e.parameter.symbols? historyCompareController(e.parameter.symbols) : messageController("Chart Not Found!!")
       case 'unsubscribe': 
         return (e.parameter.email && e.parameter.id) ? unsubscribeController(e.parameter.email, e.parameter.id) : messageController("No Such Email or ID")
+      case 'etf': 
+        return indexController("etf")
+      case 'stock': 
+        return indexController("stock")
       default:
-        return indexController()
+        return indexController("stock")
     }
   }else{
-    return indexController()
+    return indexController("stock")
   }
 }

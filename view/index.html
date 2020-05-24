@@ -6,7 +6,7 @@
     <title>股票觀察列表</title>
   </head>
   <body>
-    <h1>股票觀察分類清單</h1>  
+    <br><br>
     <div id = "loading">
     <div class="d-flex justify-content-center">
       <div class="spinner-grow" role="status">
@@ -18,7 +18,11 @@
     <script>
       // The code in this function runs when the page is loaded.
       $(function() {
-        google.script.run.withSuccessHandler(show).loadStockList();
+      <? if(type='etf'){?>
+          google.script.run.withSuccessHandler(show).loadETFList();
+      <? }else{ ?>
+          google.script.run.withSuccessHandler(show).loadStockList();
+      <? } ?>
       });
       function show(htmlPart) {
         var content = $('#loading');

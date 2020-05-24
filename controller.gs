@@ -2,8 +2,8 @@ function messageController(message){
   return render('view/message', {'message':message})
 }
 
-function indexController(){
-  return render('view/index')
+function indexController(type){
+  return render('view/index', {'type':type})
 }
 
 function loadStockList(){
@@ -11,6 +11,13 @@ function loadStockList(){
   html_page.noteObj = indexData()
   return html_page.evaluate().getContent();
 }
+
+function loadETFList(){
+  var html_page = HtmlService.createTemplateFromFile('view/etfList')
+  html_page.noteObj = etfIndexData()
+  return html_page.evaluate().getContent();
+}
+
 
 function historyChartController(stockSymbol){
   var data = weBullSingle(stockSymbol)
