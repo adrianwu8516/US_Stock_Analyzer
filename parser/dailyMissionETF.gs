@@ -1,8 +1,8 @@
-function getWeBullETFData(urlSymbol = 'nysearca-mj'){
+function getWeBullETFData(urlSymbol){
   Logger.log("Handling: " + urlSymbol)
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var retry = 1
-  while(retry < 3){
+  while(retry < 5){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
       var etfInfo = {};
@@ -25,18 +25,12 @@ function getWeBullETFData(urlSymbol = 'nysearca-mj'){
       if(xml.match(/ratioDistrs:\[[\s\S]*?\]/g)){
         var ratioDistrsLst = xml.match(/ratioDistrs:\[[\s\S]*?\]/g)[0].replace(/ratioDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
         etfInfo['ratioDistrs'] = etfJSONArrange(ratioDistrsLst)
-      }else{
-        etfInfo['ratioDistrs'] = ''
       }
       
       if(xml.match(/frontDistrs:\[[\s\S]*?\]/g)){
         var frontDistrsLst = xml.match(/frontDistrs:\[[\s\S]*?\]/g)[0].replace(/frontDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
         etfInfo['frontDistrs'] = etfJSONArrange(frontDistrsLst)
-      }else{
-        etfInfo['frontDistrs'] =  ''
       }
-//      Logger.log(etfInfo['bonusBrief'])
-//      Logger.log(JSON.stringify(etfInfo['bonusBrief']))
       ETFDataRecord(etfInfo)
       return etfInfo
     }catch(e){
@@ -58,17 +52,20 @@ function collectETFDataFromWeBull(){
     etfCatIndex = {}
     for(var i in ETF_LIST[catName]){
       var etfInfo = getWeBullETFData(urlSymbol = ETF_LIST[catName][i])
-      ETFDataRecord(etfInfo)
-      etfIndex[catName][ETF_LIST[catName][i]] = {
-        'name': etfInfo.tickerRTJSON.name,
-        'changeRatio': etfInfo.tickerRTJSON.changeRatio,
-        'rating': etfInfo.tickerRTJSON.rating,
-        'symbol': etfInfo.tickerRTJSON.symbol,
-        'close': etfInfo.tickerRTJSON.close,
-        'beta3Y': etfInfo.tickerRTJSON.beta3Y,
-        'dividend': etfInfo.tickerRTJSON.dividend,
-        'returnThisYear': etfInfo.tickerRTJSON.returnThisYear,
-        'yield1Y': etfInfo.tickerRTJSON.yield1Y,
+      try{
+        etfIndex[catName][ETF_LIST[catName][i]] = {
+          'name': etfInfo.tickerRTJSON.name,
+          'changeRatio': etfInfo.tickerRTJSON.changeRatio,
+          'rating': etfInfo.tickerRTJSON.rating,
+          'symbol': etfInfo.tickerRTJSON.symbol,
+          'close': etfInfo.tickerRTJSON.close,
+          'beta3Y': etfInfo.tickerRTJSON.beta3Y,
+          'dividend': etfInfo.tickerRTJSON.dividend,
+          'returnThisYear': etfInfo.tickerRTJSON.returnThisYear,
+          'yield1Y': etfInfo.tickerRTJSON.yield1Y,
+        }
+      }catch(e){
+        Logger.log(e)
       }
     }
   }
@@ -102,6 +99,7 @@ function ETFDataRecord(etfInfo){
 
 
 function etfJSONArrange(lst){
+  if(lst.length==1){return}
   var finalObj = {}
   var keys = Object.keys(JSON.parse(lst[0]))
   for(key_no in keys){
