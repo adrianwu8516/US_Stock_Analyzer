@@ -11,19 +11,15 @@
     </head>
  
     <body> 
-        <!--Div for our chart -->
-        <p><?=tickerRTJSON?></p>
-        <p><?=briefJSON?></p>
-        <p><?=frontDistrs?></p>
-        <p><?=ratioDistrs?></p>
-        
+
         <!--Div for our chart -->
         <? var tickerRTObj = JSON.parse(tickerRTJSON) ?>
-        <? var ratingObj = JSON.parse(briefJSON)?>
-        <? var frontDistrs = JSON.parse(frontDistrs)?>
-        <? var ratioDistrs = JSON.parse(ratioDistrs)?>
+        <? var briefObj = JSON.parse(briefJSON)?>
         
-        <h3 style="text-align:center"><?= tickerRTObj.name ?>(<?= stockSymbol ?>)</h3>
+        
+
+        
+        <h3 style="text-align:center"><?= tickerRTObj.name ?> (<?= tickerRTObj.symbol ?>)</h3>
         <br>
         <div class="container">
         <div class="row">
@@ -31,105 +27,99 @@
                 <table class="table table-sm table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">財務指標</th>
+                      <th scope="col">基本資料</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">PB</th>
-                      <td><?=tickerRTObj.pb?></td>
+                      <th scope="row">創立時間</th>
+                      <td><?=briefObj.establishDate?></td>
                     </tr>
                     <tr>
-                      <th scope="row">PS</th>
-                      <td><?=tickerRTObj.ps?></td>
+                      <th scope="row">對標</th>
+                      <td><?=briefObj.performanceComparison?></td>
                     </tr>
                     <tr>
-                      <th scope="row">PE TTM</th>
-                      <td><?=tickerRTObj.peTtm?></td>
+                      <th scope="row">風險值</th>
+                      <td><?=tickerRTObj.beta3Y?></td>
                     </tr>
                     <tr>
-                      <th scope="row">EPS TTM</th>
-                      <td><?=tickerRTObj.epsTtm?></td>
+                      <th scope="row">評級</th>
+                      <td><?=tickerRTObj.rating?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">管理費用</th>
+                      <td><?=tickerRTObj.netExpenseRatio?></td>
                     </tr>
                     <tr>
                       <th scope="row">上次分紅時間</th>
                       <td><?=tickerRTObj.latestDividendDate?></td>
                     </tr>
                     <tr>
-                      <th scope="row">最近一期財報時間</th>
-                      <td><?=tickerRTObj.latestEarningsDate?></td>
+                      <th scope="row">上次分紅</th>
+                      <td><?=tickerRTObj.ividend?></td>
                     </tr>
                     <tr>
-                      <th scope="row">下次財報時間</th>
-                      <td><?=tickerRTObj.estimateEarningsDate?></td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
-            </div>
-            <div class="col">
-                <table class="table table-sm table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">市場指標</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">市值</th>
-                      <td><?=(parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>億</td>
+                      <th scope="row">殖利率</th>
+                      <td><?=tickerRTObj.yield1Y?></td>
                     </tr>
                     <tr>
-                      <th scope="row">本日交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.volume)/(10 ** 4)).toFixed(1)?>萬</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">10日平均交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.avgVol10D)/(10 ** 4)).toFixed(1)?>萬</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3月平均交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.avgVol3M)/(10 ** 4)).toFixed(1)?>萬</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">換手率</th>
-                      <td><?=tickerRTObj.turnoverRate?></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">波動率</th>
-                      <td><?=tickerRTObj.vibrateRatio?></td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
-            <div class="col">
-                <table class="table table-sm table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">EPS預估</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><div id="chart" align='center' style="height: 250px;"></div></td>
+                      <th scope="row">年初至今報酬</th>
+                      <td><?=tickerRTObj.returnThisYear?></td>
                     </tr>
                   </tbody>
                 </table>
             </div>
         </div>
-        
-        <div id="dashboard_div" align='center'>
-        <div id="priceChart_div"   style="height: 290px;"></div>
-        <div id="filter_div"  style="height: 80px;"></div>
-        <div id="momentumChart_div"  style="height: 80px;"></div>
-        <div id="financialReporChart_div"   style="height: 150px;"></div>
-        <div id="pbpsChart_div"   style="height: 150px;"></div>
-        <div id="analystChart_div"   style="height: 200px;"></div>
-          
+        <div class="row">
+        <? if(frontDistrsObj && frontDistrsObj != ''){ ?>
+          <? var frontDistrsObj = JSON.parse(frontDistrs) ?>
+            <div class="col">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">代號</th>
+                      <th scope="col">名稱</th>
+                      <th scope="col">持股比例</th>
+                      <th scope="col">變動</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <? for(var i=0;i<frontDistrsObj.targetSymbol.length;i++){ ?>
+                    <tr>
+                      <th scope="row"><?=frontDistrsObj.targetSymbol[i]?></th>
+                      <td><?=frontDistrsObj.targetName[i]?></td>
+                      <td><?=frontDistrsObj.ratio[i]?></td>
+                      <td><?=frontDistrsObj.changeRate[i]?></td>
+                    </tr>
+                    <? } ?>
+                  </tbody>
+                </table>
+              </div>
+            <? } ?>
+            <? if(ratioDistrs && ratioDistrs != ''){ ?>
+              <? var ratioDistrsObj = JSON.parse(ratioDistrs) ?>
+              <div class="col">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">領域</th>
+                      <th scope="col">持股比例</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <? for(var i=0;i<ratioDistrsObj.categoryName.length;i++){ ?>
+                    <tr>
+                      <th scope="row"><?=ratioDistrsObj.categoryName[i]?></th>
+                      <td><?=ratioDistrsObj.ratio[i]?></td>
+                    </tr>
+                    <? } ?>
+                  </tbody>
+                </table>
+              </div>
+            <? } ?>
         </div>
-        
         </div>
     </body>
 </html>

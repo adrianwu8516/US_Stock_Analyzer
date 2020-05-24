@@ -61,7 +61,7 @@ function weBullMultiple(symbolLst, span=20) {
   return dataPack;
 }
 
-function weBullETFSingle(etfSymbol='SQQQ', span=20) {
+function weBullETFSingle(etfSymbol, span=20) {
   var cacheName = etfSymbol + '-history'
   var etfHistoryData = CACHE.get(cacheName);
   if(!etfHistoryData){
