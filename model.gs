@@ -61,6 +61,17 @@ function weBullMultiple(symbolLst, span=20) {
   return dataPack;
 }
 
+function weBullETFSingle(etfSymbol='SQQQ', span=20) {
+  var file = DriveApp.getFilesByName(etfSymbol).next();
+  var Sheet = SpreadsheetApp.open(file);
+  var dateLst = [], priceLst = []
+  Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
+  Sheet.getSheetValues(2, 3, span, 1).forEach(element => priceLst.unshift(JSON.parse(element[0])||0))
+  Logger.log(dateLst)
+  Logger.log(priceLst)
+  return
+}
+
 function indexData(){
   var cacheName = 'index'
   var indexData = CACHE.get(cacheName);
@@ -77,12 +88,11 @@ function etfIndexData(){
   var cacheName = 'etfIndex'
   var etfIndexData = CACHE.get(cacheName);
   if(!etfIndexData){
-    var etfIndexData = JSON.parse(readLog("ETFIndex.txt"))
+    var etfIndexData = JSON.parse(readLog("ETFIndex.txt", ETFFILE))
     CACHE.put(cacheName, JSON.stringify(etfIndexData), CACHELIFETIME)
   }else{
     etfIndexData = JSON.parse(etfIndexData)
-  }  
-  Logger.log(etfIndexData)
+  }
   return etfIndexData
 }
 

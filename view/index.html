@@ -18,7 +18,7 @@
     <script>
       // The code in this function runs when the page is loaded.
       $(function() {
-      <? if(type='etf'){?>
+      <? if(type=='etf'){?>
           google.script.run.withSuccessHandler(show).loadETFList();
       <? }else{ ?>
           google.script.run.withSuccessHandler(show).loadStockList();

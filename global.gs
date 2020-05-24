@@ -41,6 +41,7 @@ ETF_LIST = {
   'Bond':['nasdaq-tlt', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
   'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-uso', 'nysearca-xle']
 }
+
 CATLIST = Object.keys(STOCK_SYMBOLS)
 ETFCATLIST = Object.keys(ETF_LIST)
 

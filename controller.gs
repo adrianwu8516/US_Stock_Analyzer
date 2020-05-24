@@ -3,6 +3,7 @@ function messageController(message){
 }
 
 function indexController(type){
+  Logger.log("Type = " + type)
   return render('view/index', {'type':type})
 }
 
@@ -25,6 +26,14 @@ function historyChartController(stockSymbol){
   Logger.log(data)
   return render('view/historyChart', data)
 }
+
+function historyETFChartController(etfSymbol){
+  var data = weBullETFSingle(etfSymbol)
+  data.stockSymbol = etfSymbol
+  Logger.log(data)
+  return render('view/historyETFChart', data)
+}
+
 
 function unsubscribeController(email, hash){
   var Sheet = SpreadsheetApp.open(MAILFILE)

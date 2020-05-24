@@ -4,6 +4,8 @@ function doGet(e){
     switch(e.parameter.mode){
       case 'historyData': 
         return e.parameter.symbol? historyChartController(e.parameter.symbol) : messageController("Chart Not Found!!")
+      case 'historyETFData': 
+        return e.parameter.symbol? historyETFChartController(e.parameter.symbol) : messageController("Chart Not Found!!")
       case 'compare': 
         return e.parameter.symbols? historyCompareController(e.parameter.symbols) : messageController("Chart Not Found!!")
       case 'unsubscribe': 
@@ -16,6 +18,7 @@ function doGet(e){
         return indexController("stock")
     }
   }else{
+    Logger.log('Here')
     return indexController("stock")
   }
 }
