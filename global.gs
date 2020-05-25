@@ -38,8 +38,8 @@ ETF_LIST = {
   'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
   'US-Stock':['nasdaq-qqq', 'nysearca-mj', 'nysearca-vym', 'nysearca-xlk', 'nysearca-vnq', 'nysearca-sphd', 'nasdaq-ibb', 'nysearca-xlf'],
   'Emerging-Markets':['nysearca-vwo', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'nysearca-ews', 'nysearca-iemg', 'nysearca-eem', 'nysearca-efa'],
-  'Bond':['nasdaq-tlt', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
-  'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-uso', 'nysearca-xle']
+  'Bond':['nasdaq-tlt', 'nasdaq-iei', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
+  'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-uso', 'nysearca-xle', 'nysearca-gsg']
 }
 
 CATLIST = Object.keys(STOCK_SYMBOLS)

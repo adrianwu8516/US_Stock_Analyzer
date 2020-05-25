@@ -43,7 +43,7 @@ function getWeBullETFData(urlSymbol){
 
 function collectETFDataFromWeBull(){
   // Check if market closed
-  //if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   Logger.log("Today Handling: " + JSON.stringify(ETF_LIST))
   var etfIndex = {}
   for (var catNo in ETFCATLIST){
