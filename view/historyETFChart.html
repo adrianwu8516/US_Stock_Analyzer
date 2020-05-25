@@ -3,21 +3,133 @@
     <head>
         <base target="_self">
         <?!= include('view/header') ?>
-        
         <title>History Charts - <?= stockSymbol ?></title>
+         
+        <!-- load Google AJAX API -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
         
-        
-        
+            // Load the Visualization API and the controls package.
+            google.charts.load('current', {'packages':['corechart', 'controls']});
+            //google.load('visualization', '1', {'packages': ['corechart']});
+ 
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawDashboard);
+            google.charts.setOnLoadCallback(drawEPSChart);
+ 
+            // Callback that creates and populates a data table,
+            // instantiates a dashboard, a range slider and a pie chart,
+            // passes in the data and draws it.
+            function drawDashboard() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                
+                var dateLst = '<?= date ?>'.replace(/年|月/g, '-').replace(/日/g, '').split(',')
+                var priceLst = '<?= price ?>'.split(',').map(Number)
+                var volume = '<?= volume ?>'.split(',').map(Number)
+                var avgVol3M = '<?= avgVol3M ?>'.split(',').map(Number)
+                var vibrateRatio = '<?= vibrateRatio ?>'.split(',').map(Number)
+                var yield1Y = '<?= yield1Y ?>'.split(',').map(Number)
+                var beta3Y = '<?= beta3Y ?>'.split(',').map(Number)
+                
+
+                //define columns
+                dataTable.addColumn('date', '日期');
+                dataTable.addColumn('number', '價錢');
+                
+                dataTable.addColumn('number', '成交量');
+                dataTable.addColumn('number', '3月成交量均線');
+                
+                dataTable.addColumn('number', '一年期殖利率');
+                dataTable.addColumn('number', 'Beta值');
+                
+                //define rows of data
+                for(var i = 0 ; i <= 20 ; i++)
+                {
+                    dataTable.addRows([[
+                        new Date(dateLst[i]), priceLst[i], volume[i], avgVol3M[i], yield1Y[i], beta3Y[i]
+                    ]]);
+                } 
+                // Create a dashboard.
+                var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+                
+                // Create a price chart, passing some options
+                var priceChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'priceChart_div',
+                  'view': {'columns': [0, 1]},
+                  'options': {
+                      chartArea: {'height': '80%', 'width': '60%'},
+                      title: '價格趨勢',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#76da91'} }
+                  }
+                });
+                
+                // Create a financial report chart, passing some options
+                var yieldChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'yieldChart_div',
+                  'view': {'columns': [0, 4]},
+                  'options': {
+                      chartArea: {'height': '60%', 'width': '60%'},
+                      title: '殖利率趨勢',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: {  0:{color: '#A7B0BA'}, 1:{color: '#7898e1'}}
+                  }
+                });
+                
+                var betaChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'betaChart_div',
+                  'view': {'columns': [0, 5]},
+                  'options': {
+                      chartArea: {'height': '60%', 'width': '60%'},
+                      title: 'Beta 風險值',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}}
+                  }
+                });
+                
+                // Create a date slider, passing some options
+                var volumnSlider = new google.visualization.ControlWrapper({
+                  'controlType': 'ChartRangeFilter',
+                  'containerId': 'filter_div',
+                  'options': { 'filterColumnIndex': 0,
+                               'ui': { 'chartType': 'AreaChart', 
+                                       'chartView': { 'columns': [0, 2, 3] },
+                                       'chartOptions': {
+                                           'chartArea': {'width': '60%'},
+                                           'hAxis': { 'baselineColor': 'none', format:'MMM d', gridlines: { color: 'transparent' } },
+                                           'legend': {'position': 'none'},
+                                           'series': { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'} }
+                                        },
+                                        'minRangeSize': 86400000
+                               }
+                             }
+                });
+
+                dashboard.bind(volumnSlider, [priceChart, yieldChart, betaChart]);
+                dashboard.draw(dataTable);
+
+            }
+        </script>
     </head>
  
     <body> 
-
         <!--Div for our chart -->
         <? var tickerRTObj = JSON.parse(tickerRTJSON) ?>
         <? var briefObj = JSON.parse(briefJSON)?>
-        
-        
-
         
         <h3 style="text-align:center"><?= tickerRTObj.name ?> (<?= tickerRTObj.symbol ?>)</h3>
         <br>
@@ -50,7 +162,7 @@
                     </tr>
                     <tr>
                       <th scope="row">管理費用</th>
-                      <td><?=tickerRTObj.netExpenseRatio?></td>
+                      <td><?=(parseFloat(tickerRTObj.netExpenseRatio) * 100).toFixed(1)?> %</td>
                     </tr>
                     <tr>
                       <th scope="row">上次分紅時間</th>
@@ -62,19 +174,39 @@
                     </tr>
                     <tr>
                       <th scope="row">殖利率</th>
-                      <td><?=tickerRTObj.yield1Y?></td>
+                      <td><?=(parseFloat(tickerRTObj.yield1Y) * 100).toFixed(1)?> %</td>
                     </tr>
                     <tr>
                       <th scope="row">年初至今報酬</th>
-                      <td><?=tickerRTObj.returnThisYear?></td>
+                      <td><?=(parseFloat(tickerRTObj.returnThisYear) * 100).toFixed(1)?> %</td>
                     </tr>
+                  </tbody>
+                </table>
+            </div>
+            
+            <div class="col-4">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">分紅支付日</th>
+                      <th scope="col">分紅</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <? if(bonusBrief && bonusBrief != ''){ ?>
+                    <? var bonusBriefObj = JSON.parse(bonusBrief) ?>
+                    <? for(var i=0;i<bonusBriefObj.eachBonus.length;i++){ ?>
+                    <tr>
+                      <th scope="row"><?=(bonusBriefObj.payDate[i]).split('T')[0]?></th>
+                      <td><?=parseFloat(bonusBriefObj.eachBonus[i]).toFixed(2)?></td>
+                    </tr>
+                    <? } ?>
+                  <? } ?>
                   </tbody>
                 </table>
             </div>
         </div>
         <div class="row">
-        <? if(frontDistrsObj && frontDistrsObj != ''){ ?>
-          <? var frontDistrsObj = JSON.parse(frontDistrs) ?>
             <div class="col">
                 <table class="table table-sm table-hover">
                   <thead>
@@ -86,20 +218,21 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <? if(frontDistrs && frontDistrs != ''){ ?>
+                    <? var frontDistrsObj = JSON.parse(frontDistrs) ?>
                     <? for(var i=0;i<frontDistrsObj.targetSymbol.length;i++){ ?>
                     <tr>
                       <th scope="row"><?=frontDistrsObj.targetSymbol[i]?></th>
                       <td><?=frontDistrsObj.targetName[i]?></td>
-                      <td><?=frontDistrsObj.ratio[i]?></td>
-                      <td><?=frontDistrsObj.changeRate[i]?></td>
+                      <td><?=parseFloat(frontDistrsObj.ratio[i]).toFixed(1)?> %</td>
+                      <td><?=parseFloat(frontDistrsObj.changeRate[i]).toFixed(1)?> %</td>
                     </tr>
                     <? } ?>
+                  <? } ?>
                   </tbody>
                 </table>
               </div>
-            <? } ?>
-            <? if(ratioDistrs && ratioDistrs != ''){ ?>
-              <? var ratioDistrsObj = JSON.parse(ratioDistrs) ?>
+            
               <div class="col">
                 <table class="table table-sm table-hover">
                   <thead>
@@ -109,16 +242,24 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <? if(ratioDistrs && ratioDistrs != ''){ ?>
+                    <? var ratioDistrsObj = JSON.parse(ratioDistrs) ?>
                     <? for(var i=0;i<ratioDistrsObj.categoryName.length;i++){ ?>
                     <tr>
                       <th scope="row"><?=ratioDistrsObj.categoryName[i]?></th>
-                      <td><?=ratioDistrsObj.ratio[i]?></td>
+                      <td><?=parseFloat(ratioDistrsObj.ratio[i]).toFixed(1)?> %</td>
                     </tr>
                     <? } ?>
+                  <? } ?>
                   </tbody>
                 </table>
               </div>
-            <? } ?>
+        </div>
+        <div id="dashboard_div" align='center'>
+        <div id="priceChart_div"   style="height: 290px;"></div>
+        <div id="filter_div"  style="height: 80px;"></div>
+        <div id="yieldChart_div"   style="height: 150px;"></div>
+        <div id="betaChart_div"   style="height: 150px;"></div>
         </div>
         </div>
     </body>

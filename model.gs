@@ -67,12 +67,17 @@ function weBullETFSingle(etfSymbol, span=20) {
   if(!etfHistoryData){
     var file = DriveApp.getFilesByName(etfSymbol).next();
     var Sheet = SpreadsheetApp.open(file);
-    var dateLst = [], tickerObj = {"close":[]}
+    var dateLst = [], tickerObj = {"close":[], "volume":[], "avgVol3M":[], "vibrateRatio":[], "yield1Y":[], "beta3Y":[]}
     Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
     Sheet.getSheetValues(2, 3, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
     var etfHistoryData = {
       'date': dateLst, 
       'price': tickerObj.close,
+      'volume': tickerObj.volume,
+      'avgVol3M': tickerObj.avgVol3M,
+      'vibrateRatio': tickerObj.vibrateRatio,
+      'yield1Y': tickerObj.yield1Y,
+      'beta3Y': tickerObj.beta3Y,
       'tickerRTJSON':Sheet.getSheetValues(2, 3, 1, 1)[0], 
       'briefJSON': Sheet.getSheetValues(2, 4, 1, 1)[0], 
       'bonusBrief': Sheet.getSheetValues(2, 5, 1, 1)[0], 
@@ -84,6 +89,7 @@ function weBullETFSingle(etfSymbol, span=20) {
   }else{
     etfHistoryData = JSON.parse(etfHistoryData)
   }
+  Logger.log(etfHistoryData)
   return etfHistoryData
 }
 
