@@ -80,6 +80,7 @@ function PARSER_PACKAGE(){
 
 function renewCache(){
   CACHE.remove('index');
+  CACHE.remove('etfIndex');
   var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
 }

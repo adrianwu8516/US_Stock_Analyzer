@@ -183,8 +183,9 @@
                   </tbody>
                 </table>
             </div>
-            
-            <div class="col-4">
+            <? if(bonusBrief && bonusBrief != ''){ ?>
+              <? var bonusBriefObj = JSON.parse(bonusBrief) ?>
+              <div class="col-4">
                 <table class="table table-sm table-hover">
                   <thead>
                     <tr>
@@ -193,20 +194,20 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <? if(bonusBrief && bonusBrief != ''){ ?>
-                    <? var bonusBriefObj = JSON.parse(bonusBrief) ?>
                     <? for(var i=0;i<bonusBriefObj.eachBonus.length;i++){ ?>
                     <tr>
                       <th scope="row"><?=(bonusBriefObj.payDate[i]).split('T')[0]?></th>
                       <td><?=parseFloat(bonusBriefObj.eachBonus[i]).toFixed(2)?></td>
                     </tr>
                     <? } ?>
-                  <? } ?>
                   </tbody>
                 </table>
             </div>
+            <? } ?>
         </div>
         <div class="row">
+          <? if(frontDistrs && frontDistrs != ''){ ?>
+            <? var frontDistrsObj = JSON.parse(frontDistrs) ?>
             <div class="col">
                 <table class="table table-sm table-hover">
                   <thead>
@@ -218,8 +219,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <? if(frontDistrs && frontDistrs != ''){ ?>
-                    <? var frontDistrsObj = JSON.parse(frontDistrs) ?>
+                  
                     <? for(var i=0;i<frontDistrsObj.targetSymbol.length;i++){ ?>
                     <tr>
                       <th scope="row"><?=frontDistrsObj.targetSymbol[i]?></th>
@@ -228,11 +228,13 @@
                       <td><?=parseFloat(frontDistrsObj.changeRate[i]).toFixed(1)?> %</td>
                     </tr>
                     <? } ?>
-                  <? } ?>
+                  
                   </tbody>
                 </table>
-              </div>
-            
+            </div>
+          <? } ?>
+          <? if(ratioDistrs && ratioDistrs != ''){ ?>
+              <? var ratioDistrsObj = JSON.parse(ratioDistrs) ?>
               <div class="col">
                 <table class="table table-sm table-hover">
                   <thead>
@@ -242,18 +244,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <? if(ratioDistrs && ratioDistrs != ''){ ?>
-                    <? var ratioDistrsObj = JSON.parse(ratioDistrs) ?>
+                  
                     <? for(var i=0;i<ratioDistrsObj.categoryName.length;i++){ ?>
                     <tr>
                       <th scope="row"><?=ratioDistrsObj.categoryName[i]?></th>
                       <td><?=parseFloat(ratioDistrsObj.ratio[i]).toFixed(1)?> %</td>
                     </tr>
                     <? } ?>
-                  <? } ?>
                   </tbody>
                 </table>
               </div>
+            <? } ?>
         </div>
         <div id="dashboard_div" align='center'>
         <div id="priceChart_div"   style="height: 290px;"></div>
