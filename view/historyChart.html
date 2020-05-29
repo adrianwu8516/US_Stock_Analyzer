@@ -273,10 +273,24 @@
                       <th scope="row">EPS TTM</th>
                       <td><?=tickerRTObj.epsTtm?></td>
                     </tr>
+                    <?if(tickerRTObj.latestDividendDate){ ?>
                     <tr>
                       <th scope="row">上次分紅時間</th>
                       <td><?=tickerRTObj.latestDividendDate?></td>
                     </tr>
+                    <?}?>
+                    <?if(tickerRTObj.dividend){ ?>
+                    <tr>
+                      <th scope="row">分紅</th>
+                      <td><?=tickerRTObj.dividend?></td>
+                    </tr>
+                    <?}?>
+                    <?if(tickerRTObj.yield){ ?>
+                    <tr>
+                      <th scope="row">殖利率</th>
+                      <td><?=tickerRTObj.yield?></td>
+                    </tr>
+                    <?}?>
                     <tr>
                       <th scope="row">最近一期財報時間</th>
                       <td><?=tickerRTObj.latestEarningsDate?></td>
