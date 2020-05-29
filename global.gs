@@ -1,10 +1,10 @@
 CACHE = CacheService.getScriptCache();
 CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
-CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM']
+CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI']
 STOCK_SYMBOLS = {
-  'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay'],
-  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo'],
+  'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w'],
+  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo', 'nasdaq-okta', 'nasdaq-fivn'],
   'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-iq', 'nasdaq-bili'], //, 'nasdaq-kc'
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch'], 
@@ -17,7 +17,7 @@ STOCK_SYMBOLS = {
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b'],
   'Hardware':['nasdaq-logi', 'nasdaq-aapl'],
-  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-mrk', 'nyse-pfe', 'nyse-abt', 'nasdaq-mrna', 'nasdaq-drrx', 'nasdaq-vygr'],
+  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-mrk', 'nyse-pfe', 'nyse-abt', 'nasdaq-mrna', 'nasdaq-drrx', 'nasdaq-vygr', 'nyse-tdoc', 'nasdaq-lvgo'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo'], //, 'otcmkts-lvmuy'
   'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
@@ -28,18 +28,19 @@ STOCK_SYMBOLS = {
   'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
   'Machinery':['nyse-de', 'nyse-cat', 'nyse-hon'],
-  'Finance':['nyse-jpm', 'nyse-bac', 'nyse-gs', 'nyse-axp', 'nyse-ice', 'nasdaq-cme'],
+  'Finance':['nyse-jpm', 'nyse-bac', 'nyse-gs', 'nyse-axp', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl'],
-  'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci'],
+  'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr'],
   'Logistics':['nyse-ups', 'nyse-fdx']
 }
 
 ETF_LIST = {
   'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
-  'US-Stock':['nasdaq-qqq', 'nysearca-mj', 'nysearca-vym', 'nysearca-xlk', 'nysearca-vnq', 'nysearca-sphd', 'nasdaq-ibb', 'nysearca-xlf'],
-  'Emerging-Markets':['nysearca-vwo', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'nysearca-ews', 'nysearca-iemg', 'nysearca-eem', 'nysearca-efa'],
+  'US-Stock':['nasdaq-qqq', 'nysearca-xlk', 'nysearca-mj', 'nysearca-vym', 'nysearca-vnq', 'nasdaq-ibb', 'nysearca-xlf', 'nysearca-vtv', 'nysearca-pbw', 'bats-ita'],
+  'Dividend':['nysearca-sphd', 'nysearca-spyd', 'nysearca-vig', 'nasdaq-pff'],
+  'Emerging-Markets':['nysearca-vwo', 'nysearca-iemg', 'nysearca-eem', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'nysearca-ews', 'nysearca-efa'],
   'Bond':['nasdaq-tlt', 'nasdaq-iei', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
-  'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-uso', 'nysearca-xle', 'nysearca-gsg']
+  'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-slv', 'nysearca-uso', 'nysearca-bno', 'nysearca-xle', 'nysearca-gsg']
 }
 
 CATLIST = Object.keys(STOCK_SYMBOLS)
