@@ -21,7 +21,8 @@ function loadETFList(){
 
 
 function historyChartController(stockSymbol){
-  var data = weBullSingle(stockSymbol)
+  var span = 180
+  var data = weBullSingle(stockSymbol, span=180)
   data.stockSymbol = stockSymbol
   Logger.log(data)
   return render('view/historyChart', data)

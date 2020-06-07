@@ -33,7 +33,6 @@ function getWeBullData(urlSymbol, category){
       stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
       stockInfo['price'] = parseFloat(tickerRTJSON.tickerRT.close)
       stockInfo['delta'] = parseFloat(tickerRTJSON.tickerRT.changeRatio)
-      stockInfo['volumn'] = parseFloat(tickerRTJSON.tickerRT.volume)
       stockInfo['52weekHigh'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkHigh)
       stockInfo['52weekLow'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkLow)
       stockInfo['value'] = parseFloat(tickerRTJSON.tickerRT.marketValue / (10 ** 8))
@@ -44,10 +43,16 @@ function getWeBullData(urlSymbol, category){
       stockInfo['priceLow'] = ratingJSON.targetPrice.low
       stockInfo['priceHigh'] = ratingJSON.targetPrice.high
       stockInfo['priceMid']  = ratingJSON.targetPrice.mean
+      
       stockInfo['tickerRT'] = JSON.stringify(tickerRTJSON.tickerRT)
       stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
       stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
       stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
+      
+      stockInfo['high'] = JSON.stringify(tickerRTJSON.tickerRT.high)
+      stockInfo['low'] = JSON.stringify(tickerRTJSON.tickerRT.low)
+      stockInfo['open'] = JSON.stringify(tickerRTJSON.tickerRT.open)
+      stockInfo['volumn'] = parseFloat(tickerRTJSON.tickerRT.volume)
       return stockInfo
     }catch(e){
       Logger.log(e)

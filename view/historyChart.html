@@ -4,7 +4,7 @@
         <base target="_self">
         <?!= include('view/header') ?>
         
-        <title>History Charts - <?= stockSymbol ?></title>
+        <title>History Charts - <?= stockSymbol.toUpperCase() ?></title>
         
         <!-- load Google AJAX API -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -26,16 +26,16 @@
                 //create data table object
                 var dataTable = new google.visualization.DataTable();
                 
-                var dateLst = '<?= date ?>'.replace(/年|月/g, '-').replace(/日/g, '').split(',')
-                var priceLst = '<?= price ?>'.split(',').map(Number)
-                var priceHighLst = '<?= priceHigh ?>'.split(',').map(Number)
-                var priceMidLst = '<?= priceMid ?>'.split(',').map(Number)
-                var priceLowLst = '<?= priceLow ?>'.split(',').map(Number)
-                var pettmLst = '<?= pettm ?>'.split(',').map(Number)
+                var span = parseInt('<?= span ?>')
+                var date = '<?= date ?>'.replace(/年|月/g, '-').replace(/日/g, '').split(',')
                 var open = '<?= open ?>'.split(',').map(Number)
                 var high = '<?= high ?>'.split(',').map(Number)
-                var close = '<?= close ?>'.split(',').map(Number)
                 var low = '<?= low ?>'.split(',').map(Number)
+                var close = '<?= close ?>'.split(',').map(Number)
+                var analystHigh = '<?= analystHigh ?>'.split(',').map(Number)
+                var analystMid = '<?= analystMid ?>'.split(',').map(Number)
+                var analystLow = '<?= analystLow ?>'.split(',').map(Number)
+                var pettmLst = '<?= pettm ?>'.split(',').map(Number)
                 var volume = '<?= volume ?>'.split(',').map(Number)
                 var avgVol10D = '<?= avgVol10D ?>'.split(',').map(Number)
                 var avgVol3M = '<?= avgVol3M ?>'.split(',').map(Number)
@@ -58,11 +58,14 @@
 
                 //define columns
                 dataTable.addColumn('date', '日期');
-                dataTable.addColumn('number', '價錢');
+                dataTable.addColumn('number', '開盤');
+                dataTable.addColumn('number', '高價');
+                dataTable.addColumn('number', '低價');
+                dataTable.addColumn('number', '收盤');
+                
                 dataTable.addColumn('number', '分析師高價');
                 dataTable.addColumn('number', '分析師均價');
                 dataTable.addColumn('number', '分析師低價');
-                dataTable.addColumn('number', '滾動市盈率');// Test
                 
                 dataTable.addColumn('number', '成交量');
                 dataTable.addColumn('number', '3月成交量均線');
@@ -86,15 +89,17 @@
                 dataTable.addColumn('number', '強力買進');
                 
                 //define rows of data
-                for(var i = 0 ; i <= 20 ; i++)
+                for(var i = 0 ; i <= span ; i++)
                 {
                     dataTable.addRows([[
-                        new Date(dateLst[i]), priceLst[i], priceHighLst[i], priceMidLst[i], priceLowLst[i], pettmLst[i], //0-5
-                        avgVol3M[i], volume[i], turnoverRate[i], vibrateRatio[i], //6-9
-                        pe[i], peTtm[i], forwardPe[i], //10-12
-                        eps[i], epsTtm[i], //13, 14
-                        pb[i], ps[i], //15, 16
-                        sell[i], underPerform[i], hold[i], buy[i], strongBuy[i] // 17-21
+                        new Date(date[i]), open[i], high[i], low[i], close[i], // 0-4
+                        analystHigh[i], analystMid[i], analystLow[i], //5-7
+                        volume[i], avgVol3M[i], //8 -9
+                        turnoverRate[i], vibrateRatio[i], //10-11
+                        pe[i], peTtm[i], forwardPe[i], //12-14
+                        eps[i], epsTtm[i], //15, 16
+                        pb[i], ps[i], //17, 18
+                        sell[i], underPerform[i], hold[i], buy[i], strongBuy[i] // 19-23
                     ]]);
                 } 
                 // Create a dashboard.
@@ -104,7 +109,7 @@
                 var priceChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'priceChart_div',
-                  'view': {'columns': [0, 1, 2, 3, 4]},
+                  'view': {'columns': [0, 4, 5, 6, 7]},
                   'options': {
                       chartArea: {'height': '80%', 'width': '60%'},
                       title: '價格趨勢',
@@ -120,7 +125,7 @@
                 var momentumChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'momentumChart_div',
-                  'view': {'columns': [0, 8, 9]},
+                  'view': {'columns': [0, 10, 11]},
                   'options': {
                       chartArea: {'height': '60%', 'width': '60%'},
                       title: '動能趨勢',
@@ -136,7 +141,7 @@
                 var financialReportChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'financialReporChart_div',
-                  'view': {'columns': [0, 10, 11, 12]},
+                  'view': {'columns': [0, 12, 13, 14]},
                   'options': {
                       chartArea: {'height': '60%', 'width': '60%'},
                       title: '估值趨勢',
@@ -151,7 +156,7 @@
                 var pbpsChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'pbpsChart_div',
-                  'view': {'columns': [0, 15, 16]},
+                  'view': {'columns': [0, 17, 18]},
                   'options': {
                       chartArea: {'height': '60%', 'width': '60%'},
                       title: '市淨，市銷率',
@@ -166,7 +171,7 @@
                 var analystChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'analystChart_div',
-                  'view': {'columns': [0, 17, 18, 19, 20, 21]},
+                  'view': {'columns': [0, 19, 20, 21, 22, 23]},
                   'options': {
                       chartArea: {'height': '60%', 'width': '60%'},
                       title: '分析師評級',
@@ -184,7 +189,7 @@
                   'containerId': 'filter_div',
                   'options': { 'filterColumnIndex': 0,
                                'ui': { 'chartType': 'AreaChart', 
-                                       'chartView': { 'columns': [0, 6, 7] },
+                                       'chartView': { 'columns': [0, 8, 9] },
                                        'chartOptions': {
                                            'chartArea': {'width': '60%'},
                                            'hAxis': { 'baselineColor': 'none', format:'MMM d', gridlines: { color: 'transparent' } },
@@ -193,7 +198,13 @@
                                         },
                                         'minRangeSize': 86400000
                                }
-                             }
+                             },
+                'state':{
+                           'range': {
+                                     'start': new Date(date[span-20]),
+                                     'end': new Date(date[span-1])
+                            }
+                         }
                 });
 
                 dashboard.bind(volumnSlider, [priceChart, momentumChart, financialReportChart, pbpsChart, analystChart]);
@@ -244,7 +255,7 @@
         <? var tickerRTObj = JSON.parse(tickerRT) ?>
         <? var ratingObj = JSON.parse(rating)?>
         <? var targetPriceObj = JSON.parse(targetPrice)?>
-        <h3 style="text-align:center"><?= tickerRTObj.name ?>(<?= stockSymbol ?>)</h3>
+        <h3 style="text-align:center"><?= tickerRTObj.name ?>(<?= stockSymbol.toUpperCase() ?>)</h3>
         <br>
         <div class="container">
         <div class="row">

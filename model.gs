@@ -1,19 +1,22 @@
-function weBullSingle(stockSymbol, span=20) {
+function weBullSingle(stockSymbol, span) {
   var cacheName = stockSymbol + '-history'
-  var stockHistoryData = CACHE.get(cacheName);
+  //var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
     var file = DriveApp.getFilesByName(stockSymbol).next();
     var Sheet = SpreadsheetApp.open(file);
-    var dateLst = [], priceLst = [], pettmLst = [], priceHighLst  = [], priceMidLst = [], priceLowLst = []
+    var dateLst = [], open = [], high = [], low = [], close = [], pettmLst = [], analystHigh  = [], analystMid = [], analystLow = [], volume = []
     Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
-    Sheet.getSheetValues(2, 5, span, 1).forEach(element => priceLst.unshift(parseFloat(element[0])||0))
-    Sheet.getSheetValues(2, 11, span, 1).forEach(element => priceHighLst.unshift(parseFloat(element[0])||0))
-    Sheet.getSheetValues(2, 12, span, 1).forEach(element => priceMidLst.unshift(parseFloat(element[0])||0))
-    Sheet.getSheetValues(2, 13, span, 1).forEach(element => priceLowLst.unshift(parseFloat(element[0])||0))
-    Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||0))
+    Sheet.getSheetValues(2, 23, span, 1).forEach(element => open.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 21, span, 1).forEach(element => high.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 22, span, 1).forEach(element => low.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 5, span, 1).forEach(element => close.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 11, span, 1).forEach(element => analystHigh.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 12, span, 1).forEach(element => analystMid.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 13, span, 1).forEach(element => analystLow.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
+    Sheet.getSheetValues(2, 24, span, 1).forEach(element => volume.unshift(parseFloat(element[0])||null))
     var tickerObj = {
-      "open":[], "high":[], "close":[], "low":[], "changeRatio":[],
-      "volume":[], "avgVol10D":[], "avgVol3M":[],
+      "changeRatio":[], "avgVol10D":[], "avgVol3M":[],
       "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[],
       "turnoverRate":[], "vibrateRatio":[],
       "pe":[], "forwardPe":[], "indicatedPe":[], "peTtm":[],
@@ -25,30 +28,32 @@ function weBullSingle(stockSymbol, span=20) {
     var ratingObj = {
       "ratingAnalysisTotals":[], "sell":[], "underPerform":[], "hold":[], "buy":[], "strongBuy":[]
     }
-    
-    var targetPriceObj = {
-      "current" :[], "high" :[], "low":[], "mean":[]
-    } 
+//    
+//    var targetPriceObj = {
+//      "current" :[], "high" :[], "low":[], "mean":[]
+//    } 
     
     Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
     Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleMultipleObj(element[0], ratingObj))
-    Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
+//    Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
 
     var stockHistoryData = {
       'date': dateLst, 
-      'price': priceLst, 'priceHigh': priceHighLst, 'priceMid': priceMidLst, 'priceLow': priceLowLst,'pettm': pettmLst, 
+      'open': open, 'high': high, 'low': low, 'close': close,'pettm': pettmLst, 
+      'analystHigh': analystHigh, 'analystMid': analystMid, 'analystLow': analystLow, 'volume': volume,
       'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 
       'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
-      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0]
+      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
+      'span':span
     }
-    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, targetPriceObj);
+    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
     
   }
-  Logger.log(stockHistoryData)
+  Logger.log(stockHistoryData.high)
   return stockHistoryData
 }
 
@@ -142,7 +147,7 @@ function handleMultipleObj(element, targetObj){
     var targetKeys = Object.keys(targetObj)
     if(!element){
       for(no in targetKeys){
-        (targetObj[targetKeys[no]]).unshift(0)
+        (targetObj[targetKeys[no]]).unshift(null)
       }
     }else{
       var elementObj = JSON.parse(element)
@@ -162,35 +167,3 @@ function handleMultipleObj(element, targetObj){
     return targetObj
   }
 
-// Testing fetch with new data structure
-function modelTest(stockSymbol='MA', span=20){
-  var file = DriveApp.getFilesByName(stockSymbol).next();
-  var Sheet = SpreadsheetApp.open(file);
-
-  var tickerObj = {
-    "open":[], "high":[], "close":[], "low":[], "changeRatio":[],
-    "volume":[], "avgVol10D":[], "avgVol3M":[],
-    "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[],
-    "turnoverRate":[], "vibrateRatio":[],
-    "pe":[], "forwardPe":[], "indicatedPe":[], "peTtm":[],
-    "eps":[], "epsTtm":[],
-    "bps":[], "pb":[], "ps":[],
-    "yield":[]
-  }
-  
-  var ratingObj = {
-    "ratingAnalysisTotals":[], "sell":[], "underPerform":[], "hold":[], "buy":[], "strongBuy":[]
-  }
-  
-  var targetPriceObj = {
-    "current" :[], "high" :[], "low":[], "mean":[]
-  } 
-  
-  Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
-  Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleMultipleObj(element[0], ratingObj))
-  Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
-  
-  Logger.log(tickerObj)
-  Logger.log(ratingObj)
-  Logger.log(targetPriceObj)
-}
