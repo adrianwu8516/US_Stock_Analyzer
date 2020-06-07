@@ -21,7 +21,7 @@ STOCK_SYMBOLS = {
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo'], //, 'otcmkts-lvmuy'
   'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
-  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-lk', 'nasdaq-sbux', 'nasdaq-bynd'], 
+  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd'], 
   'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nyse-chwy'],
