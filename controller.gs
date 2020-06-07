@@ -22,8 +22,9 @@ function loadETFList(){
 
 function historyChartController(stockSymbol){
   var span = 180
-  var data = weBullSingle(stockSymbol, span=180)
+  var data = weBullSingle(stockSymbol, span)
   data.stockSymbol = stockSymbol
+  data.span = span
   Logger.log(data)
   return render('view/historyChart', data)
 }
@@ -50,8 +51,13 @@ function unsubscribeController(email, hash){
 
 // Not Finished
 function historyCompareController(stockSymbols){
-  var data = weBullMultiple(stockSymbols.split(','))
-  //data.stockSymbols = stockSymbols
+  var targetLst = stockSymbols.split(',')
+  var span = 180
+  var data = {}
+  data.multiStockData = weBullMultiple(targetLst, span)
+  data.stockSymbols = stockSymbols
+  data.no = targetLst.length
+  data.span = span
   Logger.log(data)
-  return render('view/compareChart', {'data':data})
+  return render('view/compareChart', data)
 }

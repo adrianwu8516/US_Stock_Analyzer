@@ -1,6 +1,6 @@
 function weBullSingle(stockSymbol, span) {
   var cacheName = stockSymbol + '-history'
-  //var stockHistoryData = CACHE.get(cacheName);
+  var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
     var file = DriveApp.getFilesByName(stockSymbol).next();
     var Sheet = SpreadsheetApp.open(file);
@@ -33,8 +33,8 @@ function weBullSingle(stockSymbol, span) {
 //      "current" :[], "high" :[], "low":[], "mean":[]
 //    } 
     
-    Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
-    Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleMultipleObj(element[0], ratingObj))
+    Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleTimeSeriesObj(element[0], tickerObj))
+    Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleTimeSeriesObj(element[0], ratingObj))
 //    Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
 
     var stockHistoryData = {
@@ -44,8 +44,7 @@ function weBullSingle(stockSymbol, span) {
       'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 
       'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
-      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
-      'span':span
+      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0]
     }
     stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
@@ -57,14 +56,30 @@ function weBullSingle(stockSymbol, span) {
   return stockHistoryData
 }
 
-function weBullMultiple(symbolLst, span=20) {
+function weBullMultiple(symbolLst, span){
   var dataPack = {}
   for(var i in symbolLst){
     var stockSymbol = symbolLst[i]
-    dataPack[stockSymbol] = weBullSingle(stockSymbol, span)
+    dataPack[i] = weBullSingleEasy(stockSymbol, span)
   }
+  Logger.log(dataPack)
   return dataPack;
 }
+
+function weBullSingleEasy(stockSymbol, span){
+  var file = DriveApp.getFilesByName(stockSymbol).next();
+  var Sheet = SpreadsheetApp.open(file);
+  var finalJSON = {}
+  var dateLst = [], close = [], pettmLst = []
+  Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
+  Sheet.getSheetValues(2, 5, span, 1).forEach(element => close.unshift(parseFloat(element[0])||null))
+  Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
+  finalJSON['date'] = dateLst
+  finalJSON['close'] = close
+  finalJSON['pe'] = pettmLst
+  return finalJSON
+}
+
 
 function weBullETFSingle(etfSymbol, span=20) {
   var cacheName = etfSymbol + '-history'
@@ -143,7 +158,7 @@ function cbsFinancialRecord(stockSymbol){
   }
 }
 
-function handleMultipleObj(element, targetObj){
+function handleTimeSeriesObj(element, targetObj){
     var targetKeys = Object.keys(targetObj)
     if(!element){
       for(no in targetKeys){

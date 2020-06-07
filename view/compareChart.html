@@ -3,61 +3,95 @@
     <head>
         <base target="_self">
         <?!= include('view/header') ?>
+        <title>History Charts - <?= stockSymbols.toUpperCase() ?></title>
         
-        <title>Compare Charts</title>
         <!-- load Google AJAX API -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
-            
-            // Unfinished!!!!!
-            google.load('visualization', '1', {'packages': ['corechart']});
-            google.setOnLoadCallback(drawPriceChart);
-            //callback function
-            function drawPriceChart() {
+        
+            //load the Google Visualization API and the chart
+            google.charts.load('current', {'packages':['corechart', 'controls']});
  
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawPriceChart);
+            google.charts.setOnLoadCallback(drawPEChart);
+            
+            var span = parseInt('<?= span ?>')
+            var stockLst = '<?= stockSymbols ?>'.split(',')
+            var no = parseInt('<?= no ?>')
+            var multiStockData = JSON.parse('<?= JSON.stringify(multiStockData) ?>')
+            var date = []
+            multiStockData['0'].date.forEach(e => date.push(new Date(e.replace(/年|月/g, '-').replace(/日/g, ''))))
+            // Callback that creates and populates a data table,
+            // instantiates a dashboard, a range slider and a pie chart,
+            // passes in the data and draws it.
+            function drawPriceChart() {
+            
                 //create data table object
                 var dataTable = new google.visualization.DataTable();
-                
-                var dataObj = JSON.parse('<?= JSON.stringify(data) ?>');
-                var keyLst = '<?= Object.keys(data) ?>'.split(',');
 
-                
-                //define columns
-                dataTable.addColumn('string', '日期');
-                for(var no in keyLst){
-                    dataTable.addColumn('number', keyLst[no]);
-                    console.log(keyLst[no]);
+                //console.log(date)
+                dataTable.addColumn('date', '日期');
+                for(var i=0;i<no;i++){
+                    dataTable.addColumn('number', stockLst[i] + '（價格）');
                 }
                 //define rows of data
-                for(var i = 0 ; i < 20 ; i++){
-                    var rowLst = []
-                    for(var no in keyLst){
-                        if(no==0) rowLst.push(dataObj[keyLst[no]].date[i])
-                        rowLst.push(dataObj[keyLst[no]].price[i])
-                    }
-                    console.log(rowLst)
-                    dataTable.addRows([rowLst]);
-                } 
-                
-                //instantiate our chart object
-                var chart = new google.visualization.LineChart (document.getElementById('chart'));
-                
-                //define options for visualization
-                var options = {
-                     //chartArea: {'height': '90%', 'width': '57%'}//,
-                     //colors:['#76da91', '#7898e1']
-                };
- 
-                //draw our chart
-                chart.draw(dataTable, options); 
+                for(var i = 0 ; i <= span-1 ; i++){
+                   var rowLst = [date[i]]
+                   for(var j=0;j<no;j++){
+                       rowLst.push(multiStockData[String(j)].close[i])
+                   }
+                   dataTable.addRows([rowLst]);
+               }
+               //instantiate chart object
+               var chart = new google.visualization.LineChart (document.getElementById('priceChart'));
+               
+               //define options for visualization
+               var options = {width: 1027, 
+                              height: 768,
+                              title: '價格比較'};
+               
+               //draw our chart
+               chart.draw(dataTable, options); 
+               
             }
-        </script> 
-        
+            function drawPEChart() {
+            
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+
+                //console.log(date)
+                dataTable.addColumn('date', '日期');
+                for(var i=0;i<no;i++){
+                    dataTable.addColumn('number', stockLst[i] + '（PE值）');
+                }
+                //define rows of data
+                for(var i = 0 ; i <= span-1 ; i++){
+                   var rowLst = [date[i]]
+                   for(var j=0;j<no;j++){
+                       rowLst.push(multiStockData[String(j)].pe[i])
+                   }
+                   dataTable.addRows([rowLst]);
+               }
+               //instantiate chart object
+               var chart = new google.visualization.LineChart (document.getElementById('peChart'));
+               
+               //define options for visualization
+               var options = {width: 1027, 
+                              height: 768,
+                              title: '估值比較'};
+               
+               //draw our chart
+               chart.draw(dataTable, options); 
+               
+            }
+            
+            
+         </script> 
     </head>
  
-    <body> 
-       <div id="dashboard_div" align='center'>
-          <div id="chart"  style="height: 500px;"></div>
-        </div>
+    <body>
+        <div id="priceChart"></div>
+        <div id="peChart"></div>
     </body>
 </html>
