@@ -52,7 +52,6 @@ function weBullSingle(stockSymbol, span) {
     stockHistoryData = JSON.parse(stockHistoryData)
     
   }
-  Logger.log(stockHistoryData.high)
   return stockHistoryData
 }
 

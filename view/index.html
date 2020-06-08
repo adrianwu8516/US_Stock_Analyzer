@@ -3,7 +3,7 @@
   <head>
     <base target="_self">
     <?!= include('view/header') ?>
-    <title>股票觀察列表</title>
+    <title>觀察列表</title>
   </head>
   <body>
     <br><br>
@@ -20,7 +20,9 @@
       $(function() {
       <? if(type=='etf'){?>
           google.script.run.withSuccessHandler(show).loadETFList();
-      <? }else{ ?>
+      <? }else if (type=='compare'){ ?>
+          google.script.run.withSuccessHandler(show).loadCompareList();
+      <? }else{ ?> 
           google.script.run.withSuccessHandler(show).loadStockList();
       <? } ?>
       });

@@ -19,6 +19,11 @@ function loadETFList(){
   return html_page.evaluate().getContent();
 }
 
+function loadCompareList(){
+  var html_page = HtmlService.createTemplateFromFile('view/compareList')
+  return html_page.evaluate().getContent();
+}
+
 
 function historyChartController(stockSymbol){
   var span = 180
