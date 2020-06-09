@@ -55,13 +55,17 @@
                 var sell = '<?= sell ?>'.split(',').map(Number)
                 var strongBuy = '<?= strongBuy ?>'.split(',').map(Number)
                 var hold = '<?= hold ?>'.split(',').map(Number)
+                var MACD = '<?= MACD ?>'.split(',').map(Number)
+                var BollMean = '<?= BollMean ?>'.split(',').map(Number)
+                var BollUpper = '<?= BollUpper ?>'.split(',').map(Number)
+                var BollLower = '<?= BollLower ?>'.split(',').map(Number)
 
                 //define columns
                 dataTable.addColumn('date', '日期');
                 dataTable.addColumn('number', '開盤');
                 dataTable.addColumn('number', '高價');
                 dataTable.addColumn('number', '低價');
-                dataTable.addColumn('number', '收盤');
+                dataTable.addColumn('number', '價格');
                 
                 dataTable.addColumn('number', '分析師高價');
                 dataTable.addColumn('number', '分析師均價');
@@ -88,6 +92,11 @@
                 dataTable.addColumn('number', '買進');
                 dataTable.addColumn('number', '強力買進');
                 
+                dataTable.addColumn('number', 'MACD');
+                dataTable.addColumn('number', '布林均線');
+                dataTable.addColumn('number', '布林上通道');
+                dataTable.addColumn('number', '布林下通道');
+                
                 //define rows of data
                 for(var i = 0 ; i <= span ; i++)
                 {
@@ -99,7 +108,8 @@
                         pe[i], peTtm[i], forwardPe[i], //12-14
                         eps[i], epsTtm[i], //15, 16
                         pb[i], ps[i], //17, 18
-                        sell[i], underPerform[i], hold[i], buy[i], strongBuy[i] // 19-23
+                        sell[i], underPerform[i], hold[i], buy[i], strongBuy[i], // 19-23
+                        MACD[i], BollMean[i], BollUpper[i], BollLower[i]
                     ]]);
                 } 
                 // Create a dashboard.
@@ -121,6 +131,22 @@
                   }
                 });
                 
+                // Create a price chart, passing some options
+                var bollChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'bollChart_div',
+                  'view': {'columns': [0, 4, 25, 26, 27]},
+                  'options': {
+                      chartArea: {'height': '80%', 'width': '60%'},
+                      title: '布林通道',
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}, 2:{color: '#76da91'}, 3:{color: '#76da91'} }
+                  }
+                });
+                
                 // Create a financial report chart, passing some options
                 var momentumChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
@@ -131,6 +157,22 @@
                       title: '動能趨勢',
                       crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
                       focusTarget: 'category',
+                      hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
+                      vAxis: { gridlines: { color: 'transparent' } },
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}}
+                  }
+                });
+                
+                // Create a financial report chart, passing some options
+                var macdChart = new google.visualization.ChartWrapper({
+                  'chartType': 'AreaChart',
+                  'containerId': 'macdChart_div',
+                  'view': {'columns': [0, 24]},
+                  'options': {
+                      chartArea: {'height': '60%', 'width': '60%'},
+                      crosshair: { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'},
+                      focusTarget: 'category',
+                      //bar: {groupWidth: "95%"},
                       hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
                       vAxis: { gridlines: { color: 'transparent' } },
                       series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}}
@@ -207,7 +249,7 @@
                          }
                 });
 
-                dashboard.bind(volumnSlider, [priceChart, momentumChart, financialReportChart, pbpsChart, analystChart]);
+                dashboard.bind(volumnSlider, [bollChart, priceChart, macdChart, momentumChart, financialReportChart, pbpsChart, analystChart]);
                 dashboard.draw(dataTable);
 
             }
@@ -367,11 +409,13 @@
         </div>
         
         <div id="dashboard_div" align='center'>
-          <div id="priceChart_div"   style="height: 290px;"></div>
+          <div id="bollChart_div"   style="height: 290px;"></div>
+          <div id="macdChart_div"  style="height: 140px;"></div>
           <div id="filter_div"  style="height: 80px;"></div>
           <div id="momentumChart_div"  style="height: 80px;"></div>
           <div id="financialReporChart_div"   style="height: 150px;"></div>
           <div id="pbpsChart_div"   style="height: 150px;"></div>
+          <div id="priceChart_div"   style="height: 290px;"></div>
           <div id="analystChart_div"   style="height: 200px;"></div>
           
         </div>

@@ -36,7 +36,7 @@ function weBullSingle(stockSymbol, span) {
     Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleTimeSeriesObj(element[0], tickerObj))
     Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleTimeSeriesObj(element[0], ratingObj))
 //    Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
-
+    var BOLL = Boll(close)
     var stockHistoryData = {
       'date': dateLst, 
       'open': open, 'high': high, 'low': low, 'close': close,'pettm': pettmLst, 
@@ -44,7 +44,11 @@ function weBullSingle(stockSymbol, span) {
       'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 
       'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
-      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0]
+      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
+      'MACD': MACD(close), 
+      'BollMean': BOLL.mean,
+      'BollUpper': BOLL.upper,
+      'BollLower': BOLL.lower,
     }
     stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
