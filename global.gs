@@ -35,8 +35,8 @@ STOCK_SYMBOLS = {
 }
 
 ETF_LIST = {
-  'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
-  'US-Stock':['nasdaq-qqq', 'nysearca-xlk', 'nysearca-mj', 'nysearca-vym', 'nysearca-vnq', 'nasdaq-ibb', 'nysearca-xlf', 'nysearca-vtv', 'nysearca-pbw', 'bats-ita'],
+  'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-qqq', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
+  'US-Stock':['nysearca-xlk', 'nysearca-mj', 'nysearca-vym', 'nysearca-vnq', 'nasdaq-ibb', 'nysearca-xlf', 'nysearca-vtv', 'nysearca-pbw', 'bats-ita'],
   'Dividend':['nysearca-sphd', 'nysearca-spyd', 'nysearca-vig', 'nasdaq-pff'],
   'Emerging-Markets':['nysearca-vwo', 'nysearca-iemg', 'nysearca-eem', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'bats-inda', 'nysearca-ews', 'nysearca-efa'],
   'Bond':['nasdaq-tlt', 'nasdaq-iei', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
@@ -75,6 +75,7 @@ function PARSER_PACKAGE(){
   collectDataFromWeBull()
   collectDataFromCBS()
   dataRecordandProcess()
+  dailyMacroRecord()
   if(!checkifClosed()) return;
   renewCache()
 }
