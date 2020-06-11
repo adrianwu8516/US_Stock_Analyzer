@@ -29,7 +29,7 @@ function getWeBullData(urlSymbol, category){
       var stockInfo = {};
       stockInfo['category'] = category
       stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol.replace(/ /g, '-')
-      stockInfo['companyName'] = (tickerRTJSON.tickerRT.name).replace(/ |0|,/g, '')
+      stockInfo['companyName'] = LanguageApp.translate((tickerRTJSON.tickerRT.name).replace(/ |0|,/g, ''), 'zh-CN', 'zh-TW')
       stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
       stockInfo['price'] = parseFloat(tickerRTJSON.tickerRT.close)
       stockInfo['delta'] = parseFloat(tickerRTJSON.tickerRT.changeRatio)
@@ -43,7 +43,7 @@ function getWeBullData(urlSymbol, category){
       stockInfo['priceLow'] = ratingJSON.targetPrice.low
       stockInfo['priceHigh'] = ratingJSON.targetPrice.high
       stockInfo['priceMid']  = ratingJSON.targetPrice.mean
-      
+      tickerRTJSON.tickerRT.name = stockInfo['companyName'] // From zh-CN to zh-TW
       stockInfo['tickerRT'] = JSON.stringify(tickerRTJSON.tickerRT)
       stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
       stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
