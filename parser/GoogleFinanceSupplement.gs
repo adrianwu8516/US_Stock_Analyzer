@@ -4,9 +4,35 @@ function addGoogleDataToAllExistedFiles(){
       var symbol = STOCK_SYMBOLS[catName][i]
       Logger.log(symbol)
       supplementForStock(symbol)
+      //fixingDateData(symbol, dateStr = '2020年06月12日')
     }
   }
 }
+
+function fixingDateData(symbol='nyse-ups', dateStr = '2020年06月12日'){
+  var fileName = symbol.split('-')[1]
+  if(DriveApp.getFilesByName(fileName).hasNext()){
+    var file = DriveApp.getFilesByName(fileName).next()
+    var stockDoc = SpreadsheetApp.openById(file.getId());
+    var targetRow = onSearch(stockDoc, dateStr, searchTargetCol=0)
+    if(targetRow){
+      var yest = stockDoc.getRange('A' + (targetRow+2) + ':T' + (targetRow+2)).getValues()
+      var today = stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).getValues()
+      var todayPrice = today[0][4]
+      var yestPrice = yest[0][4]
+      var yestValue = yest[0][6]
+      var yestPb = yest[0][7]
+      yest[0][0] = dateStr
+      yest[0][2] = LanguageApp.translate(yest[0][2], 'zh-CN', 'zh-TW')
+      yest[0][4] = today[0][4]
+      yest[0][5] = Math.round((todayPrice - yestPrice)/yestPrice * 10000)/100 + '%'
+      yest[0][6] = yestValue/yestPrice*todayPrice
+      yest[0][7] = Math.round(yestPb/yestPrice*todayPrice * 100)/100
+      stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).setValues(yest)
+    }
+  }
+}
+
 
 function supplementForStock(symbol) {
   var googleSymbol = symbol.replace('-', ':').toUpperCase()
@@ -16,14 +42,14 @@ function supplementForStock(symbol) {
     var stockDoc = SpreadsheetApp.openById(file.getId());
     
     // Search and Destroy Problematic Rows
-    removeProblematicDateInfo(stockDoc, '2020年04月06日')
-    removeProblematicDateInfo(stockDoc, '2020年04月05日')
+    //removeProblematicDateInfo(stockDoc, '2020年04月06日')
+    //removeProblematicDateInfo(stockDoc, '2020年04月05日')
     
     // Insert
     insertGoogleHisData(stockDoc, googleSymbol)
     
     // Insert New Column Name
-    stockDoc.getRange("A1:Z1").setValues([["日期", "代號", "公司名稱", "交易所", "目前價格", "今天漲跌（％）", "市值", "市淨率", "分析師評價", "分析師關注度", "分析師高價", "分析師均價", "分析師低價", "52週最高價", "52週最低價", "CBS評等", "tickerRT", "rating", "targetPrice", "forecastEps", "當日最高", "當日最低", "開盤", "成交量", "EPS", "Beta"]])
+    stockDoc.getRange("A1:X1").setValues([["日期", "代號", "公司名稱", "交易所", "目前價格", "今天漲跌（％）", "市值", "市淨率", "分析師評價", "分析師關注度", "分析師高價", "分析師均價", "分析師低價", "52週最高價", "52週最低價", "CBS評等", "tickerRT", "rating", "targetPrice", "forecastEps", "當日最高", "當日最低", "開盤", "成交量"]])
   }
 }
 
@@ -32,7 +58,7 @@ function insertGoogleHisData(stockDoc, googleSymbol){
   //    var endDateString = "DATE(" + endDate.getFullYear() + "," + (endDate.getMonth() + 1) + "," + endDate.getDate() + ")"
   var sheet = SpreadsheetApp.openById("1CXyvcYPu9xGg7KlWwaIJskXMQd5pZArm6dS5h5TmhiI").getSheetByName("Operation") // Should be able to open a new temp sheet
   //    sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","high",DATE(2000,1,1),' + endDateString + ',1)')
-  sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","all",DATE(1995,1,1),today(),1)')
+  sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","all",DATE(2020,6,8),today(),1)')
   
   var length = sheet.getRange("A1:A").getValues().filter(String).length
   try{
@@ -44,21 +70,23 @@ function insertGoogleHisData(stockDoc, googleSymbol){
     sheet.getRange("E2:E"+length).getValues().forEach(e => hisPrice.unshift([e]))
     sheet.getRange("F2:F"+length).getValues().forEach(e => hisVolume.unshift([e]))
     // Search and Destroy Problematic Rows
-    var removeIndex = hisDate.findIndex(element => element == '2020年05月15日')
-    hisDate.splice(removeIndex, 1)
-    hisOpen.splice(removeIndex, 1)
-    hisHigh.splice(removeIndex, 1)
-    hisLow.splice(removeIndex, 1)
-    hisPrice.splice(removeIndex, 1)
-    hisVolume.splice(removeIndex, 1)
+    //var removeIndex = hisDate.findIndex(element => element == '2020年05月15日')
+    //hisDate.splice(removeIndex, 1)
+    //hisOpen.splice(removeIndex, 1)
+    //hisHigh.splice(removeIndex, 1)
+    //hisLow.splice(removeIndex, 1)
+    //hisPrice.splice(removeIndex, 1)
+    //hisVolume.splice(removeIndex, 1)
     
     // Insert and Replace Original Data with Google Version
-    stockDoc.getRange("A2:A" + (hisDate.length+1)).setValues(hisDate)
-    stockDoc.getRange("E2:E" + (hisPrice.length+1)).setValues(hisPrice)
-    stockDoc.getRange("U2:U" + (hisHigh.length+1)).setValues(hisHigh)
-    stockDoc.getRange("V2:V" + (hisLow.length+1)).setValues(hisLow)
-    stockDoc.getRange("W2:W" + (hisOpen.length+1)).setValues(hisOpen)
-    stockDoc.getRange("X2:X" + (hisVolume.length+1)).setValues(hisVolume)
+    Logger.log(hisDate)
+    Logger.log(hisPrice)
+    stockDoc.getRange("A3:A" + (hisDate.length+2)).setValues(hisDate)
+    stockDoc.getRange("E3:E" + (hisPrice.length+2)).setValues(hisPrice)
+    stockDoc.getRange("U3:U" + (hisHigh.length+2)).setValues(hisHigh)
+    stockDoc.getRange("V3:V" + (hisLow.length+2)).setValues(hisLow)
+    stockDoc.getRange("W3:W" + (hisOpen.length+2)).setValues(hisOpen)
+    stockDoc.getRange("X3:X" + (hisVolume.length+2)).setValues(hisVolume)
   }catch(e){
     Logger.log(e)
   }

@@ -52,7 +52,7 @@ function getWeBullData(urlSymbol, category){
       stockInfo['high'] = parseInt(tickerRTJSON.tickerRT.high)
       stockInfo['low'] = parseInt(tickerRTJSON.tickerRT.low)
       stockInfo['open'] = parseInt(tickerRTJSON.tickerRT.open)
-      stockInfo['volumn'] = parseInt(tickerRTJSON.tickerRT.volume)
+      stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
       return stockInfo
     }catch(e){
       Logger.log(e)

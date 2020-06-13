@@ -92,7 +92,7 @@ function weBullETFSingle(etfSymbol, span=20) {
     var Sheet = SpreadsheetApp.open(file);
     var dateLst = [], tickerObj = {"close":[], "volume":[], "avgVol3M":[], "vibrateRatio":[], "yield1Y":[], "beta3Y":[]}
     Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
-    Sheet.getSheetValues(2, 3, span, 1).forEach(element => tickerObj = handleMultipleObj(element[0], tickerObj))
+    Sheet.getSheetValues(2, 3, span, 1).forEach(element => tickerObj = handleTimeSeriesObj(element[0], tickerObj))
     var etfHistoryData = {
       'date': dateLst, 
       'price': tickerObj.close,
