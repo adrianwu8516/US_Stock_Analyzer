@@ -13,7 +13,11 @@ function dataRecordandProcess(){
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
         Logger.log("Recording: " + stockSymbol)
-        dataRecord(stockInfo)
+        try{
+          dataRecord(stockInfo)
+        }catch(e){
+          Logger.log(e)
+        }
         delete stockInfo.tickerRT; // In case the cache might be too large to load
         delete stockInfo.rating;
         delete stockInfo.targetPrice;
