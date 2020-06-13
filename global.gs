@@ -4,7 +4,7 @@ SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-2
 CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI']
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w'],
-  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-ma', 'nyse-v', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo', 'nasdaq-okta', 'nasdaq-fivn'],
+  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo', 'nasdaq-okta', 'nasdaq-fivn'],
   'Internet-China':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-iq', 'nasdaq-bili'], //, 'nasdaq-kc'
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-roku', 'nyse-spot'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch'], 
@@ -28,7 +28,7 @@ STOCK_SYMBOLS = {
   'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
   'Machinery':['nyse-de', 'nyse-cat', 'nyse-hon'],
-  'Finance':['nyse-jpm', 'nyse-bac', 'nyse-gs', 'nyse-axp', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi'],
+  'Finance':['nyse-jpm', 'nyse-bac', 'nyse-gs', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl'],
   'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr'],
   'Logistics':['nyse-ups', 'nyse-fdx']
