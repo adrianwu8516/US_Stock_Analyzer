@@ -13,18 +13,67 @@ function Std(arr){
   return Math.sqrt(sd/arr.length);
 }
 
+function changeRatio(target, base){
+  return (target - base)/base
+}
+
 
 // Formatting Numbers
 function formartNumber(n){
       return Number(n.toFixed(2));
 }
 
+function pearsonCorrelation(prefs, p1, p2) {
+  var si = [];
+
+  for (var key in prefs[p1]) {
+    if (prefs[p2][key]) si.push(key);
+  }
+
+  var n = si.length;
+
+  if (n == 0) return 0;
+
+  var sum1 = 0;
+  for (var i = 0; i < si.length; i++) sum1 += prefs[p1][si[i]];
+
+  var sum2 = 0;
+  for (var i = 0; i < si.length; i++) sum2 += prefs[p2][si[i]];
+
+  var sum1Sq = 0;
+  for (var i = 0; i < si.length; i++) {
+    sum1Sq += Math.pow(prefs[p1][si[i]], 2);
+  }
+
+  var sum2Sq = 0;
+  for (var i = 0; i < si.length; i++) {
+    sum2Sq += Math.pow(prefs[p2][si[i]], 2);
+  }
+
+  var pSum = 0;
+  for (var i = 0; i < si.length; i++) {
+    pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+  }
+
+  var num = pSum - (sum1 * sum2 / n);
+  var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n) *
+      (sum2Sq - Math.pow(sum2, 2) / n));
+
+  if (den == 0) return 0;
+
+  return num / den;
+}
+
 // Simple Moving Average
 function SMA(lst, span){
   var final = []
-  for(var i=0; i<lst.length-span; i++){
-    var avg = Mean(lst.slice(0+i,span+i))
-    final.push(formartNumber(avg))
+  for(var i=0; i<lst.length; i++){
+    if(i < span){
+      final.push(0)
+    }else{
+      var avg = Sum(lst.slice(0+i,span+i))
+      final.push(formartNumber(avg))
+    }
   }
   return final
 }
