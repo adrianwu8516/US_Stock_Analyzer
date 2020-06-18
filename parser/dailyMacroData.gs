@@ -50,7 +50,7 @@ function dailyMacroRecord(){
       todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex
     ]]);
   }else{
-    macroDoc.insertRowBefore(1);
+    macroDoc.insertRowAfter(1);
     macroDoc.getRange('A2:H2').setValues([[
       todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex
     ]]);

@@ -30,7 +30,7 @@ STOCK_SYMBOLS = {
   'Machinery':['nyse-de', 'nyse-cat', 'nyse-hon'],
   'Finance':['nyse-jpm', 'nyse-bac', 'nyse-gs', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl'],
-  'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr'],
+  'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nasdaq-reg'],
   'Logistics':['nyse-ups', 'nyse-fdx']
 }
 
