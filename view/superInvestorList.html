@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-7">
+          <? var buyLst = Object.keys(superInvestorLst.bestSeller).reverse() ?>
+          <h4 align="center">買入榜</h4>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">代號</th>
+                <th scope="col">買賣差</th>
+                <th scope="col">買入</th>
+                <th scope="col">賣出</th>
+                <th scope="col">成本</th>
+                <th scope="col">現價</th>
+              </tr>
+            </thead>
+            <tbody>
+              <? for(i in buyLst){ 
+                    var lst = superInvestorLst.bestSeller[buyLst[i]]
+                    for(j in lst){?>
+                    <tr>
+                        <th><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= lst[j][0]?>" target="_blank"><?= lst[j][0]?></a></th>
+                        <td><?= buyLst[i] ?></td>
+                        <td><?= lst[j][1]?></td>
+                        <td><?= lst[j][2]?></td>
+                        <? if(lst[j][3] < lst[j][4] || isNaN(lst[j][4])){?>
+                          <td><span style="color: #008000;"><?= lst[j][3]?></span></td>
+                          <td><span style="color: #008000;"><?= lst[j][4]?></span></td>
+                        <?}else{ ?>
+                          <td><span style="color: red;"><?= lst[j][3]?></span></td>
+                          <td><span style="color: red;"><?= lst[j][4]?></span></td>
+                        <? }?>
+                        
+                    </tr>
+                    <?}
+              } ?>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm">
+          <? var sellLst = Object.keys(superInvestorLst.worstSeller).reverse() ?>
+          <h4 align="center">賣出榜</h4>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">代號</th>
+                <th scope="col">買賣差</th>
+                <th scope="col">買入</th>
+                <th scope="col">賣出</th>
+              </tr>
+            </thead>
+            <tbody>
+              <? for(i in sellLst){ 
+                    var lst = superInvestorLst.worstSeller[sellLst[i]]
+                    for(j in lst){?>
+                    <tr>
+                        <th><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= lst[j][0]?>" target="_blank"><?= lst[j][0]?></a></th>
+                        <td><?= sellLst[i] ?></td>
+                        <td><?= lst[j][1]?></td>
+                        <td><?= lst[j][2]?></td>
+                    </tr>
+                    <?}
+              } ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
+
+

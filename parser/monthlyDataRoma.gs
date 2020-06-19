@@ -37,16 +37,17 @@ function monthlyDataRomaSnP500Compare(){
     snpCompare[symbol] = {}
     snpCompare[symbol].buyer = parseInt(xmlPositiveLst[i].replace(/[\s\S]+?<b>([0-9]+?)<\/b>[\s\S]+/, '$1'))
     snpCompare[symbol].holdPrice = parseFloat(xmlPositiveLst[i].replace(/[\s\S]+?Hold Price: \$([0-9.]+?)<\/span>/, '$1'))
+    if(isNaN(snpCompare[symbol].holdPrice)){snpCompare[symbol].holdPrice = ''}
   }
   var urlNegative = 'https://www.dataroma.com/m/grid.php?s=sq';
   var xmlNegative = UrlFetchApp.fetch(urlNegative).getContentText();
-  var xmlNegativeLst = xmlPositive.match(/<a class="col[\s\S]+?<\/span>/g)
+  var xmlNegativeLst = xmlNegative.match(/<a class="col[\s\S]+?<\/span>/g)
   for(i in xmlPositiveLst){
     var symbol = xmlNegativeLst[i].replace(/[\S\s]+?sym=([\S\s]+?)"[\S\s]+/, '$1')
     snpCompare[symbol].seller = parseInt(xmlNegativeLst[i].replace(/[\s\S]+?<b>([0-9]+?)<\/b>[\s\S]+/, '$1'))
   }
   Logger.log(snpCompare)
-  //DataRomaCompareFillIn(investorDoc, snpCompare, todayStr)
+  DataRomaCompareFillIn(investorDoc, snpCompare, todayStr)
 }
 
 
@@ -69,8 +70,9 @@ function DataRomaFillIn(investorDoc, investorData){
 function DataRomaCompareFillIn(investorDoc, snpCompare, todayStr){
   for(var sym in snpCompare){
     investorDoc.insertRowAfter(1);
+    var diff = snpCompare[sym].buyer - snpCompare[sym].seller
     investorDoc.getRange('A2:F2').setValues([[
-      todayStr, sym, (snpCompare[sym].buyer - snpCompare[sym].seller), snpCompare[sym].buyer, snpCompare[sym].seller, snpCompare[sym].holdPrice
+      todayStr, sym, diff, snpCompare[sym].buyer, snpCompare[sym].seller, snpCompare[sym].holdPrice
     ]]);
   }
 }

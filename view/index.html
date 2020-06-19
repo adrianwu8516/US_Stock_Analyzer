@@ -22,6 +22,8 @@
           google.script.run.withSuccessHandler(show).loadETFList();
       <? }else if (type=='compare'){ ?>
           google.script.run.withSuccessHandler(show).loadCompareList();
+      <? }else if (type=='superInvestor'){ ?>
+          google.script.run.withSuccessHandler(show).loadSuperInvestorList();
       <? }else{ ?> 
           google.script.run.withSuccessHandler(show).loadStockList();
       <? } ?>

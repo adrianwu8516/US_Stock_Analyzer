@@ -24,6 +24,12 @@ function loadCompareList(){
   return html_page.evaluate().getContent();
 }
 
+function loadSuperInvestorList(){
+  var html_page = HtmlService.createTemplateFromFile('view/superInvestorList')
+  html_page.superInvestorLst = superInvestorData()
+  Logger.log(superInvestorData())
+  return html_page.evaluate().getContent();
+}
 
 function historyChartController(stockSymbol){
   var span = 180

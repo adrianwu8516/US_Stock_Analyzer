@@ -16,45 +16,24 @@ function weBullSingle(stockSymbol, span) {
     Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
     Sheet.getSheetValues(2, 24, span, 1).forEach(element => volume.unshift(parseFloat(element[0])||null))
     var tickerObj = {
-      "changeRatio":[], "avgVol10D":[], "avgVol3M":[],
-      "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[],
-      "turnoverRate":[], "vibrateRatio":[],
-      "pe":[], "forwardPe":[], "indicatedPe":[], "peTtm":[],
-      "eps":[], "epsTtm":[],
-      "bps":[], "pb":[], "ps":[],
-      "yield":[]
+      "avgVol10D":[], "avgVol3M":[], "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[], "turnoverRate":[], "vibrateRatio":[], "changeRatio":[], 
+      "pe":[], "forwardPe":[], "indicatedPe":[], "peTtm":[], "eps":[], "epsTtm":[],"bps":[], "pb":[], "ps":[],"yield":[]
     }
-    
-    var ratingObj = {
-      "ratingAnalysisTotals":[], "sell":[], "underPerform":[], "hold":[], "buy":[], "strongBuy":[]
-    }
-//    
-//    var targetPriceObj = {
-//      "current" :[], "high" :[], "low":[], "mean":[]
-//    } 
-    
+    var ratingObj = {"ratingAnalysisTotals":[], "sell":[], "underPerform":[], "hold":[], "buy":[], "strongBuy":[]}
     Sheet.getSheetValues(2, 17, span, 1).forEach(element => tickerObj = handleTimeSeriesObj(element[0], tickerObj))
     Sheet.getSheetValues(2, 18, span, 1).forEach(element => ratingObj = handleTimeSeriesObj(element[0], ratingObj))
-//    Sheet.getSheetValues(2, 19, span, 1).forEach(element => targetPriceObj = handleMultipleObj(element[0], targetPriceObj))
     var BOLL = Boll(close)
     var stockHistoryData = {
-      'date': dateLst, 
-      'open': open, 'high': high, 'low': low, 'close': close,'pettm': pettmLst, 
+      'date': dateLst, 'open': open, 'high': high, 'low': low, 'close': close,'pettm': pettmLst, 
       'analystHigh': analystHigh, 'analystMid': analystMid, 'analystLow': analystLow, 'volume': volume,
-      'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 
-      'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
-      'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 
-      'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
-      'MACD': MACD(close), 
-      'BollMean': BOLL.mean,
-      'BollUpper': BOLL.upper,
-      'BollLower': BOLL.lower,
+      'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
+      'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
+      'MACD': MACD(close), 'BollMean': BOLL.mean, 'BollUpper': BOLL.upper, 'BollLower': BOLL.lower,
     }
     stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
-    
   }
   return stockHistoryData
 }
@@ -65,7 +44,6 @@ function weBullMultiple(symbolLst, span){
     var stockSymbol = symbolLst[i]
     dataPack[i] = weBullSingleEasy(stockSymbol, span)
   }
-  Logger.log(dataPack)
   return dataPack;
 }
 
@@ -112,7 +90,6 @@ function weBullETFSingle(etfSymbol, span=20) {
   }else{
     etfHistoryData = JSON.parse(etfHistoryData)
   }
-  Logger.log(etfHistoryData)
   return etfHistoryData
 }
 
@@ -140,48 +117,65 @@ function etfIndexData(){
   return etfIndexData
 }
 
-
-function cbsFinancialRecord(stockSymbol){
-  // Unfinished Don't know what to do with financial reports
-  var stockSymbol = 'zm'
-  var file = DriveApp.getFileById('1B8Xv88I9eWcFc21dE4tRpV3m-Y8n4rsWJ78JDIJc63g')
-  var Sheet = SpreadsheetApp.open(file);
-  var today = new Date()
-  var index = (today.getFullYear() - 1) + '-' + stockSymbol
-  var targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
-  if (!targetRow) {
-    index = (today.getFullYear() - 2) + '-' + stockSymbol
-    targetRow = onSearch(Sheet, searchString = index, searchTargetCol = 1)
-  }
-  if(targetRow){
-    targetRow += 1
-    var finList = Sheet.getSheetValues(targetRow, 1, 1, 34)[0]
-  }else{
-    
-  }
-}
-
-function handleTimeSeriesObj(element, targetObj){
-    var targetKeys = Object.keys(targetObj)
-    if(!element){
-      for(no in targetKeys){
-        (targetObj[targetKeys[no]]).unshift(null)
-      }
-    }else{
-      var elementObj = JSON.parse(element)
-      var elementKeys = Object.keys(elementObj)
-      for(no in elementKeys){
-        if(targetKeys.includes(elementKeys[no])){
-          targetObj[elementKeys[no]].unshift(elementObj[elementKeys[no]])
-        }else if(elementKeys[no] == 'ratingSpread'){
-          var spreadObj = elementObj.ratingSpread
-          var spreadKeys = Object.keys(spreadObj)
-          for(spreadNo in spreadKeys){
-            (targetObj[spreadKeys[spreadNo]]).unshift(spreadObj[spreadKeys[spreadNo]])
-          }
+function superInvestorData(){
+  var cacheName = 'superInvestorData'
+  var SIFinalData = CACHE.get(cacheName);
+  if(!SIFinalData){
+    var SIDoc = SpreadsheetApp.openById(SUPERINVESTORSHEET_ID).getSheetByName("SNP500Compare")
+    var SIData = SIDoc.getRange("A2:F501").getValues()
+    var bestSeller = {}, worstSeller = {}
+    for(i in SIData){
+      var no = SIData[i][2]
+      if(no > 2){
+        var currentPrice = askCurrentPriceFromGoogle(SIData[i][1])
+        if(bestSeller[no]){
+          bestSeller[no].push([SIData[i][1], SIData[i][3], SIData[i][4], SIData[i][5], currentPrice])
+        }else{
+          bestSeller[no] = [[SIData[i][1], SIData[i][3], SIData[i][4], SIData[i][5], currentPrice]]
+        }
+      }else if(no < -2){
+        if(worstSeller[no]){
+          worstSeller[no].push([SIData[i][1], SIData[i][3], SIData[i][4]])
+        }else{
+          worstSeller[no] = [[SIData[i][1], SIData[i][3], SIData[i][4]]]
         }
       }
     }
-    return targetObj
+    var SIFinalData = {'bestSeller': bestSeller, 'worstSeller':worstSeller}
+    CACHE.put(cacheName, JSON.stringify(SIFinalData), CACHELIFETIME)
+  }else{
+    SIFinalData = JSON.parse(SIFinalData)
   }
+  return SIFinalData
+}
+
+function handleTimeSeriesObj(element, targetObj){
+  var targetKeys = Object.keys(targetObj)
+  if(!element){
+    for(no in targetKeys){
+      (targetObj[targetKeys[no]]).unshift(null)
+    }
+  }else{
+    var elementObj = JSON.parse(element)
+    var elementKeys = Object.keys(elementObj)
+    for(no in elementKeys){
+      if(targetKeys.includes(elementKeys[no])){
+        targetObj[elementKeys[no]].unshift(elementObj[elementKeys[no]])
+      }else if(elementKeys[no] == 'ratingSpread'){
+        var spreadObj = elementObj.ratingSpread
+        var spreadKeys = Object.keys(spreadObj)
+        for(spreadNo in spreadKeys){
+          (targetObj[spreadKeys[spreadNo]]).unshift(spreadObj[spreadKeys[spreadNo]])
+        }
+      }
+    }
+  }
+  return targetObj
+}
+
+function askCurrentPriceFromGoogle(symbol='fb'){
+  var sheet = SpreadsheetApp.openById("1CXyvcYPu9xGg7KlWwaIJskXMQd5pZArm6dS5h5TmhiI").getSheetByName("Operation")
+  var price = sheet.getRange(1,1).setFormula('=GoogleFinance("' + symbol + '","price")').getValue()
+  return price
+}
 

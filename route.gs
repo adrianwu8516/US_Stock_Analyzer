@@ -16,6 +16,8 @@ function doGet(e){
         return indexController("compare")
       case 'stock': 
         return indexController("stock")
+      case 'superInvestor': 
+        return indexController("superInvestor")
       default:
         return indexController("stock")
     }

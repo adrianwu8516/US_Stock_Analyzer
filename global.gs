@@ -1,7 +1,7 @@
 CACHE = CacheService.getScriptCache();
 CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
-CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI', 'WFC', 'C', 'SCHW']
+CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI', 'WFC', 'C', 'SCHW', 'USB', 'AIG']
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w'],
   'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nasdaq-pypl', 'nyse-sq', 'nasdaq-zm', 'nyse-work', 'nyse-net', 'nyse-twlo', 'nasdaq-okta', 'nasdaq-fivn'],
@@ -15,23 +15,25 @@ STOCK_SYMBOLS = {
   'IC':['nasdaq-amd', 'nasdaq-nvda', 'nasdaq-intc', 'nasdaq-avgo', 'nasdaq-qcom', 'nasdaq-mu', 'nasdaq-xlnx', 'nasdaq-txn'],
   'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nyse-cgc', 'nasdaq-tlry'],
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
-  'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b'],
+  'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy'],
   'Hardware':['nasdaq-logi', 'nasdaq-aapl'],
-  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nasdaq-amgn', 'nasdaq-biib', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-mrk', 'nyse-pfe', 'nyse-abt', 'nasdaq-mrna', 'nasdaq-drrx', 'nasdaq-vygr', 'nyse-tdoc', 'nasdaq-lvgo'],
+  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc'],
+  'Medicine':['nyse-mrk', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo'], //, 'otcmkts-lvmuy'
   'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
-  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd'], 
+  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd', 'nyse-k'], 
   'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nyse-chwy'],
-  'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm'],
+  'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
-  'Machinery':['nyse-de', 'nyse-cat', 'nyse-hon'],
-  'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-gs', 'nyse-wfc', 'nyse-schw', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi'],
+  'Industry':['nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-keys', 'nasdaq-flir'],
+  'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-wfc', 'nyse-schw', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl'],
-  'REITs':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nasdaq-reg'],
-  'Logistics':['nyse-ups', 'nyse-fdx']
+  'RealEstate':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nasdaq-reg', 'nyse-dhi', 'nyse-low'],
+  'Logistics':['nyse-ups', 'nyse-fdx'],
+  'Consulting':['nasdaq-ctsh']
 }
 
 ETF_LIST = {
