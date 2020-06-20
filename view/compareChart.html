@@ -85,10 +85,27 @@
     </head>
  
     <body>
-    <div align='center'>
-        <div id="priceChart"></div>
-        <div id="priceRatioChart"></div>
-        <div id="peChart"></div>
+    
+    <div class="container">
+      <br><br>
+      <h2 align="center">歷史比較圖表</h2>
+      <p style="text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzhCULmOHZhJaNfIqln_m9QudDsUD9k6DwVnTGu_uo/dev?mode=mode=corrLab&amp;symbols=<?=stockSymbols?>">檢視相關係數矩陣</a></p>
+      
+      <div class="row">
+        <div class="col-sm">
+          <div id="priceChart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div id="priceRatioChart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div id="peChart"></div>
+        </div>
+      </div>
     </div>
     </body>
 </html>

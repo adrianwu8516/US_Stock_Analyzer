@@ -47,7 +47,6 @@ function historyETFChartController(etfSymbol){
   return render('view/historyETFChart', data)
 }
 
-
 function unsubscribeController(email, hash){
   var Sheet = SpreadsheetApp.open(MAILFILE)
   var targetRow = onSearch(Sheet, searchString = hash, searchTargetCol = 2)
@@ -60,7 +59,6 @@ function unsubscribeController(email, hash){
   } 
 }
 
-// Not Finished
 function historyCompareController(stockSymbols){
   var targetLst = stockSymbols.split(',')
   var span = 180
@@ -69,6 +67,16 @@ function historyCompareController(stockSymbols){
   data.stockSymbols = stockSymbols
   data.no = targetLst.length
   data.span = span
-  Logger.log(data)
   return render('view/compareChart', data)
+}
+
+function corrLabController(stockSymbols){
+  var targetLst = stockSymbols.split(',')
+  var span = 360
+  var data = {}
+  data.multiStockData = weBullMultiple(targetLst, span)
+  data.stockSymbols = stockSymbols
+  data.no = targetLst.length
+  data.span = span
+  return render('view/corrLab', data)
 }

@@ -8,6 +8,8 @@ function doGet(e){
         return e.parameter.symbol? historyETFChartController(e.parameter.symbol.toLowerCase()) : messageController("Chart Not Found!!")
       case 'compareData': 
         return e.parameter.symbols? historyCompareController(e.parameter.symbols.toLowerCase()) : messageController("Chart Not Found!!")
+      case 'corrLab': 
+        return e.parameter.symbols? corrLabController(e.parameter.symbols.toLowerCase()) : messageController("Chart Not Found!!")
       case 'unsubscribe': 
         return (e.parameter.email && e.parameter.id) ? unsubscribeController(e.parameter.email, e.parameter.id) : messageController("No Such Email or ID")
       case 'etf': 
