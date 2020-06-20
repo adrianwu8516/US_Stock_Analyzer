@@ -89,6 +89,42 @@ function insertGoogleHisData(stockDoc, googleSymbol){
   return
 }
 
+
+function addGoogleDataToAllExistedETFFiles(){
+  for(var catName in ETF_LIST){
+    for(var i in ETF_LIST[catName]){
+      var symbol = ETF_LIST[catName][i]
+      var fileName = symbol.split('-')[1]
+      var file = DriveApp.getFilesByName(fileName).next()
+      var etfDoc = SpreadsheetApp.openById(file.getId());
+      var googleSymbol = symbol.replace('-', ':').toUpperCase()
+      Logger.log(googleSymbol)
+      insertGoogleHisETFData(etfDoc, googleSymbol)
+    }
+  }
+}
+
+
+function insertGoogleHisETFData(etfDoc, googleSymbol){
+  var sheet = SpreadsheetApp.openById("1CXyvcYPu9xGg7KlWwaIJskXMQd5pZArm6dS5h5TmhiI").getSheetByName("Operation") // Should be able to open a new temp sheet
+  sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","close",DATE(1995,1,1),today(),1)')
+  
+  var length = sheet.getRange("A1:A").getValues().filter(String).length
+  try{
+    var hisDate = [], hisPrice = []
+    sheet.getRange("A2:A"+length).getValues().forEach(date => hisDate.unshift([date[0].getFullYear() + "年" + String(date[0].getMonth() + 1).padStart(2, '0') + "月" + String(date[0].getDate()).padStart(2, '0') + "日"]))
+    sheet.getRange("B2:B"+length).getValues().forEach(e => hisPrice.unshift([e]))
+
+    etfDoc.getRange("A3:A" + (hisDate.length+2)).setValues(hisDate)
+    etfDoc.getRange("I3:I" + (hisPrice.length+2)).setValues(hisPrice)
+    
+    etfDoc.getRange("A1:I1").setValues([["日期", "代號", "tickerRTJSON", "briefJSON", "bonusBrief", "assetsStructure", "ratioDistrs", "frontDistrs", "Price"]])
+  }catch(e){
+    Logger.log(e)
+  }
+
+}
+
 function removeProblematicDateInfo(stockDoc, dateStr){
   var OriginalDateList = stockDoc.getRange("A:A").getValues()
   var prob = OriginalDateList.findIndex(e => e[0] == dateStr) + 1
