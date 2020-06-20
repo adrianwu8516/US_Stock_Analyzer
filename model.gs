@@ -45,12 +45,18 @@ function weBullMultiple(symbolLst, span){
     var dataPack = {}
     for(var i in symbolLst){
       var stockSymbol = symbolLst[i]
-      dataPack[i] = weBullSingleEasy(stockSymbol, span)
+      if(stockSymbol.includes('etf')){
+        var etfSymbol = stockSymbol.replace('etf', '') 
+        dataPack[i] = etfSingleEasy(etfSymbol , span)
+      }else{
+        dataPack[i] = weBullSingleEasy(stockSymbol, span)
+      }
     }
     CACHE.put(cacheName, JSON.stringify(dataPack), CACHELIFETIME)
   }else{
     dataPack = JSON.parse(dataPack)
   }
+  Logger.log(dataPack)
   return dataPack;
 }
 
@@ -62,6 +68,20 @@ function weBullSingleEasy(stockSymbol, span){
   Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
   Sheet.getSheetValues(2, 5, span, 1).forEach(element => close.unshift(parseFloat(element[0])||null))
   Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
+  finalJSON['date'] = dateLst
+  finalJSON['close'] = close
+  finalJSON['pe'] = pettmLst
+  return finalJSON
+}
+
+function etfSingleEasy(etfSymbol, span){
+  var file = DriveApp.getFilesByName(etfSymbol).next();
+  var Sheet = SpreadsheetApp.open(file);
+  var finalJSON = {}
+  var dateLst = [], close = [], pettmLst = []
+  Sheet.getSheetValues(2, 1, span, 1).forEach(element => dateLst.unshift(element[0]))
+  Sheet.getSheetValues(2, 9, span, 1).forEach(element => close.unshift(parseFloat(element[0])||null))
+  Sheet.getSheetValues(2, 1, span, 1).forEach(element => pettmLst.unshift(null))
   finalJSON['date'] = dateLst
   finalJSON['close'] = close
   finalJSON['pe'] = pettmLst
