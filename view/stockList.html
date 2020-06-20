@@ -55,7 +55,7 @@
                                            <td style="height: 20px; text-align: center;"><?=catInfo[i]['cbsRanking']?></td>
                                        <? }?>
             
-                                       <td style="height: 20px; text-align: center;"><a href="<?= catInfo[i]['url']?>" target="_blank"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> )</a></td>
+                                       <td style="height: 20px; text-align: center;"><a href="<?= catInfo[i]['url']?>" target="_blank"><?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> ) <?if(catInfo[i]['volumeMark']){?><?=catInfo[i]['volumeMark']?><?}?></a></td>
                                        <td style="height: 20px; text-align: center;"><?= catInfo[i]['price'] ?></td>
             
                                        <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>

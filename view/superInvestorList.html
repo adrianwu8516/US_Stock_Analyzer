@@ -30,12 +30,13 @@
                         <td><?= buyLst[i] ?></td>
                         <td><?= lst[j][1]?></td>
                         <td><?= lst[j][2]?></td>
-                        <? if(lst[j][3] < lst[j][4] || isNaN(lst[j][4])){?>
+                        <? var roi = Math.round((lst[j][4] - lst[j][3])/lst[j][3]*10000)/100 ?>
+                        <? if(roi > 0 || isNaN(lst[j][4])){?>
                           <td><span style="color: #008000;"><?= lst[j][3]?></span></td>
-                          <td><span style="color: #008000;"><?= lst[j][4]?></span></td>
+                          <td><span style="color: #008000;"><?= lst[j][4]?> (<?= roi?>%)</span></td>
                         <?}else{ ?>
                           <td><span style="color: red;"><?= lst[j][3]?></span></td>
-                          <td><span style="color: red;"><?= lst[j][4]?></span></td>
+                          <td><span style="color: red;"><?= lst[j][4]?> (<?= roi?>%)</span></td>
                         <? }?>
                         
                     </tr>

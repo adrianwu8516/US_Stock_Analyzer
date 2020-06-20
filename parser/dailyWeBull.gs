@@ -1,4 +1,5 @@
 function weBullAnalystMark(stockInfo){
+  // Analyst Marks
   if(stockInfo['price'] < stockInfo['priceLow']){
     stockInfo['sign'] = "🏆";
     stockInfo['analysis'] = Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於低標 " + stockInfo['priceLow'] + " 元"
@@ -11,6 +12,10 @@ function weBullAnalystMark(stockInfo){
   }else{
     stockInfo['sign'] = "🆘";
     stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師最高價 " + stockInfo['priceHigh'] + " 元"
+  }
+  // Volumn Marks
+  if(stockInfo['volume'] > stockInfo['volume10D']*2){
+    stockInfo['volumeMark'] = "⚔"
   }
   return stockInfo
 }
@@ -53,6 +58,7 @@ function getWeBullData(urlSymbol, category){
       stockInfo['low'] = parseInt(tickerRTJSON.tickerRT.low)
       stockInfo['open'] = parseInt(tickerRTJSON.tickerRT.open)
       stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
+      stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
       return stockInfo
     }catch(e){
       Logger.log(e)
