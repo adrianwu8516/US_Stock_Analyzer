@@ -33,9 +33,8 @@ function fixingDateData(symbol='nyse-ups', dateStr = '2020年06月12日'){
   }
 }
 
-
-function supplementForStock(symbol) {
-  var googleSymbol = symbol.replace('-', ':').toUpperCase()
+function supplementForStock(googleSymbol) {
+  //var googleSymbol = symbol.replace('-', ':').toUpperCase()
   var fileName = symbol.split('-')[1]
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var file = DriveApp.getFilesByName(fileName).next()
@@ -54,11 +53,8 @@ function supplementForStock(symbol) {
 }
 
 function insertGoogleHisData(stockDoc, googleSymbol){
-  //    var endDate = file.getDateCreated()
-  //    var endDateString = "DATE(" + endDate.getFullYear() + "," + (endDate.getMonth() + 1) + "," + endDate.getDate() + ")"
   var sheet = SpreadsheetApp.openById("1CXyvcYPu9xGg7KlWwaIJskXMQd5pZArm6dS5h5TmhiI").getSheetByName("Operation") // Should be able to open a new temp sheet
-  //    sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","high",DATE(2000,1,1),' + endDateString + ',1)')
-  sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","all",DATE(2020,6,8),today(),1)')
+  sheet.getRange(1,1).setFormula('=GoogleFinance("' + googleSymbol + '","all",DATE(1995,1,1),today(),1)')
   
   var length = sheet.getRange("A1:A").getValues().filter(String).length
   try{
