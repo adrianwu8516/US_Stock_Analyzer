@@ -39,10 +39,17 @@ function weBullSingle(stockSymbol, span) {
 }
 
 function weBullMultiple(symbolLst, span){
-  var dataPack = {}
-  for(var i in symbolLst){
-    var stockSymbol = symbolLst[i]
-    dataPack[i] = weBullSingleEasy(stockSymbol, span)
+  var cacheName = symbolLst + '-history'
+  var dataPack = CACHE.get(cacheName);
+  if(!dataPack){
+    var dataPack = {}
+    for(var i in symbolLst){
+      var stockSymbol = symbolLst[i]
+      dataPack[i] = weBullSingleEasy(stockSymbol, span)
+    }
+    CACHE.put(cacheName, JSON.stringify(dataPack), CACHELIFETIME)
+  }else{
+    dataPack = JSON.parse(dataPack)
   }
   return dataPack;
 }

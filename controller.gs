@@ -72,7 +72,7 @@ function historyCompareController(stockSymbols){
 
 function corrLabController(stockSymbols){
   var targetLst = stockSymbols.split(',')
-  var span = 360
+  var span = 180
   var data = {}
   data.multiStockData = weBullMultiple(targetLst, span)
   data.stockSymbols = stockSymbols
