@@ -4,28 +4,35 @@ function messageController(message){
 
 function indexController(type){
   Logger.log("Type = " + type)
-  return render('view/index', {'type':type})
+  return render('view/index/index', {'type':type})
 }
 
 function loadStockList(){
-  var html_page = HtmlService.createTemplateFromFile('view/stockList')
+  var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
   html_page.noteObj = indexData()
   return html_page.evaluate().getContent();
 }
 
 function loadETFList(){
-  var html_page = HtmlService.createTemplateFromFile('view/etfList')
+  var html_page = HtmlService.createTemplateFromFile('view/index/etfList')
   html_page.noteObj = etfIndexData()
   return html_page.evaluate().getContent();
 }
 
 function loadCompareList(){
-  var html_page = HtmlService.createTemplateFromFile('view/compareList')
+  var html_page = HtmlService.createTemplateFromFile('view/index/compareList')
+  return html_page.evaluate().getContent();
+}
+
+function loadMacroList(span=14){
+  var html_page = HtmlService.createTemplateFromFile('view/index/macroList')
+  html_page.macroJSON = macroData(span)
+  html_page.span = span
   return html_page.evaluate().getContent();
 }
 
 function loadSuperInvestorList(){
-  var html_page = HtmlService.createTemplateFromFile('view/superInvestorList')
+  var html_page = HtmlService.createTemplateFromFile('view/index/superInvestorList')
   html_page.superInvestorLst = superInvestorData()
   Logger.log(superInvestorData())
   return html_page.evaluate().getContent();

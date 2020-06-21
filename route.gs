@@ -14,6 +14,8 @@ function doGet(e){
         return (e.parameter.email && e.parameter.id) ? unsubscribeController(e.parameter.email, e.parameter.id) : messageController("No Such Email or ID")
       case 'etf': 
         return indexController("etf")
+      case 'macro': 
+        return indexController("macro")
       case 'compare': 
         return indexController("compare")
       case 'stock': 
@@ -24,7 +26,6 @@ function doGet(e){
         return indexController("stock")
     }
   }else{
-    Logger.log('Here')
     return indexController("stock")
   }
 }

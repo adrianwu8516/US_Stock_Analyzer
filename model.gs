@@ -144,6 +144,23 @@ function etfIndexData(){
   return etfIndexData
 }
 
+function macroData(span){
+  var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID)
+//  var macroData = macroDoc.getRange("A2:H2").getValues()[0]
+  var macroDataJSON = {
+    date: macroDoc.getSheetValues(2, 1, span, 1).map(item => item[0].replace(/年|月/g, '-').replace(/日/g, '')).reverse(),
+    fearGreed:  macroDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
+    fearGreedNote:  macroDoc.getSheetValues(2, 3, span, 1).map(item => item[0]).reverse(),
+    fearGreedRatio:  macroDoc.getSheetValues(2, 4, span, 1).map(item => parseFloat(item[0])).reverse(),
+    mmRecession:  macroDoc.getSheetValues(2, 5, span, 1).map(item => parseFloat(item[0])).reverse(),
+    mmCovid19:  macroDoc.getSheetValues(2, 6, span, 1).map(item => parseFloat(item[0])).reverse(),
+    mmShillerPE:  macroDoc.getSheetValues(2, 7, span, 1).map(item => parseFloat(item[0])).reverse(),
+    mmBuffettIndex:  macroDoc.getSheetValues(2, 8, span, 1).map(item => parseFloat(item[0])).reverse(),
+  }
+  Logger.log(macroDataJSON)
+  return macroDataJSON
+}
+
 function superInvestorData(){
   var cacheName = 'superInvestorData'
   var SIFinalData = CACHE.get(cacheName);
@@ -169,7 +186,7 @@ function superInvestorData(){
       }
     }
     var SIFinalData = {'bestSeller': bestSeller, 'worstSeller':worstSeller}
-    CACHE.put(cacheName, JSON.stringify(SIFinalData), CACHELIFETIME)
+    CACHE.put(cacheName, JSON.stringify(SIFinalData), CACHELIFETIME*2)
   }else{
     SIFinalData = JSON.parse(SIFinalData)
   }

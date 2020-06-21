@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <base target="_self">
+        <?!= include('view/header') ?>
+        <title>History Charts - Macro Economics</title>
+        
+        <!-- load Google AJAX API -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        
+            //load the Google Visualization API and the chart
+            google.charts.load('current', {'packages':['corechart', 'controls']});
+ 
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawFearGreedChart);
+            google.charts.setOnLoadCallback(drawCovid19Chart);
+            google.charts.setOnLoadCallback(drawRecessionChart);
+            google.charts.setOnLoadCallback(drawShillerPEChart);
+            google.charts.setOnLoadCallback(drawBuffettIndexChart);
+            
+            var macroData = JSON.parse('<?= JSON.stringify(macroJSON) ?>')
+            var span = parseInt('<?= span ?>')
+            
+            function drawFearGreedChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','恐懼貪婪指數');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.fearGreed[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('fearGreedChart'));
+               var options = {width: 500, height: 375,title: '恐懼貪婪指數'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawCovid19Chart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','疫情信心指數');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmCovid19[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('mmCovid19Chart'));
+               var options = {width: 500, height: 375,title: '疫情信心指數'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawRecessionChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','經濟衰退機率');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmRecession[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('mmRecessionChart'));
+               var options = {width: 500, height: 375,title: '經濟衰退機率'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawShillerPEChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','席勒本益比');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmShillerPE[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('mmShillerPEChart'));
+               var options = {width: 500, height: 375,title: '席勒本益比'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawBuffettIndexChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','巴菲特指數');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmBuffettIndex[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('mmBuffettIndexChart'));
+               var options = {width: 500, height: 375,title: '巴菲特指數'};
+               chart.draw(dataTable, options);
+            }
+            
+         </script> 
+    </head>
+ 
+    <body>
+    <div class="container">
+      <br><br>
+      <h2 align="center">總體經濟概況</h2>
+      <table class="columns" align="center">
+        <tr>
+          <td><div id="fearGreedChart" style="border: 1px solid #ccc"></div></td>
+          <td><div id="mmBuffettIndexChart" style="border: 1px solid #ccc"></div></td>
+        </tr>
+        <tr>
+          <td><div id="mmShillerPEChart" style="border: 1px solid #ccc"></div></td>
+          <td><div id="mmRecessionChart" style="border: 1px solid #ccc"></div></td>
+        </tr>
+        <tr>
+          <td><div id="mmCovid19Chart" style="border: 1px solid #ccc"></div></td>
+        </tr>
+      </table>
+    </div>
+    </body>
+</html>

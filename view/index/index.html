@@ -24,6 +24,8 @@
           google.script.run.withSuccessHandler(show).loadCompareList();
       <? }else if (type=='superInvestor'){ ?>
           google.script.run.withSuccessHandler(show).loadSuperInvestorList();
+      <? }else if (type=='macro'){ ?>
+          google.script.run.withSuccessHandler(show).loadMacroList();
       <? }else{ ?> 
           google.script.run.withSuccessHandler(show).loadStockList();
       <? } ?>
