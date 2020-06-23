@@ -90,10 +90,10 @@ function ETFDataRecord(etfInfo){
   var targetRow = onSearch(etfDoc, todayStr, searchTargetCol=0) 
   if(targetRow){
     targetRow += 1
-    etfDoc.getRange('A' + targetRow + ':H' + targetRow).setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs'])]]);
+    etfDoc.getRange('A' + targetRow + ':I' + targetRow).setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs']), etfInfo['tickerRTJSON'].close]]);
   }else{
     etfDoc.insertRowBefore(2);
-    etfDoc.getRange('A2:H2').setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs'])]]);
+    etfDoc.getRange('A2:I2').setValues([[todayStr, etfInfo['symbol'], JSON.stringify(etfInfo['tickerRTJSON']), JSON.stringify(etfInfo['briefJSON']), JSON.stringify(etfInfo['bonusBrief']), JSON.stringify(etfInfo['assetsStructure']), JSON.stringify(etfInfo['ratioDistrs']), JSON.stringify(etfInfo['frontDistrs']), etfInfo['tickerRTJSON'].close]]);
   }
 }
 
