@@ -130,13 +130,16 @@ function monthlyFinancialReport(){
   for(var cat in STOCK_SYMBOLS){
     for(var stockNo in STOCK_SYMBOLS[cat]){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
+      let sleepDurationSec = 0.5
       let round = 0
       while(round < 3){
         try{
           getCBSFinancialReport(symbol)
         }catch(e){
           Logger.log(e)
-          round += 1
+          Logger.log(stockName + " : CBS parse failed " + retry)
+          Utilities.sleep(sleepDurationSec * 1000 * retry)
+          retry  += 1
         }
       }
     }
