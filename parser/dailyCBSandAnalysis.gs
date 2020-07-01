@@ -3,13 +3,14 @@ function getCBSRanking(stockName){
   if(CBSMUSTFAIL.includes(stockName)) return ""
   var sleepDurationSec = 0.5
   var retry = 1
-  while(retry < 10){
+  while(retry < 2){
     try{
       var signalUrl = "https://caibaoshuo.com/companies/" + stockName + "/cbs_signal"
       var xml = UrlFetchApp.fetch(signalUrl).getContentText();
       xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
       var document = XmlService.parse(xml);
-      signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
+      var signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
+      Logger.log(signal)
       return signal
     }catch(e){
       Logger.log(e)

@@ -2,7 +2,7 @@ function MMModule() {
   var url = 'https://www.macromicro.me/macro';
   var xml = UrlFetchApp.fetch(url).getContentText();
   var MMDownPct = xml.match(/MM全球景氣衰退機率<\/a>[\S\s]*?<\/div>/)[0].match(/>[\S]*?</)[0].replace(/>|</g, '')
-  var MMWuhanIndex = xml.match(/MM武漢肺炎信心指數<\/a>[\S\s]*?<\/div>/)[0].match(/>[\S]*?</)[0].replace(/>|</g, '')
+  var MMWuhanIndex = xml.match(/MM新冠肺炎信心指數<\/a>[\S\s]*?<\/div>/)[0].match(/>[\S]*?</)[0].replace(/>|</g, '')
   
   url = 'https://www.macromicro.me/charts/410/us-sp500-cyclically-adjusted-price-earnings-ratio';
   xml = UrlFetchApp.fetch(url).getContentText();

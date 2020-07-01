@@ -93,12 +93,16 @@ function getCBSFinancialReport(symbol){
     if(targetRow){
       targetRow += 1
       sheet.getRange('A' + targetRow + ':H' + targetRow).setValues([[
-        uuid, symbol, year.replace('近12个月', 'TTM'), data[year]['五大財務比率'], data[year]['資產負債比率'], data[year]['資產負債表'], data[year]['利潤表'], data[year]['現金流量表']
+        uuid, symbol, year.replace('近12个月', 'TTM'), 
+        JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
+        JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
       ]]) 
     }else{
       sheet.insertRowBefore(2);
       sheet.getRange('A2:H2').setValues([[
-        uuid, symbol, year.replace('近12个月', 'TTM'), data[year]['五大財務比率'], data[year]['資產負債比率'], data[year]['資產負債表'], data[year]['利潤表'], data[year]['現金流量表']
+        uuid, symbol, year.replace('近12个月', 'TTM'), 
+        JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
+        JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
       ]]) 
     }
   }
@@ -158,5 +162,5 @@ function translateChar(str){
   .replace('誉', '譽').replace('账', '帳').replace('旧', '舊').replace('库', '庫').replace('制', '製').replace('筑', '築').replace('机', '機').replace('设', '設')
   .replace('备', '備').replace('优', '優').replace('无', '無').replace('余', '餘').replace('调', '調').replace('销', '銷').replace('摊', '攤').replace('发', '發')
   .replace('续', '續').replace('购', '購').replace('买', '買').replace('厂', '廠').replace('补', '補').replace('偿', '償').replace('额', '額').replace('币', '幣')
-  .replace('运', '運').replace('变', '變')
+  .replace('运', '運').replace('变', '變').replace(' ', '').replace('=', '')
 }

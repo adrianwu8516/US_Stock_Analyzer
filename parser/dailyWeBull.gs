@@ -54,9 +54,9 @@ function getWeBullData(urlSymbol, category){
       stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
       stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
       
-      stockInfo['high'] = parseInt(tickerRTJSON.tickerRT.high)
-      stockInfo['low'] = parseInt(tickerRTJSON.tickerRT.low)
-      stockInfo['open'] = parseInt(tickerRTJSON.tickerRT.open)
+      stockInfo['high'] = parseFloat(tickerRTJSON.tickerRT.high)
+      stockInfo['low'] = parseFloat(tickerRTJSON.tickerRT.low)
+      stockInfo['open'] = parseFloat(tickerRTJSON.tickerRT.open)
       stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
       stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
       return stockInfo

@@ -3,6 +3,8 @@ function getForecasting(data, symbol) {
   var url = 'https://finance.yahoo.com/quote/' + symbol + '/analysis?p=' + symbol 
   var xml = UrlFetchApp.fetch(url).getContentText();
   var revenueEstimateXml = xml.match(/<table class="W\(100%\) M\(0\) BdB Bdc\(\$seperatorColor\) Mb\(25px\)" data-reactid="86">[\s\S]*?<\/table>/)[0]
+  data[symbol].currentYearSales = billiontoMillion(revenueEstimateXml.replace(/[\s\S]*?data-reactid="131">([\s\S]*?)<[\s\S]*/, '$1'))
+  data[symbol].nextYearSales = billiontoMillion(revenueEstimateXml.replace(/[\s\S]*?data-reactid="133">([\s\S]*?)<[\s\S]*/, '$1'))
   data[symbol].currentYearSalesGrowth = revenueEstimateXml.replace(/[\s\S]*?data-reactid="175">([\s\S]*?)<[\s\S]*/, '$1')
   data[symbol].nextYearSalesGrowth = revenueEstimateXml.replace(/[\s\S]*?data-reactid="177">([\s\S]*?)<[\s\S]*/, '$1')
   var growthEstimateXml = xml.match(/data-reactid="391">[\s\S]*?<\/table>/)[0]
@@ -23,15 +25,25 @@ function recordForecasting(data){
     var targetRow = onSearch(sheet, uuid, searchTargetCol=0)
     if(targetRow){
       targetRow += 1
-      sheet.getRange('A' + targetRow + ':I' + targetRow).setValues([[
-        uuid, symbol, monthStr, data[symbol].currentYearEpsGrowth, data[symbol].currentYearSalesGrowth, data[symbol].nextYearEpsGrowth, data[symbol].nextYearSalesGrowth, data[symbol].past5Year, data[symbol].next5Year
+      sheet.getRange('A' + targetRow + ':K' + targetRow).setValues([[
+        uuid, symbol, monthStr, data[symbol].currentYearEpsGrowth, data[symbol].currentYearSalesGrowth, data[symbol].nextYearEpsGrowth, data[symbol].nextYearSalesGrowth, 
+        data[symbol].past5Year, data[symbol].next5Year, data[symbol].currentYearSales, data[symbol].nextYearSales
       ]]) 
     }else{
       sheet.insertRowBefore(2);
-      sheet.getRange('A2:I2').setValues([[
-        uuid, symbol, monthStr, data[symbol].currentYearEpsGrowth, data[symbol].currentYearSalesGrowth, data[symbol].nextYearEpsGrowth, data[symbol].nextYearSalesGrowth, data[symbol].past5Year, data[symbol].next5Year
+      sheet.getRange('A2:K2').setValues([[
+        uuid, symbol, monthStr, data[symbol].currentYearEpsGrowth, data[symbol].currentYearSalesGrowth, data[symbol].nextYearEpsGrowth, data[symbol].nextYearSalesGrowth, 
+        data[symbol].past5Year, data[symbol].next5Year, data[symbol].currentYearSales, data[symbol].nextYearSales
       ]]) 
     }
+  }
+}
+
+function billiontoMillion(str){
+  if(str.includes('M')){
+    return parseFloat(str)
+  }else if(str.includes('B')){
+    return parseFloat(str) * 1000
   }
 }
 
