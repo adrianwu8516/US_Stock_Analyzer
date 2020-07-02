@@ -3,8 +3,8 @@ function getCBSFinancialReport(symbol){
   var data = {'近12个月':{}}
   var url = 'https://caibaoshuo.com/companies/' + symbol + '/financials#guru_al_sheet_tab';
   var xml = UrlFetchApp.fetch(url).getContentText();
-  var xmlRaw = xml.match(/<table class="table table-hover table-scroll">[\s\S]*?<\/table>/g)
-  
+  var xmlRaw = xml.match(/<!-- 年 -->[\s\S]*?<table[\s\S]*?<\/table>/g)
+
   // 资产负债比率(重要科目)
   var blRatioPeriod = xmlRaw[0].match(/<th class="p-1 text-center">[0-9-]*<\/th>/g).map(item => item.replace(/<th class="p-1 text-center">([0-9-]*)<\/th>/, '$1'))
   blRatioPeriod.forEach(item => data[item] = {})
@@ -18,7 +18,6 @@ function getCBSFinancialReport(symbol){
       data[blRatioPeriod[i]]['資產負債比率'][itemTitle] = translateNumber(itemLst[i].replace(/<span>([\s\S]*?)<\/span>/, '$1'))
     }
   }
-  
   //五大财务比率(+成长能力)
   var fRRatioPeriod = xmlRaw[2].match(/<th class="p-1">[\S]*[0-9]+[\S]*<\/th>/g).map(item => item.replace(/<th class="p-1">([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
   var fRRatioItems = xmlRaw[2].match(/<a class="wiki-terms"[\S\s]*?<\/td><\/tr>/gm)
@@ -33,7 +32,7 @@ function getCBSFinancialReport(symbol){
   }
   
   //资产负债表
-  var bLPeriod = xmlRaw[3].match(/<th class="p-1 p-sm-2">[\S]*[0-9]+[\S]*<\/th>/g).map(item => item.replace(/<th class="p-1 p-sm-2">([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
+  var bLPeriod = xmlRaw[3].match(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/g).map(item => item.replace(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
   for(var i in bLPeriod){
     if(!(data[bLPeriod[i]])) data[bLPeriod[i]]={} 
     if(!(data[bLPeriod[i]]['資產負債表'])) data[bLPeriod[i]]['資產負債表']={}
@@ -51,7 +50,7 @@ function getCBSFinancialReport(symbol){
   }
   
   //利潤表
-  var iSPeriod = xmlRaw[4].match(/<th class="p-1 p-sm-2">[\S]*[0-9]+[\S]*<\/th>/g).map(item => item.replace(/<th class="p-1 p-sm-2">([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
+  var iSPeriod = xmlRaw[4].match(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/g).map(item => item.replace(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
   for(var i in iSPeriod){
     if(!(data[iSPeriod[i]])) data[iSPeriod[i]]={} 
     if(!(data[iSPeriod[i]]['利潤表'])) data[iSPeriod[i]]['利潤表']={} 
@@ -68,7 +67,7 @@ function getCBSFinancialReport(symbol){
   }
   
   //現金流量表
-  var cFPeriod = xmlRaw[5].match(/<th class="p-1 p-sm-2">([\S]*[0-9]+[\S]*)<\/th>/g).map(item => item.replace(/<th class="p-1 p-sm-2">([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
+  var cFPeriod = xmlRaw[5].match(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/g).map(item => item.replace(/<th class="p-1[\s\S]*?>([\S]*[0-9]+[\S]*)<\/th>/, '$1'))
   for(var i in cFPeriod){
     if(!(data[cFPeriod[i]])) data[cFPeriod[i]]={} 
     if(!(data[cFPeriod[i]]['現金流量表'])) data[cFPeriod[i]]['現金流量表']={} 

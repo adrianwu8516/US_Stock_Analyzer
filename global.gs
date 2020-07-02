@@ -76,11 +76,11 @@ function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
 function PARSER_PACKAGE(){
   collectDataFromWeBull()
   collectDataFromCBS()
+  dailyMacroRecord()
 }
 
 function RECORDER_PACKAGE(){
   dataRecordandProcess()
-  dailyMacroRecord()
   if(!checkifClosed()) return;
   renewCache()
 }

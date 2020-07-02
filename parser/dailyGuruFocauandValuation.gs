@@ -1,5 +1,5 @@
 function ValuationLine(){
-  var lst = ['hlf', 'luv', 'lmt', 'baba', 'iipr', 'twtr', 'arjd', 'psx', 'mrk', 'nsc', 'unp', 'csx', 'keys', 'flir']
+  var lst = ['hlf', 'luv', 'lmt', 'baba', 'iipr', 'twtr', 'arjd', 'psx', 'mrk', 'nsc', 'unp', 'csx', 'keys', 'flir', 'gwph', 'vnet', 'fb', 'fsly', 'noc', 'rds-a', 'ual', 'drrx']
   for(i in lst){
     try{
       calculateFreeCashFlowValuation(lst[i])
@@ -9,11 +9,11 @@ function ValuationLine(){
   }
 }
 
-function calculateFreeCashFlowValuation(symbol='mu'){
+function calculateFreeCashFlowValuation(symbol='hlf'){
   var financialReportSheet = SpreadsheetApp.openById(FINANCIALREPORTSSHEET_ID)
   var year = new Date().getFullYear()
   var month = String(new Date().getMonth() + 1).padStart(2, '0')
-  var i = 0, profitMargin = [], FCFtoProfitMargin = [], factor = {}
+  var i = 1, profitMargin = [], FCFtoProfitMargin = [], factor = {}
   while(i < 5){
     var uuid = symbol + '-' + String(year-i)
     var targetRow = onSearch(financialReportSheet, uuid, searchTargetCol=0)
@@ -22,6 +22,7 @@ function calculateFreeCashFlowValuation(symbol='mu'){
       var FS = financialReportSheet.getSheetValues(targetRow, 7, 1, 1)[0][0]
       var CF = financialReportSheet.getSheetValues(targetRow, 8, 1, 1)[0][0]
       if(!(FS=="") && !(CF=="")){
+        
         profitMargin.push(JSON.parse(FS)['淨利潤率%'])
         FCFtoProfitMargin.push(JSON.parse(CF)['自由現金流'] / JSON.parse(FS)['淨利潤'])
       }
@@ -50,16 +51,18 @@ function calculateFreeCashFlowValuation(symbol='mu'){
       targetRow += 1
       var forecastData = forecastingSheet.getSheetValues(targetRow, 4, 1, 8)[0]
       factor.growthRate = Math.min((forecastData[1] + forecastData[3])/2, forecastData[5])
-      factor.perpetualGrowthRate = Math.min(0.025, forecastData[5])
+      factor.perpetualGrowthRate = 0.025 //Math.min(0.025, forecastData[5])
       factor.thisYearRevenue = forecastData[6]
       factor.nextYearRevenue = forecastData[7]
   }else{
     Logger.log("Cannot find financial forecast data: " + uuid)
   }
+  Logger.log(factor)
   var futureRevenue = [factor.thisYearRevenue, factor.nextYearRevenue, factor.nextYearRevenue*(1+factor.growthRate), factor.nextYearRevenue*(1+factor.growthRate)**2]
   var futureProfit = futureRevenue.map(item=> item*factor.avgProfitMargin)
   var futureFCF = futureProfit.map(item=> item*factor.avgFCFtoProfitMargin)
   futureFCF.push(futureFCF[futureFCF.length-1]*(1+factor.perpetualGrowthRate)/(factor.wacc - factor.perpetualGrowthRate))
+  Logger.log(futureFCF)
   let PVfutureFCF = 0
   for(var i=0; i<futureFCF.length; i++){
     PVfutureFCF += futureFCF[i] / ((1+factor.wacc) ** (i+1))
@@ -89,7 +92,7 @@ function recordValuation(symbol, data){
     Logger.log('Cannot find original record sheet of ' + symbol)
   }
   today = new Date();
-  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
+  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()-1).padStart(2, '0') + '日';
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
