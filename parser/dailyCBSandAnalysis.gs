@@ -3,15 +3,12 @@ function getCBSRanking(stockName){
   if(CBSMUSTFAIL.includes(stockName)) return ""
   var sleepDurationSec = 0.5
   var retry = 1
-  while(retry < 2){
+  while(retry < 3){
     try{
-      var signalUrl = "https://caibaoshuo.com/companies/" + stockName + "/cbs_signal"
+      var signalUrl = "https://caibaoshuo.com/companies/" + stockName
       var xml = UrlFetchApp.fetch(signalUrl).getContentText();
-      xml = xml.match(/<table class="table table-hover"([\s\S]*?)<\/table>/gm)
-      var document = XmlService.parse(xml);
-      var signal = document.getRootElement().getChildren('tbody')[0].getChildren('tr')[0].getChildren('td')[1].getText().replace(/\n +/g, '')
-      Logger.log(signal)
-      return signal
+      var signal = xml.replace(/[\s\S]*?<p class="led-text"><span style=[\s\S]*?>([\S]*?)<\/span><\/p>[\s\S]*/m, '$1')
+      return signal.length > 3? '':signal
     }catch(e){
       Logger.log(e)
       Logger.log(stockName + " : CBS parse failed " + retry)
@@ -28,6 +25,7 @@ function cbsDataCollectUnit(stockSymbol){
   if (stockInfoStr != null){
     var stockInfo = JSON.parse(stockInfoStr)
     stockInfo.cbsRanking = getCBSRanking(stockSymbol.replace('-', '.'))
+    Logger.log(stockInfo.cbsRanking)
     stockSymbol = stockSymbol.split('-')[0] // In case some stock symbol might looks like RDS-A
     CACHE.put(stockSymbol, JSON.stringify(stockInfo), CACHELIFETIME)
   }else{

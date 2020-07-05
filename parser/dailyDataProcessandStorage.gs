@@ -4,8 +4,7 @@ function dataRecordandProcess(){
   
   // Record
   var logObj = {}
-  for (var catNo in CATLIST){
-    var catName = CATLIST[catNo]
+  for (var catName in STOCK_SYMBOLS){
     if (typeof logObj[catName] == "undefined") logObj[catName] = {}
     for(var i in STOCK_SYMBOLS[catName]){
       var stockSymbol = STOCK_SYMBOLS[catName][i].split(/-(.+)/)[1].toUpperCase()
@@ -81,35 +80,29 @@ function dataRecord(stockInfo){
 }
 
 function dailyComparison(noteObj, noteObjOld){
-  var catLst = Object.keys(noteObj)
-  for(var catNo in catLst){
-    var catName = catLst[catNo]
-    var catObj = noteObj[catName]
-    var stockLst = Object.keys(catObj)
-    for(var stockNo in stockLst){
-      var stockName = stockLst[stockNo]
-      var stockInfo = catObj[stockName]
-      try {
-        var newPopularity = stockInfo['analystPopularity']
-        var oldPopularity = noteObjOld[catName][stockName]['analystPopularity']
-        if(oldPopularity){
-          if(newPopularity > oldPopularity){
-            noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↗ " + String(newPopularity)
-          }else if(newPopularity < oldPopularity){
-            noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↘ " + String(newPopularity)
-          }
+  for(var catName in noteObj){
+    for(var stockName in noteObj[catName]){
+      Logger.log("Now compare" + stockName)
+      var stockInfo = noteObj[catName][stockName]
+      if(!noteObjOld[catName]) {Logger.log( catName + " is a new category"); continue;}
+      if(!noteObjOld[catName][stockName]) {Logger.log( stockName + " is a new company"); continue;}
+      var newPopularity = stockInfo['analystPopularity']
+      var oldPopularity = noteObjOld[catName][stockName]['analystPopularity']
+      if(oldPopularity){
+        if(newPopularity > oldPopularity){
+          noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↗ " + String(newPopularity)
+        }else if(newPopularity < oldPopularity){
+          noteObj[catName][stockName]['analystPopularity'] = String(oldPopularity) + " ↘ " + String(newPopularity)
         }
-        var newPriceMid = stockInfo['priceMid']
-        var oldPriceMid = noteObjOld[catName][stockName]['priceMid']
-        if(oldPriceMid){
-          if(newPriceMid > oldPriceMid){
-            noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，調高目標均價從 " + String(oldPriceMid) + " ↗ " + String(newPriceMid)
-          }else if(newPriceMid < oldPriceMid){
-            noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，降低目標均價從 " + String(oldPriceMid) + " ↘ " + String(newPriceMid)
-          }
+      }
+      var newPriceMid = stockInfo['priceMid']
+      var oldPriceMid = noteObjOld[catName][stockName]['priceMid']
+      if(oldPriceMid){
+        if(newPriceMid > oldPriceMid){
+          noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，調高目標均價從 " + String(oldPriceMid) + " ↗ " + String(newPriceMid)
+        }else if(newPriceMid < oldPriceMid){
+          noteObj[catName][stockName]['analysis'] = stockInfo['analysis'] + "，降低目標均價從 " + String(oldPriceMid) + " ↘ " + String(newPriceMid)
         }
-      }catch (e) {
-        Logger.log(noteObj[catName][stockName]['companyName'] + " is a new item")
       }
     }
   }

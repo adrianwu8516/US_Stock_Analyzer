@@ -46,8 +46,7 @@ function collectETFDataFromWeBull(){
   if(!checkifClosed()) return;
   Logger.log("Today Handling: " + JSON.stringify(ETF_LIST))
   var etfIndex = {}
-  for (var catNo in ETFCATLIST){
-    var catName = ETFCATLIST[catNo]
+  for (var catName in ETF_LIST){
     etfIndex[catName] = {}
     etfCatIndex = {}
     for(var i in ETF_LIST[catName]){

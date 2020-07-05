@@ -13,7 +13,7 @@ function weBullAnalystMark(stockInfo){
     stockInfo['sign'] = "🆘";
     stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於分析師最高價 " + stockInfo['priceHigh'] + " 元"
   }
-  // Volumn Marks
+  // Volumn Marks - check if the volumn goes up
   if(stockInfo['volume'] > stockInfo['volume10D']*2){
     stockInfo['volumeMark'] = "⚔"
   }
@@ -27,8 +27,13 @@ function getWeBullData(urlSymbol, category){
   while(retry < 3){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
-      var xmlRating = xml.match(/{rating:([\s\S]*?)}]}}/g)[0]
-      var ratingJSON = JSON.parse(xmlRating.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
+      // If there's no rating for that stock
+      if(xml.match(/{rating:([\s\S]*?)}]}}/g)){
+        var xmlRating = xml.match(/{rating:([\s\S]*?)}]}}/g)[0]
+        var ratingJSON = JSON.parse(xmlRating.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
+      }else{
+        var ratingJSON = {'targetPrice':{}, 'rating':{}, 'forecastEps':{}}
+      }
       var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
       var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
       var stockInfo = {};
@@ -73,8 +78,7 @@ function collectDataFromWeBull(){
   if(!checkifClosed()) return;
   Logger.log("Today Handling: " + JSON.stringify(STOCK_SYMBOLS))
   var pool = []
-  for (var catNo in CATLIST){
-    var catName = CATLIST[catNo]
+  for (var catName in STOCK_SYMBOLS){
     for(var i in STOCK_SYMBOLS[catName]){
       var stockInfo = getWeBullData(urlSymbol = STOCK_SYMBOLS[catName][i], category = catName)
       stockInfo = weBullAnalystMark(stockInfo)

@@ -121,14 +121,14 @@ function weBullETFSingle(etfSymbol, span=20) {
 }
 
 function indexData(){
-  var cacheName = 'index'
-  var indexData = CACHE.get(cacheName);
-  if(!indexData){
+//  var cacheName = 'index'
+//  var indexData = CACHE.get(cacheName);
+//  if(!indexData){
     var indexData = JSON.parse(readLog("LoggerMailer.txt"))
-    CACHE.put(cacheName, JSON.stringify(indexData), CACHELIFETIME)
-  }else{
-    indexData = JSON.parse(indexData)
-  }  
+//    CACHE.put(cacheName, JSON.stringify(indexData), CACHELIFETIME)
+//  }else{
+//    indexData = JSON.parse(indexData)
+//  }  
   return indexData
 }
 
