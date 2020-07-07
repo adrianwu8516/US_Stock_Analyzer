@@ -5,7 +5,7 @@ CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w'],
   'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-sap', 'nasdaq-pypl', 'nyse-sq', 'nyse-four', 'nyse-net', 'nyse-fsly', 'nasdaq-fivn', 'nasdaq-bl', 'nasdaq-iac', 'nasdaq-tree', 'nasdaq-intu', 'nyse-uber', 'nasdaq-lyft', 'nasdaq-upwk'],
-  'Saas':['nasdaq-zm', 'nyse-twlo', 'nasdaq-twou', 'nyse-work', 'nasdaq-team', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-crwd', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar'],
+  'SaaS':['nasdaq-zm', 'nyse-twlo', 'nasdaq-twou', 'nyse-work', 'nasdaq-team', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-crwd', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar'],
   'ChinaConcept':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-kc', 'nasdaq-momo', 'nasdaq-sy', 'nasdaq-wb', 'nasdaq-sina', 'nyse-edu', 'nyse-tal', 'nyse-nio'],
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-cmcsa', 'nasdaq-iq', 'nasdaq-bili', 'nyse-huya', 'nasdaq-roku', 'nyse-spot', 'nasdaq-tme'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch'], 
