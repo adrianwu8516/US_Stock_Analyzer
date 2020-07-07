@@ -2,6 +2,9 @@ function dataRecordandProcess(){
   // Check if market closed
   if(!checkifClosed()) return;
   
+  // Financial Forecast Data Prepare 
+  var YahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
+  
   // Record
   var logObj = {}
   for (var catName in STOCK_SYMBOLS){
@@ -17,6 +20,10 @@ function dataRecordandProcess(){
         }catch(e){
           Logger.log(e)
         }
+        var forecast = checkYahooForecast(YahooSheet, stockSymbol)
+        stockInfo.thisRevenue = forecast.thisRevenue
+        stockInfo.nextRevenue = forecast.nextRevenue
+        stockInfo.next5Year = forecast.next5Year
         delete stockInfo.tickerRT; // In case the cache might be too large to load
         delete stockInfo.rating;
         delete stockInfo.targetPrice;
@@ -36,8 +43,6 @@ function dataRecordandProcess(){
   // Use txt file instead of cache, so we can change to another mail server if we want to change the mailer
 }
 
-
-
 function dataRecord(stockInfo){
   var fileName = stockInfo['symbol']
   if(DriveApp.getFilesByName(fileName).hasNext()){
@@ -47,11 +52,14 @@ function dataRecord(stockInfo){
     var documentId = DriveApp.getFileById(STOCK_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
     var stockDoc = SpreadsheetApp.openById(documentId);
-    if(stockInfo['symbol'] == 'NSQ'){
+    if(stockInfo['exchange'] == 'NSQ'){
       var googleSymbol = 'NASDAQ:' + fileName.toUpperCase()
       insertGoogleHisData(stockDoc, googleSymbol)
-    }else if(stockInfo['symbol'] == 'NYSE'){
+    }else if(stockInfo['exchange'] == 'NYSE'){
       var googleSymbol = 'NYSE:' + fileName.toUpperCase()
+      insertGoogleHisData(stockDoc, googleSymbol)
+    }else if(stockInfo['exchange'] == 'PK'){
+      var googleSymbol = 'OTCMKTS:' + fileName.toUpperCase()
       insertGoogleHisData(stockDoc, googleSymbol)
     }else{
       Logger.log("Can not find " + fileName + " in Google Finance Database")
@@ -107,4 +115,20 @@ function dailyComparison(noteObj, noteObjOld){
     }
   }
   return noteObj
+}
+
+function checkYahooForecast(sheet, symbol){
+  var targetRow = onSearch(sheet, symbol.toLowerCase(), searchTargetCol=1)
+  var forecast = {}
+  if(targetRow){
+    targetRow += 1
+    var value = sheet.getSheetValues(targetRow, 4, 1, 6)[0]
+    forecast.thisEPS = Math.round(value[0] * 100)
+    forecast.thisRevenue = Math.round(value[1] * 100)
+    forecast.nextEPS = Math.round(value[2] * 100)
+    forecast.nextRevenue = Math.round(value[3] * 100)
+    forecast.psat5Year = Math.round(value[4] * 100)
+    forecast.next5Year = Math.round(value[5] * 100)
+  }
+  return forecast
 }

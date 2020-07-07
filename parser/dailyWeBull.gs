@@ -30,12 +30,12 @@ function getWeBullData(urlSymbol, category){
       // If there's no rating for that stock
       if(xml.match(/{rating:([\s\S]*?)}]}}/g)){
         var xmlRating = xml.match(/{rating:([\s\S]*?)}]}}/g)[0]
-        var ratingJSON = JSON.parse(xmlRating.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z]*?):/g, ',"\$1\":'))
+        var ratingJSON = JSON.parse(xmlRating.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z]*?):/g, ',"$1":'))
       }else{
         var ratingJSON = {'targetPrice':{}, 'rating':{}, 'forecastEps':{}}
       }
       var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
-      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
+      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":'))
       var stockInfo = {};
       stockInfo['category'] = category
       stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol.replace(/ /g, '-')
@@ -47,6 +47,8 @@ function getWeBullData(urlSymbol, category){
       stockInfo['52weekLow'] = parseFloat(tickerRTJSON.tickerRT.fiftyTwoWkLow)
       stockInfo['value'] = parseFloat(tickerRTJSON.tickerRT.marketValue / (10 ** 8))
       stockInfo['TTM'] = parseFloat(tickerRTJSON.tickerRT.peTtm)
+      stockInfo['pb'] = parseFloat(tickerRTJSON.tickerRT.pb)
+      stockInfo['ps'] = parseFloat(tickerRTJSON.tickerRT.ps)
       stockInfo['analystPopularity'] = ratingJSON.rating.ratingAnalysisTotals
       stockInfo['analystAttitiude'] = ratingJSON.rating.ratingAnalysis
       stockInfo['url'] = url

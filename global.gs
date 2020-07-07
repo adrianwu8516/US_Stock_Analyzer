@@ -24,13 +24,13 @@ STOCK_SYMBOLS = {
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb', 'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy'], 
   'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
-  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd', 'nyse-k', 'nyse-usfd'], 
+  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nasdaq-cake', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd', 'nyse-k', 'nyse-usfd'], 
   'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nyse-chwy', 'nasdaq-dltr'],
   'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
-  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-keys', 'nasdaq-flir'],
+  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-mmm', 'nyse-keys', 'nasdaq-flir'],
   'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl'],
   'RealEstate':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nasdaq-reg', 'nyse-dhi', 'nyse-low', 'nasdaq-z'],
@@ -87,14 +87,14 @@ function RECORDER_PACKAGE(){
 function renewCache(){
   CACHE.remove('index');
   CACHE.remove('etfIndex');
-  var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
-  CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
+  //var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
+  //CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
 }
 
 function onSearch(sheetName, searchString, searchTargetCol) {
   var values = sheetName.getDataRange().getValues();
-  for(var i=values.length-1, basic=0; i>basic; i--) {
-    if(values[i][searchTargetCol] == searchString) {return i;}
+  for(var i=0; i<values.length; i++) {
+    if(values[i][searchTargetCol] == searchString) {return i}
   }
 }
 

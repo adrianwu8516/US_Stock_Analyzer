@@ -12,10 +12,7 @@ function myFunction() {
   }
 }
 
-function fixMissingValue(){
-  // Check if market closed
-  if(!checkifClosed()) return;
-  
+function fixMissingValue(){ 
   // Record
   for(var catName in STOCK_SYMBOLS){
     for(var i in STOCK_SYMBOLS[catName]){

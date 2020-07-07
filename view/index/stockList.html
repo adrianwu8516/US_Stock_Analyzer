@@ -28,13 +28,16 @@
                                      <th scope="col" style="height: 30px; text-align: center;"><strong>線圖</strong></th>
                                      <th scope="col" style="height: 30px; text-align: center;"><strong>財報</strong></th>
                                      <th scope="col" style="height: 30px; text-align: center;"><strong>公司</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>收盤價</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52週最高</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52週最低</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>價格</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52H</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52L</strong></th>
                                      <th scope="col" style="height: 30px; text-align: center;"><strong>漲跌</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>滾動市盈率</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PE</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PB</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PS</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>營收成長率</strong></th>
                                      <th scope="col" style="height: 30px; text-align: center;"><strong>分析</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>分析師數</strong></th>
+                                     <th scope="col" style="height: 30px; text-align: center;"><strong>關注數</strong></th>
                                    </tr>
                                    <? for(var i in catInfo){ ?>
                                      <tr style="height: 20px;">
@@ -79,13 +82,24 @@
                                        <? }?>
             
                                        <? if (catInfo[i]['TTM'] > 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['TTM'].toFixed(1) ?></span></strong></td>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
                                        <? }else if (catInfo[i]['TTM'] < 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= catInfo[i]['TTM'].toFixed(1) ?></span></strong></td>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center;;"><strong><?= catInfo[i]['TTM'].toFixed(1) ?></strong></td>
+                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['TTM']) ?></strong></td>
                                        <? }?>
-            
+                                       
+                                       <? if (catInfo[i]['pb'] > 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                       <? }else if (catInfo[i]['TTM'] < 0){ ?>
+                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                       <? }else{ ?>
+                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['pb']) ?></strong></td>
+                                       <? }?>
+                                       
+                                       <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['ps']) ?></strong></td>
+                                       <td style="height: 20px text-align: center;;"><strong><?= catInfo[i]['thisRevenue'] ?>/<?= catInfo[i]['nextRevenue'] ?>/<?= catInfo[i]['next5Year'] ?></strong></td>
+                                       
                                        <? if (catInfo[i]['analysis'].includes("↗")){ ?>
                                            <td style="height: 20px; text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
                                        <? }else if (catInfo[i]['analysis'].includes("↘")){ ?>

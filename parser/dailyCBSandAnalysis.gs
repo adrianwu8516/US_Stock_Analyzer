@@ -3,7 +3,7 @@ function getCBSRanking(stockName){
   if(CBSMUSTFAIL.includes(stockName)) return ""
   var sleepDurationSec = 0.5
   var retry = 1
-  while(retry < 3){
+  while(retry < 2){
     try{
       var signalUrl = "https://caibaoshuo.com/companies/" + stockName
       var xml = UrlFetchApp.fetch(signalUrl).getContentText();

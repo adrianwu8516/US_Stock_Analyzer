@@ -9,33 +9,10 @@ function addGoogleDataToAllExistedFiles(){
   }
 }
 
-function fixingDateData(symbol='nyse-ups', dateStr = '2020年06月12日'){
-  var fileName = symbol.split('-')[1]
-  if(DriveApp.getFilesByName(fileName).hasNext()){
-    var file = DriveApp.getFilesByName(fileName).next()
-    var stockDoc = SpreadsheetApp.openById(file.getId());
-    var targetRow = onSearch(stockDoc, dateStr, searchTargetCol=0)
-    if(targetRow){
-      var yest = stockDoc.getRange('A' + (targetRow+2) + ':T' + (targetRow+2)).getValues()
-      var today = stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).getValues()
-      var todayPrice = today[0][4]
-      var yestPrice = yest[0][4]
-      var yestValue = yest[0][6]
-      var yestPb = yest[0][7]
-      yest[0][0] = dateStr
-      yest[0][2] = LanguageApp.translate(yest[0][2], 'zh-CN', 'zh-TW')
-      yest[0][4] = today[0][4]
-      yest[0][5] = Math.round((todayPrice - yestPrice)/yestPrice * 10000)/100 + '%'
-      yest[0][6] = yestValue/yestPrice*todayPrice
-      yest[0][7] = Math.round(yestPb/yestPrice*todayPrice * 100)/100
-      stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).setValues(yest)
-    }
-  }
-}
-
-function supplementForStock(googleSymbol) {
+function supplementForStock(googleSymbol='MMM') {
   //var googleSymbol = symbol.replace('-', ':').toUpperCase()
-  var fileName = symbol.split('-')[1]
+  //var fileName = symbol.split('-')[1]
+  var fileName = googleSymbol
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var file = DriveApp.getFilesByName(fileName).next()
     var stockDoc = SpreadsheetApp.openById(file.getId());
@@ -130,4 +107,29 @@ function removeProblematicDateInfo(stockDoc, dateStr){
   var prob = OriginalDateList.findIndex(e => e[0] == dateStr) + 1
   if(prob) {Logger.log(stockDoc.getRange(prob+":"+prob).getValues()); stockDoc.deleteRow(prob)}
   return
+}
+
+
+function fixingDateData(symbol='nyse-ups', dateStr = '2020年06月12日'){
+  var fileName = symbol.split('-')[1]
+  if(DriveApp.getFilesByName(fileName).hasNext()){
+    var file = DriveApp.getFilesByName(fileName).next()
+    var stockDoc = SpreadsheetApp.openById(file.getId());
+    var targetRow = onSearch(stockDoc, dateStr, searchTargetCol=0)
+    if(targetRow){
+      var yest = stockDoc.getRange('A' + (targetRow+2) + ':T' + (targetRow+2)).getValues()
+      var today = stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).getValues()
+      var todayPrice = today[0][4]
+      var yestPrice = yest[0][4]
+      var yestValue = yest[0][6]
+      var yestPb = yest[0][7]
+      yest[0][0] = dateStr
+      yest[0][2] = LanguageApp.translate(yest[0][2], 'zh-CN', 'zh-TW')
+      yest[0][4] = today[0][4]
+      yest[0][5] = Math.round((todayPrice - yestPrice)/yestPrice * 10000)/100 + '%'
+      yest[0][6] = yestValue/yestPrice*todayPrice
+      yest[0][7] = Math.round(yestPb/yestPrice*todayPrice * 100)/100
+      stockDoc.getRange('A' + (targetRow+1) + ':T' + (targetRow+1)).setValues(yest)
+    }
+  }
 }
