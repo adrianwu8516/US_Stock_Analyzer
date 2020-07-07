@@ -12,7 +12,6 @@ function getForecasting(data, symbol) {
   data[symbol].nextYearEpsGrowth = growthEstimateXml.replace(/[\s\S]*?data-reactid="424">([\s\S]*?)<[\s\S]*/, '$1')
   data[symbol].next5Year = growthEstimateXml.replace(/[\s\S]*?data-reactid="431">([\s\S]*?)<[\s\S]*/, '$1')
   data[symbol].past5Year = growthEstimateXml.replace(/[\s\S]*?data-reactid="438">([\s\S]*?)<[\s\S]*/, '$1')
-  Logger.log(data)
   return data
 }
 
