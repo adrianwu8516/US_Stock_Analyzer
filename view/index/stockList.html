@@ -1,6 +1,4 @@
-
 <? var category = Object.keys(noteObj) ?>
-
 
 <section id="tabs" class="project-tab">
             <div class="container">
@@ -21,6 +19,7 @@
                           <? for(var cat in category){ ?>
                             <? var catInfo = noteObj[category[cat]] ?>
                             <div class="tab-pane fade  <? if(cat==0){?> show active <?} ?>" id="<?= category[cat] ?>" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="table-responsive-xl">
                                 <table class="table table-hover" cellspacing="0">
                                   <tbody>
                                     <tr style="height: 30px;">
@@ -120,6 +119,7 @@
                                    <? } ?>
                                  </tbody>
                                </table>
+                             </div>
                              </div>
                           <?}?>
                         </div>
