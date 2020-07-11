@@ -23,15 +23,15 @@ function fixMissingValue(){
         var stockDoc = SpreadsheetApp.openById(documentId);
         if(stockDoc.getSheetValues(4,1,1,1)[0][0]==''){
           Logger.log(fileName + ": 4th row null")
-          //stockDoc.deleteRow(4)
+          stockDoc.deleteRow(4)
         }
         if(stockDoc.getSheetValues(3,1,1,1)[0][0]==''){
           Logger.log(fileName + ": 3rd row null")
-          //stockDoc.deleteRow(3)
+          stockDoc.deleteRow(3)
         }
         if(stockDoc.getSheetValues(2,1,1,1)[0][0]==''){
           Logger.log(fileName + ": 3rd row null")
-          //stockDoc.deleteRow(2)
+          stockDoc.deleteRow(2)
         }
       }else{
         Logger.log(fileName + " File Missed!")

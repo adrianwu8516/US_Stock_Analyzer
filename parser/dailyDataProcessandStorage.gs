@@ -15,10 +15,16 @@ function dataRecordandProcess(){
       if(stockInfo != null){
         stockInfo = JSON.parse(stockInfo)
         Logger.log("Recording: " + stockSymbol)
-        try{
-          dataRecord(stockInfo)
-        }catch(e){
-          Logger.log(e)
+        let sleepDurationSec = 0.5
+        let retry = 0
+        while(retry < 2){
+          try{
+            dataRecord(stockInfo)
+            break
+          }catch(e){
+            Logger.log(e)
+            retry += 1
+          }
         }
         var forecast = checkYahooForecast(YahooSheet, stockSymbol)
         stockInfo.thisRevenue = forecast.thisRevenue
@@ -90,7 +96,6 @@ function dataRecord(stockInfo){
 function dailyComparison(noteObj, noteObjOld){
   for(var catName in noteObj){
     for(var stockName in noteObj[catName]){
-      Logger.log("Now compare" + stockName)
       var stockInfo = noteObj[catName][stockName]
       if(!noteObjOld[catName]) {Logger.log( catName + " is a new category"); continue;}
       if(!noteObjOld[catName][stockName]) {Logger.log( stockName + " is a new company"); continue;}
