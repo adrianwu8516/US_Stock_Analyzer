@@ -15,6 +15,12 @@ function weBullSingle(stockSymbol, span) {
     Sheet.getSheetValues(2, 13, span, 1).forEach(element => analystLow.unshift(parseFloat(element[0])||null))
     Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
     Sheet.getSheetValues(2, 24, span, 1).forEach(element => volume.unshift(parseFloat(element[0])||null))
+    var guruData = Sheet.getSheetValues(2, 27, 1, 13)[0]
+    var guruObj = {
+      "ZScore": guruData[0], "MScore": guruData[1], "FScore": guruData[2], 
+      "ev2ebitdaLow": guruData[3], "ev2ebitdaMid": guruData[4], "ev2ebitdaHigh": guruData[5], "ev2ebitdaNow": guruData[6], "buyback_yield": guruData[7], 
+      "iv_dcf_share": guruData[8], "iv_dcf": guruData[9], "GrahamNumber": guruData[10], "LynchValue": guruData[11], "MedPSValue": guruData[12]
+    }
     var tickerObj = {
       "avgVol10D":[], "avgVol3M":[], "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[], "turnoverRate":[], "vibrateRatio":[], "changeRatio":[], 
       "pe":[], "forwardPe":[], "indicatedPe":[], "peTtm":[], "eps":[], "epsTtm":[],"bps":[], "pb":[], "ps":[],"yield":[]
@@ -30,11 +36,12 @@ function weBullSingle(stockSymbol, span) {
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
       'MACD': MACD(close), 'BollMean': BOLL.mean, 'BollUpper': BOLL.upper, 'BollLower': BOLL.lower,
     }
-    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj); //, targetPriceObj
+    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
   }
+  Logger.log(stockHistoryData.guruObj)
   return stockHistoryData
 }
 

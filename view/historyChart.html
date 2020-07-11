@@ -324,6 +324,14 @@
                       <td><?=tickerRTObj.peTtm?></td>
                     </tr>
                     <tr>
+                      <th scope="row">EV/EBITDA範圍</th>
+                      <td><?=ev2ebitdaLow?> -- <?=ev2ebitdaMid?> -- <?=ev2ebitdaHigh?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">EV/EBITDA</th>
+                      <td><?=ev2ebitdaNow?></td>
+                    </tr>
+                    <tr>
                       <th scope="row">EPS TTM</th>
                       <td><?=tickerRTObj.epsTtm?></td>
                     </tr>
@@ -361,7 +369,7 @@
                 <table class="table table-sm table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">市場指標</th>
+                      <th scope="col">進階指標</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
@@ -371,25 +379,38 @@
                       <td><?=(parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>億</td>
                     </tr>
                     <tr>
-                      <th scope="row">本日交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.volume)/(10 ** 4)).toFixed(1)?>萬</td>
+                      <th scope="row">F Score 財務健康指標</th>
+                      <td><?=FScore?></td>
                     </tr>
                     <tr>
-                      <th scope="row">10日平均交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.avgVol10D)/(10 ** 4)).toFixed(1)?>萬</td>
+                      <th scope="row">Z Score 破產指標</th>
+                      <td><?=ZScore?></td>
                     </tr>
                     <tr>
-                      <th scope="row">3月平均交易量</th>
-                      <td><?=(parseFloat(tickerRTObj.avgVol3M)/(10 ** 4)).toFixed(1)?>萬</td>
+                      <th scope="row">M Score 財務操縱指標</th>
+                      <td><?=MScore?></td>
+                    </tr>
+                     <tr>
+                      <th scope="row">Projected FCF 估值</th>
+                      <td><?=iv_dcf_share?></td>
                     </tr>
                     <tr>
-                      <th scope="row">換手率</th>
-                      <td><?=tickerRTObj.turnoverRate?></td>
+                      <th scope="row">DCF (FCF Based) 估值</th>
+                      <td><?=iv_dcf?></td>
                     </tr>
                     <tr>
-                      <th scope="row">波動率</th>
-                      <td><?=tickerRTObj.vibrateRatio?></td>
+                      <th scope="row">葛拉漢安全價格</th>
+                      <td><?=GrahamNumber?></td>
                     </tr>
+                     <tr>
+                      <th scope="row">彼德林奇成長股估值</th>
+                      <td><?=LynchValue?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">市銷率10年回歸估值</th>
+                      <td><?=MedPSValue?></td>
+                    </tr>
+                    
                   </tbody>
                 </table>
             </div>
