@@ -312,28 +312,32 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">PB</th>
-                      <td><?=tickerRTObj.pb?></td>
+                      <th scope="row">市淨率 PB</th>
+                      <td><?=Math.round(tickerRTObj.pb*10)/10?></td>
                     </tr>
                     <tr>
-                      <th scope="row">PS</th>
-                      <td><?=tickerRTObj.ps?></td>
+                      <th scope="row">市銷率 PS</th>
+                      <td><?=Math.round(tickerRTObj.ps*10)/10?></td>
                     </tr>
                     <tr>
-                      <th scope="row">PE TTM</th>
-                      <td><?=tickerRTObj.peTtm?></td>
+                      <th scope="row">市盈率 PE TTM</th>
+                      <td><?=Math.round(tickerRTObj.peTtm*10)/10?></td>
                     </tr>
                     <tr>
                       <th scope="row">EV/EBITDA範圍</th>
-                      <td><?=ev2ebitdaLow?> -- <?=ev2ebitdaMid?> -- <?=ev2ebitdaHigh?></td>
+                      <td><span style="color: #339966;"><?=ev2ebitdaLow?></span> -- <?=ev2ebitdaMid?> -- <span style="color: #ff0000;"><?=ev2ebitdaHigh?></span></td>
                     </tr>
                     <tr>
                       <th scope="row">EV/EBITDA</th>
-                      <td><?=ev2ebitdaNow?></td>
+                      <?if(ev2ebitdaNow<ev2ebitdaMid){?>
+                        <td><span style="color: #339966;"><?=ev2ebitdaNow?></span></td>
+                      <?}else if(ev2ebitdaNow>ev2ebitdaMid){?>
+                        <td><span style="color: #ff0000;"><?=ev2ebitdaNow?></span></td>
+                      <?}?>
                     </tr>
                     <tr>
                       <th scope="row">EPS TTM</th>
-                      <td><?=tickerRTObj.epsTtm?></td>
+                      <td><?=Math.round(tickerRTObj.epsTtm*10)/10?></td>
                     </tr>
                     <?if(tickerRTObj.latestDividendDate){ ?>
                     <tr>
@@ -350,7 +354,7 @@
                     <?if(tickerRTObj.yield){ ?>
                     <tr>
                       <th scope="row">殖利率</th>
-                      <td><?=tickerRTObj.yield?></td>
+                      <td><?=Math.round(tickerRTObj.yield*10)/10?></td>
                     </tr>
                     <?}?>
                     <tr>
@@ -379,16 +383,34 @@
                       <td><?=(parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>億</td>
                     </tr>
                     <tr>
-                      <th scope="row">F Score 財務健康指標</th>
-                      <td><?=FScore?></td>
+                      <th scope="row">Piotroski F-Score 財務健康指標</th>
+                      <?if(FScore>6){?>
+                        <td><span style="color: #339966;"><?=FScore?></span></td>
+                      <?}else if(FScore>5){?>
+                        <td><span style="color: #E19223;"><?=FScore?></span></td>
+                      <?}else{?>
+                        <td><span style="color: #ff0000;"><?=FScore?></span></td>
+                      <?}?>
                     </tr>
                     <tr>
-                      <th scope="row">Z Score 破產指標</th>
-                      <td><?=ZScore?></td>
+                      <th scope="row">Altman Z-Score 破產指標</th>
+                      <?if(ZScore<=1.81){?>
+                        <td><span style="color: #ff0000;"><?=ZScore?></span></td>
+                      <?}else if(ZScore<=2.99){?>
+                        <td><span style="color: #E19223;"><?=ZScore?></span></td>
+                      <?}else{?>
+                        <td><span style="color: #339966;"><?=ZScore?></span></td>
+                      <?}?>
                     </tr>
                     <tr>
-                      <th scope="row">M Score 財務操縱指標</th>
-                      <td><?=MScore?></td>
+                      <th scope="row">Beneish M-Score 財務操縱指標</th>
+                      <?if(MScore>-2.22){?>
+                        <td><span style="color: #ff0000;"><?=MScore?></span></td>
+                      <?}else if(MScore>0){?>
+                        <td><span style="color: #E19223;"><?=MScore?></span></td>
+                      <?}else{?>
+                        <td><span style="color: #339966;"><?=MScore?></span></td>
+                      <?}?>
                     </tr>
                      <tr>
                       <th scope="row">Projected FCF 估值</th>
