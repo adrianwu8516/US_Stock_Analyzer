@@ -15,11 +15,12 @@ function weBullSingle(stockSymbol, span) {
     Sheet.getSheetValues(2, 13, span, 1).forEach(element => analystLow.unshift(parseFloat(element[0])||null))
     Sheet.getSheetValues(2, 8, span, 1).forEach(element => pettmLst.unshift(parseFloat(element[0])||null))
     Sheet.getSheetValues(2, 24, span, 1).forEach(element => volume.unshift(parseFloat(element[0])||null))
-    var guruData = Sheet.getSheetValues(2, 27, 1, 13)[0]
+    var guruData = Sheet.getSheetValues(2, 27, 1, 17)[0]
     var guruObj = {
       "ZScore": guruData[0], "MScore": guruData[1], "FScore": guruData[2], 
       "ev2ebitdaLow": guruData[3], "ev2ebitdaMid": guruData[4], "ev2ebitdaHigh": guruData[5], "ev2ebitdaNow": guruData[6], "buyback_yield": guruData[7], 
-      "iv_dcf_share": guruData[8], "iv_dcf": guruData[9], "GrahamNumber": guruData[10], "LynchValue": guruData[11], "MedPSValue": guruData[12]
+      "iv_dcf_share": guruData[8], "iv_dcf": guruData[9], "GrahamNumber": guruData[10], "LynchValue": guruData[11], "MedPSValue": guruData[12], 
+      "p2tangible_bookLow": guruData[13], "p2tangible_bookMid": guruData[14], "p2tangible_bookHigh": guruData[15], "p2tangible_bookNow": guruData[16]
     }
     var tickerObj = {
       "avgVol10D":[], "avgVol3M":[], "fiftyTwoWkHigh":[], "fiftyTwoWkLow":[], "turnoverRate":[], "vibrateRatio":[], "changeRatio":[], 

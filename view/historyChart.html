@@ -320,11 +320,11 @@
                       <td><?=Math.round(tickerRTObj.ps*10)/10?></td>
                     </tr>
                     <tr>
-                      <th scope="row">市盈率 PE TTM</th>
+                      <th scope="row">市盈率 PE</th>
                       <td><?=Math.round(tickerRTObj.peTtm*10)/10?></td>
                     </tr>
                     <tr>
-                      <th scope="row">EV/EBITDA範圍</th>
+                      <th scope="row">EV/EBITDA</th>
                       <td><span style="color: #339966;"><?=ev2ebitdaLow?></span> -- <?=ev2ebitdaMid?> -- <span style="color: #ff0000;"><?=ev2ebitdaHigh?></span></td>
                     </tr>
                     <tr>
@@ -333,6 +333,18 @@
                         <td><span style="color: #339966;"><?=ev2ebitdaNow?></span></td>
                       <?}else if(ev2ebitdaNow>ev2ebitdaMid){?>
                         <td><span style="color: #ff0000;"><?=ev2ebitdaNow?></span></td>
+                      <?}?>
+                    </tr>
+                    <tr>
+                      <th scope="row">股價資產比</th>
+                      <td><span style="color: #339966;"><?=Math.round(p2tangible_bookLow*10)/10?></span> -- <?=Math.round(p2tangible_bookMid*10)/10?> -- <span style="color: #ff0000;"><?=Math.round(p2tangible_bookHigh*10)/10?></span></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">股價資產比</th>
+                      <?if(p2tangible_bookNow<p2tangible_bookMid){?>
+                        <td><span style="color: #339966;"><?=p2tangible_bookNow?></span></td>
+                      <?}else if(p2tangible_bookNow>p2tangible_bookMid){?>
+                        <td><span style="color: #ff0000;"><?=p2tangible_bookNow?></span></td>
                       <?}?>
                     </tr>
                     <tr>
@@ -357,14 +369,6 @@
                       <td><?=Math.round(tickerRTObj.yield*10)/10?></td>
                     </tr>
                     <?}?>
-                    <tr>
-                      <th scope="row">最近一期財報時間</th>
-                      <td><?=tickerRTObj.latestEarningsDate?></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">下次財報時間</th>
-                      <td><?=tickerRTObj.estimateEarningsDate?></td>
-                    </tr>
                     
                   </tbody>
                 </table>
@@ -380,10 +384,17 @@
                   <tbody>
                     <tr>
                       <th scope="row">市值</th>
-                      <td><?=(parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>億</td>
+                      <?var mktValue = (parseFloat(tickerRTObj.marketValue)/(10 ** 8)).toFixed(1)?>
+                      <?if(mktValue<20){?>
+                        <td><span style="color: #339966;"><?=mktValue?>億(小型股)</span></td>
+                      <?}else if(mktValue<100){?>
+                        <td><span style="color: #ff0000;"><?=mktValue?>億(中型股)</span></td>
+                      <?}else{?>
+                        <td><span style="color: #E19223;"><?=mktValue?>億(大型股)</span></td>
+                      <?}?>
                     </tr>
                     <tr>
-                      <th scope="row">Piotroski F-Score 財務健康指標</th>
+                      <th scope="row">F-Score 財務指標</th>
                       <?if(FScore>6){?>
                         <td><span style="color: #339966;"><?=FScore?></span></td>
                       <?}else if(FScore>5){?>
@@ -393,7 +404,7 @@
                       <?}?>
                     </tr>
                     <tr>
-                      <th scope="row">Altman Z-Score 破產指標</th>
+                      <th scope="row">Z-Score 破產指標</th>
                       <?if(ZScore<=1.81){?>
                         <td><span style="color: #ff0000;"><?=ZScore?></span></td>
                       <?}else if(ZScore<=2.99){?>
@@ -403,7 +414,7 @@
                       <?}?>
                     </tr>
                     <tr>
-                      <th scope="row">Beneish M-Score 財務操縱指標</th>
+                      <th scope="row">M-Score 操縱指標</th>
                       <?if(MScore>-2.22){?>
                         <td><span style="color: #ff0000;"><?=MScore?></span></td>
                       <?}else if(MScore>0){?>
@@ -413,11 +424,11 @@
                       <?}?>
                     </tr>
                      <tr>
-                      <th scope="row">Projected FCF 估值</th>
+                      <th scope="row">預估 FCF 估值</th>
                       <td><?=iv_dcf_share?></td>
                     </tr>
                     <tr>
-                      <th scope="row">DCF (FCF Based) 估值</th>
+                      <th scope="row">DCF 估值</th>
                       <td><?=iv_dcf?></td>
                     </tr>
                     <tr>
@@ -425,14 +436,21 @@
                       <td><?=GrahamNumber?></td>
                     </tr>
                      <tr>
-                      <th scope="row">彼德林奇成長股估值</th>
+                      <th scope="row">林奇成長股估值</th>
                       <td><?=LynchValue?></td>
                     </tr>
                     <tr>
-                      <th scope="row">市銷率10年回歸估值</th>
+                      <th scope="row">PS10年回歸估值</th>
                       <td><?=MedPSValue?></td>
                     </tr>
-                    
+                    <tr>
+                      <th scope="row">最近一期財報時間</th>
+                      <td><?=tickerRTObj.latestEarningsDate?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">下次財報時間</th>
+                      <td><?=tickerRTObj.estimateEarningsDate?></td>
+                    </tr>
                   </tbody>
                 </table>
             </div>

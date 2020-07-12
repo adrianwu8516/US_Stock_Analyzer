@@ -131,6 +131,21 @@ function getGuruFocusData(symbol) {
   url = 'https://www.gurufocus.com/term/medpsvalue/' + symbol + '/Median-PS-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
   data.medpsvalue = parseFloat(xml.replace(/[\s\S]*Median PS Value of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  
+  url = 'https://www.gurufocus.com/term/p2tangible_book/' + symbol + '/Price-to-Tangible-Book'
+  xml = UrlFetchApp.fetch(url).getContentText();
+  if(xml.replace(/[\s\S]*Price-to-Tangible-Book of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
+    data.p2tangible_bookLow = NaN
+    data.p2tangible_bookMid = NaN
+    data.p2tangible_bookHigh = NaN
+    data.p2tangible_bookNow = NaN
+  }else{
+    var p2tangible_book = xml.replace(/[\s\S]*<strong>Min([\s\S]*?)<\/strong>[\s\S]*/, '$1').split(':').map(item => parseFloat(item))
+    data.p2tangible_bookLow = p2tangible_book[1]
+    data.p2tangible_bookMid = p2tangible_book[2]
+    data.p2tangible_bookHigh = p2tangible_book[3]
+    data.p2tangible_bookNow = p2tangible_book[4]
+  }
   Logger.log(data)
   CACHE.put(symbol+'-Guru', JSON.stringify(data), CACHELIFETIME)
 }
@@ -144,17 +159,18 @@ function recordValuation(symbol, data){
     Logger.log('Cannot find original record sheet of ' + symbol)
   }
   today = new Date();
-  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
+  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()-1).padStart(2, '0') + '日';
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('Y' + targetRow + ':AM' + targetRow).setValues([[
+    stockDoc.getRange('Y' + targetRow + ':AQ' + targetRow).setValues([[
       data.wacc, data.roic, data.zscore, data.mscore, data.fscore, data.ev2ebitdaLow, data.ev2ebitdaMid, data.ev2ebitdaHigh, data.ev2ebitdaNow, 
-      data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue
+      data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue,
+      data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow
     ]]);
     // For new stocks
-//    stockDoc.getRange('Y1:AM1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue"]])
-//    stockDoc.getRange('Y2:AM2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00']])
+    stockDoc.getRange('Y1:AQ1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow']])
+    stockDoc.getRange('Y2:AQ2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
   }else{
     Logger.log('Cannot find original record of that day in ' + symbol)
   }
@@ -188,7 +204,7 @@ function dailyGuruFocus(){
 
 function dailyGuruFocusRecord(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  //if(!checkifClosed()) return;
   for(var cat in STOCK_SYMBOLS){
     for(var stockNo in STOCK_SYMBOLS[cat]){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')

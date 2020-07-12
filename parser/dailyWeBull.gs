@@ -13,14 +13,29 @@ function weBullAnalystMark(stockInfo){
     stockInfo['sign'] = "🆘";
     stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於高標 " + stockInfo['priceHigh']
   }
+  
   // Volumn Marks - check if the volumn goes up
   if(stockInfo['volume'] > stockInfo['volume10D']*2){
     stockInfo['volumeMark'] = "⚔"
   }
+  
+  // Post-Earning Announcement Effect, Get Fast / Positive News
+  var lastFRDate = Date.parse(stockInfo.latestEarningsDate)
+  var today = new Date()
+  if((today - lastFRDate < 86400000 * 3)&&(today > lastFRDate)){ // within 3 days
+    stockInfo['news'] = "🗞"
+    let forecastLast = JSON.parse(stockInfo.forecastEps)['points'][4]
+    let forecast2ndLast = JSON.parse(stockInfo.forecastEps)['points'][3]
+    if(forecastLast.valueActual != null){
+      stockInfo['beatAnalyst'] = (forecastLast.valueActual >= forecastLast.valueForecast)? "😎" : "😨"
+    }else if(forecast2ndLast.valueActual != null){
+      stockInfo['beatAnalyst'] = (forecast2ndLast.valueActual >= forecast2ndLast.valueForecast)? "😎" : "😨"
+    }
+  }
   return stockInfo
 }
 
-function getWeBullData(urlSymbol, category){
+function getWeBullData(urlSymbol='nasdaq-aapl', category=''){
   Logger.log("Handling: " + urlSymbol)
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var retry = 1
@@ -66,6 +81,9 @@ function getWeBullData(urlSymbol, category){
       stockInfo['open'] = parseFloat(tickerRTJSON.tickerRT.open)
       stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
       stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
+      // Test
+      stockInfo = weBullAnalystMark(stockInfo)
+      Logger.log(stockInfo)
       return stockInfo
     }catch(e){
       Logger.log(e)

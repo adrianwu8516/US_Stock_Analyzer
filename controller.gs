@@ -43,7 +43,6 @@ function historyChartController(stockSymbol){
   var data = weBullSingle(stockSymbol, span)
   data.stockSymbol = stockSymbol
   data.span = span
-  Logger.log(data)
   return render('view/historyChart', data)
 }
 
