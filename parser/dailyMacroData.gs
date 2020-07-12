@@ -27,6 +27,10 @@ function MMModule() {
   xml = UrlFetchApp.fetch(url).getContentText();
   var USRecession = xml.match(/美國-未來一年衰退機率\(10Y-3M模型, L\)[\S\s]*?<\/span>/)[0].replace(/[\S\s]*?>([\S]*?[0-9])<\/span>/, '$1')
   
+  url = 'https://www.macromicro.me/charts/47/vix'
+  xml = UrlFetchApp.fetch(url).getContentText();
+  var vix = xml.match(/VIX波動率指數<\/div[\S\s]*?<\/span>/)[0].replace(/[\S\s]*?>([\S]*?[0-9])<\/span>/, '$1')
+
   var MMObj = {
     downPct: MMDownPct,
     wuhan: MMWuhanIndex,
@@ -37,7 +41,8 @@ function MMModule() {
     AAIIBull: AAIIBull,
     yieldGap10_2: yieldGap10_2,
     SNP500: SNP500,
-    USRecession: USRecession
+    USRecession: USRecession,
+    vix: vix
   }
   return MMObj
 }
@@ -67,13 +72,13 @@ function dailyMacroRecord(){
   var targetRow = onSearch(macroDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    macroDoc.getRange('A' + targetRow + ':N' + targetRow).setValues([[
-      todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex, MMObj.AAIIBear, MMObj.AAIINeutral, MMObj.AAIIBull, MMObj.yieldGap10_2, MMObj.SNP500, MMObj.USRecession
+    macroDoc.getRange('A' + targetRow + ':P' + targetRow).setValues([[
+      todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex, MMObj.AAIIBear, MMObj.AAIINeutral, MMObj.AAIIBull, MMObj.yieldGap10_2, MMObj.SNP500, MMObj.USRecession, MMObj.vix, ((MMObj.vix)/100)**2
     ]]);
   }else{
     macroDoc.insertRowBefore(2);
-    macroDoc.getRange('A2:N2').setValues([[
-      todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex, MMObj.AAIIBear, MMObj.AAIINeutral, MMObj.AAIIBull, MMObj.yieldGap10_2, MMObj.SNP500, MMObj.USRecession
+    macroDoc.getRange('A2:P2').setValues([[
+      todayStr, FGObj.now, FGObj.symbol, FGObj.change, MMObj.downPct, MMObj.wuhan, MMObj.ShillerPE, MMObj.BuffetIndex, MMObj.AAIIBear, MMObj.AAIINeutral, MMObj.AAIIBull, MMObj.yieldGap10_2, MMObj.SNP500, MMObj.USRecession, MMObj.vix, ((MMObj.vix)/100)**2
     ]]);
   }
 }

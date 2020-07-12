@@ -18,6 +18,10 @@
             google.charts.setOnLoadCallback(drawRecessionChart);
             google.charts.setOnLoadCallback(drawShillerPEChart);
             google.charts.setOnLoadCallback(drawBuffettIndexChart);
+            google.charts.setOnLoadCallback(drawSInvestorChart);
+            google.charts.setOnLoadCallback(drawSnpChart);
+            google.charts.setOnLoadCallback(drawAskedReturnsChart);
+            google.charts.setOnLoadCallback(drawGapYieldChart);
             
             var macroData = JSON.parse('<?= JSON.stringify(macroJSON) ?>')
             var span = parseInt('<?= span ?>')
@@ -49,9 +53,11 @@
             function drawRecessionChart() {
                var dataTable = new google.visualization.DataTable();
                dataTable.addColumn('date', '日期');
-               dataTable.addColumn('number','經濟衰退機率');
+               dataTable.addColumn('number','全球衰退機率');
+               dataTable.addColumn('number','美國衰退機率');
+               dataTable.addColumn('number','恐慌指數');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmRecession[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.globalRecession[i], macroData.usRecession[i], macroData.vix[i]]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('mmRecessionChart'));
                var options = {width: 500, height: 375,title: '經濟衰退機率'};
@@ -82,6 +88,55 @@
                chart.draw(dataTable, options);
             }
             
+            function drawSInvestorChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','散戶看空指數');
+               dataTable.addColumn('number','散戶中性指數');
+               dataTable.addColumn('number','散戶看多指數');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.sInvestorBear[i], macroData.sInvestorNeutral[i], macroData.sInvestorBull[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('sInvestorChart'));
+               var options = {width: 500, height: 375,title: '散戶指標'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawSnpChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','S&P 500');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.snp500Index[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('snpChart'));
+               var options = {width: 500, height: 375,title: 'S&P500 指標'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawAskedReturnsChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','要求報酬');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.requiredMarketReturn[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('askedReturnsChart'));
+               var options = {width: 500, height: 375,title: '市場要求報酬（％），越高越危機入市'};
+               chart.draw(dataTable, options);
+            }
+            
+            function drawGapYieldChart() {
+               var dataTable = new google.visualization.DataTable();
+               dataTable.addColumn('date', '日期');
+               dataTable.addColumn('number','公債利差');
+               for(var i = 0 ; i < span ; i++){
+                  dataTable.addRows([[new Date(macroData.date[i]), macroData.gapYield10to2[i]]]);
+               }
+               var chart = new google.visualization.LineChart (document.getElementById('gapYieldChart'));
+               var options = {width: 500, height: 375,title: '公債10年/2年利差，越低景氣越熱'};
+               chart.draw(dataTable, options);
+            }
          </script> 
     </head>
  
@@ -90,12 +145,20 @@
       <br><br>
       <table class="columns" align="center">
         <tr>
+          <td><div id="snpChart" style="border: 1px solid #ccc"></div></td>
           <td><div id="fearGreedChart" style="border: 1px solid #ccc"></div></td>
-          <td><div id="mmBuffettIndexChart" style="border: 1px solid #ccc"></div></td>
         </tr>
         <tr>
           <td><div id="mmShillerPEChart" style="border: 1px solid #ccc"></div></td>
+          <td><div id="mmBuffettIndexChart" style="border: 1px solid #ccc"></div></td>
+        </tr>
+        <tr>
+          <td><div id="sInvestorChart" style="border: 1px solid #ccc"></div></td>
           <td><div id="mmRecessionChart" style="border: 1px solid #ccc"></div></td>
+        </tr>
+        <tr>
+          <td><div id="gapYieldChart" style="border: 1px solid #ccc"></div></td>
+          <td><div id="askedReturnsChart" style="border: 1px solid #ccc"></div></td>
         </tr>
         <tr>
           <td><div id="mmCovid19Chart" style="border: 1px solid #ccc"></div></td>

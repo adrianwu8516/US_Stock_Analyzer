@@ -159,10 +159,18 @@ function macroData(span){
     fearGreed:  macroDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
     fearGreedNote:  macroDoc.getSheetValues(2, 3, span, 1).map(item => item[0]).reverse(),
     fearGreedRatio:  macroDoc.getSheetValues(2, 4, span, 1).map(item => parseFloat(item[0])).reverse(),
-    mmRecession:  macroDoc.getSheetValues(2, 5, span, 1).map(item => parseFloat(item[0])).reverse(),
+    globalRecession:  macroDoc.getSheetValues(2, 5, span, 1).map(item => parseFloat(item[0])).reverse(),
     mmCovid19:  macroDoc.getSheetValues(2, 6, span, 1).map(item => parseFloat(item[0])).reverse(),
     mmShillerPE:  macroDoc.getSheetValues(2, 7, span, 1).map(item => parseFloat(item[0])).reverse(),
     mmBuffettIndex:  macroDoc.getSheetValues(2, 8, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorBear:  macroDoc.getSheetValues(2, 9, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorNeutral:  macroDoc.getSheetValues(2, 10, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorBull:   macroDoc.getSheetValues(2, 11, span, 1).map(item => parseFloat(item[0])).reverse(),
+    gapYield10to2:   macroDoc.getSheetValues(2, 12, span, 1).map(item => parseFloat(item[0])).reverse(),
+    snp500Index:   macroDoc.getSheetValues(2, 13, span, 1).map(item => parseFloat(item[0])).reverse(),
+    usRecession:   macroDoc.getSheetValues(2, 14, span, 1).map(item => parseFloat(item[0])/100).reverse(),
+    vix:   macroDoc.getSheetValues(2, 15, span, 1).map(item => parseFloat(item[0])/100).reverse(),
+    requiredMarketReturn:   macroDoc.getSheetValues(2, 16, span, 1).map(item => parseFloat(item[0])*100).reverse(),
   }
   Logger.log(macroDataJSON)
   return macroDataJSON
