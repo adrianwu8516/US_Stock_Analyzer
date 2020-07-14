@@ -89,6 +89,13 @@ function renewCache(){
   CACHE.remove('etfIndex');
   //var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
   //CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
+  for(var cat in STOCK_SYMBOLS){
+    for (var stockSymbol in STOCK_SYMBOLS[cat]){
+      var stockName = STOCK_SYMBOLS[cat][stockSymbol].split('-')[1]
+      CACHE.remove(stockName + '-history')
+      
+    }
+  }
 }
 
 function onSearch(sheetName, searchString, searchTargetCol) {

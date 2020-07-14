@@ -159,7 +159,7 @@ function recordValuation(symbol, data){
     Logger.log('Cannot find original record sheet of ' + symbol)
   }
   today = new Date();
-  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()-1).padStart(2, '0') + '日';
+  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
