@@ -73,9 +73,9 @@ function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
 }
 
 function PARSER_PACKAGE(){
+  dailyMacroRecord()
   collectDataFromWeBull()
   collectDataFromCBS()
-  dailyMacroRecord()
 }
 
 function RECORDER_PACKAGE(){

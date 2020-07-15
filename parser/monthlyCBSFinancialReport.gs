@@ -1,5 +1,5 @@
 function getCBSFinancialReport(symbol){
-  
+  if(symbol.includes(['mdxg'])) return
   var data = {'近12个月':{}}
   var url = 'https://caibaoshuo.com/companies/' + symbol + '/financials#guru_al_sheet_tab';
   var xml = UrlFetchApp.fetch(url).getContentText();
@@ -14,6 +14,7 @@ function getCBSFinancialReport(symbol){
     var itemTitle = translateChar(blRatioItem.replace(/<a[\s\S]*?">([\s\S]*?)<\/a>[\s\S]*/, '$1'))
     var itemLst = blRatioItem.match(/<span>([\s\S]*?)<\/span>/g)
     for(var i in itemLst){
+      if(!(data[blRatioPeriod[i]])){data[blRatioPeriod[i]]={}}
       if(!(data[blRatioPeriod[i]]['資產負債比率'])){data[blRatioPeriod[i]]['資產負債比率']={}}
       data[blRatioPeriod[i]]['資產負債比率'][itemTitle] = translateNumber(itemLst[i].replace(/<span>([\s\S]*?)<\/span>/, '$1'))
     }
@@ -26,6 +27,7 @@ function getCBSFinancialReport(symbol){
     var itemTitle = translateChar(fRRatioItem.replace(/<a[\s\S]*?">([\s\S]*?)<\/a>[\s\S]*/, '$1'))
     var itemLst = fRRatioItem.match(/<td class="p-1">([\s\S]*?)<\/td>/g)
     for(var i in itemLst){
+      if(!(data[fRRatioPeriod[i]])){data[fRRatioPeriod[i]]={}}
       if(!(data[fRRatioPeriod[i]]['五大財務比率'])){data[fRRatioPeriod[i]]['五大財務比率']={}}
       data[fRRatioPeriod[i]]['五大財務比率'][itemTitle] = translateNumber(itemLst[i].replace(/<td class="p-1">([\s\S]*?)<\/td>/, '$1'))
     }
@@ -82,29 +84,7 @@ function getCBSFinancialReport(symbol){
       data[cFPeriod[year]]['現金流量表'][handlingTitle] = translateNumber(cFXmlLst[no])
     }
   }
-  
-  // Record 
-  var sheet = SpreadsheetApp.openById(FINANCIALREPORTSSHEET_ID)
-  
-  for(year in data){
-    var uuid = symbol + '-' + year.replace('近12个月', 'TTM')
-    var targetRow = onSearch(sheet, uuid, searchTargetCol=0)
-    if(targetRow){
-      targetRow += 1
-      sheet.getRange('A' + targetRow + ':H' + targetRow).setValues([[
-        uuid, symbol, year.replace('近12个月', 'TTM'), 
-        JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
-        JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
-      ]]) 
-    }else{
-      sheet.insertRowBefore(2);
-      sheet.getRange('A2:H2').setValues([[
-        uuid, symbol, year.replace('近12个月', 'TTM'), 
-        JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
-        JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
-      ]]) 
-    }
-  }
+  CACHE.put(symbol+'-CBSFinancialReport', JSON.stringify(data), CACHELIFETIME)
 }
 
 function translateNumber(str){
@@ -137,8 +117,9 @@ function monthlyFinancialReport(){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
       let sleepDurationSec = 0.5
       let retry = 0
-      while(retry < 3){
+      while(retry < 2){
         try{
+          Logger.log('Handling: ' + symbol)
           getCBSFinancialReport(symbol)
           break
         }catch(e){
@@ -146,6 +127,40 @@ function monthlyFinancialReport(){
           Logger.log(symbol + " : CBS parse failed " + retry)
           Utilities.sleep(sleepDurationSec * 1000 * retry)
           retry  += 1
+        }
+      }
+    }
+  }
+  monthlyFinancialReportRecording()
+}
+
+// Record 
+function monthlyFinancialReportRecording(){
+  var sheet = SpreadsheetApp.openById(FINANCIALREPORTSSHEET_ID)
+  for(var cat in STOCK_SYMBOLS){
+    for(var stockNo in STOCK_SYMBOLS[cat]){
+      var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
+      Logger.log("recording: " + symbol)
+      var data = CACHE.get(symbol+'-CBSFinancialReport')
+      if(!(data)) continue;
+      data = JSON.parse(data)
+      for(var year in data){
+        var uuid = symbol + '-' + year.replace('近12个月', 'TTM')
+        var targetRow = onSearch(sheet, uuid, searchTargetCol=0)
+        if(targetRow){
+          targetRow += 1
+          sheet.getRange('A' + targetRow + ':H' + targetRow).setValues([[
+            uuid, symbol, year.replace('近12个月', 'TTM'), 
+            JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
+            JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
+          ]]) 
+        }else{
+          sheet.insertRowBefore(2);
+          sheet.getRange('A2:H2').setValues([[
+            uuid, symbol, year.replace('近12个月', 'TTM'), 
+            JSON.stringify(data[year]['五大財務比率']), JSON.stringify(data[year]['資產負債比率']), 
+            JSON.stringify(data[year]['資產負債表']), JSON.stringify(data[year]['利潤表']), JSON.stringify(data[year]['現金流量表'])
+          ]]) 
         }
       }
     }

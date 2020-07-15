@@ -60,7 +60,7 @@ function monthlyYahooForecasting(){
           break
         }catch(e){
           Logger.log(e)
-          Logger.log(symbol + " : CBS parse failed " + retry)
+          Logger.log(symbol + " : Yahoo parse failed " + retry)
           Utilities.sleep(sleepDurationSec * 1000 * retry)
           retry  += 1
         }
