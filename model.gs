@@ -37,12 +37,24 @@ function weBullSingle(stockSymbol, span) {
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
       'MACD': MACD(close), 'BollMean': BOLL.mean, 'BollUpper': BOLL.upper, 'BollLower': BOLL.lower,
     }
-    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj); //, targetPriceObj
+    var forecastObj = {}
+    var yahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
+    var targetRow = onSearch(yahooSheet, stockSymbol, searchTargetCol=1)
+    if(targetRow){
+      targetRow += 1
+      var forecastData = yahooSheet.getSheetValues(targetRow,3,1,7)[0]
+      forecastObj.thisEPSGrowth = Math.round(forecastData[1] * 1000)/10 + "%"
+      forecastObj.thisRevenueGrowth = Math.round(forecastData[2] * 1000)/10 + "%"
+      forecastObj.nextEPSGrowth = Math.round(forecastData[3] * 1000)/10 + "%"
+      forecastObj.nextRevenueGrowth = Math.round(forecastData[4] * 1000)/10 + "%"
+      forecastObj.last5Y = Math.round(forecastData[5] * 1000)/10 + "%"
+      forecastObj.next5Y = Math.round(forecastData[6] * 1000)/10 + "%"
+    }
+    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj, forecastObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
   }
-  Logger.log(stockHistoryData.guruObj)
   return stockHistoryData
 }
 

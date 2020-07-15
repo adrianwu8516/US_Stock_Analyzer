@@ -93,7 +93,6 @@ function renewCache(){
     for (var stockSymbol in STOCK_SYMBOLS[cat]){
       var stockName = STOCK_SYMBOLS[cat][stockSymbol].split('-')[1]
       CACHE.remove(stockName + '-history')
-      
     }
   }
 }

@@ -351,6 +351,14 @@
                       <th scope="row">EPS TTM</th>
                       <td><?=Math.round(tickerRTObj.epsTtm*10)/10?></td>
                     </tr>
+                    <tr>
+                      <th scope="row">最近一期財報時間</th>
+                      <td><?=tickerRTObj.latestEarningsDate?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">下次財報時間</th>
+                      <td><?=tickerRTObj.estimateEarningsDate?></td>
+                    </tr>
                     <?if(tickerRTObj.latestDividendDate){ ?>
                     <tr>
                       <th scope="row">上次分紅時間</th>
@@ -366,7 +374,7 @@
                     <?if(tickerRTObj.yield){ ?>
                     <tr>
                       <th scope="row">殖利率</th>
-                      <td><?=Math.round(tickerRTObj.yield*10)/10?></td>
+                      <td><?=Math.round(tickerRTObj.yield*1000)/10?>%</td>
                     </tr>
                     <?}?>
                     
@@ -444,12 +452,20 @@
                       <td><?=MedPSValue?></td>
                     </tr>
                     <tr>
-                      <th scope="row">最近一期財報時間</th>
-                      <td><?=tickerRTObj.latestEarningsDate?></td>
+                      <th scope="row">盈餘成長</th>
+                      <td><?=thisEPSGrowth?> / <?=nextEPSGrowth?></td>
                     </tr>
                     <tr>
-                      <th scope="row">下次財報時間</th>
-                      <td><?=tickerRTObj.estimateEarningsDate?></td>
+                      <th scope="row">銷售成長</th>
+                      <td><?=thisRevenueGrowth?> / <?=nextRevenueGrowth?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">過去 5 年銷售成長</th>
+                      <td><?=last5Y?></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">未來 5 年銷售成長</th>
+                      <td><?=next5Y?></td>
                     </tr>
                   </tbody>
                 </table>
