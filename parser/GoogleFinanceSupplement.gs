@@ -9,7 +9,7 @@ function addGoogleDataToAllExistedFiles(){
   }
 }
 
-function supplementForStock(googleSymbol='NIU') {
+function supplementForStock(googleSymbol='CAKE') {
   //var googleSymbol = symbol.replace('-', ':').toUpperCase()
   //var fileName = symbol.split('-')[1]
   var fileName = googleSymbol
