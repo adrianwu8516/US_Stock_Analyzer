@@ -9,7 +9,7 @@ function addGoogleDataToAllExistedFiles(){
   }
 }
 
-function supplementForStock(googleSymbol='MMM') {
+function supplementForStock(googleSymbol='NIU') {
   //var googleSymbol = symbol.replace('-', ':').toUpperCase()
   //var fileName = symbol.split('-')[1]
   var fileName = googleSymbol
@@ -25,7 +25,7 @@ function supplementForStock(googleSymbol='MMM') {
     insertGoogleHisData(stockDoc, googleSymbol)
     
     // Insert New Column Name
-    stockDoc.getRange("A1:X1").setValues([["日期", "代號", "公司名稱", "交易所", "目前價格", "今天漲跌（％）", "市值", "市淨率", "分析師評價", "分析師關注度", "分析師高價", "分析師均價", "分析師低價", "52週最高價", "52週最低價", "CBS評等", "tickerRT", "rating", "targetPrice", "forecastEps", "當日最高", "當日最低", "開盤", "成交量"]])
+    //stockDoc.getRange("A1:X1").setValues([["日期", "代號", "公司名稱", "交易所", "目前價格", "今天漲跌（％）", "市值", "市淨率", "分析師評價", "分析師關注度", "分析師高價", "分析師均價", "分析師低價", "52週最高價", "52週最低價", "CBS評等", "tickerRT", "rating", "targetPrice", "forecastEps", "當日最高", "當日最低", "開盤", "成交量"]])
   }
 }
 

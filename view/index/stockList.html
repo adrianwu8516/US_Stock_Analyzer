@@ -22,104 +22,134 @@
                             <div class="table-responsive-xl">
                                 <table class="table table-hover" cellspacing="0">
                                   <tbody>
-                                    <tr style="height: 30px;">
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>指標</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>線圖</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>財報</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>公司</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>價格</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52H</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>52L</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>漲跌</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PE</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PB</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>PS</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>營收成長率</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>分析</strong></th>
-                                     <th scope="col" style="height: 30px; text-align: center;"><strong>關注</strong></th>
+                                    <tr>
+                                     <th scope="col" style="text-align: center;"><strong>指標</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>線圖</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>財報</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>公司</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>價格</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>52H</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>52L</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>漲跌</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>PE</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>PB</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>PS</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>今年PEG</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>明年PEG</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>EPS成長</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>營收成長</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>分析</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>關注</strong></th>
                                    </tr>
                                    <? for(var i in catInfo){ ?>
-                                     <tr style="height: 20px;">
-                                       <td style="height: 20px; text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
-                                       <td style="height: 20px; text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['symbol'].toLowerCase()?>" target="_blank">📈</a></td>
+                                     <tr>
+                                       <td style="text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
+                                       <td style="text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['symbol'].toLowerCase()?>" target="_blank">📈</a></td>
             
                                        <? if (catInfo[i]['cbsRanking'] == '过热'){ ?>
-                                           <td style="height: 20px; text-align: center;"><a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a></td>
+                                           <td style="text-align: center;"><a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a></td>
                                        <? }else if (catInfo[i]['cbsRanking'] == '中等'){ ?>
-                                           <td style="height: 20px; text-align: center;"><a style="color: #FCCC79;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">中等</a></td>
+                                           <td style="text-align: center;"><a style="color: #FCCC79;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">中等</a></td>
                                        <? }else if (catInfo[i]['cbsRanking'] == '低价'){ ?>
-                                           <td style="height: 20px; text-align: center;"><a style="color: #8FD17F;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">偏低</a></td>
+                                           <td style="text-align: center;"><a style="color: #8FD17F;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">偏低</a></td>
                                        <? }else if (catInfo[i]['cbsRanking'] == '低估'){ ?>
-                                           <td style="height: 20px; text-align: center;"><a style="color: #3D9CFF;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">低估</a></td>
+                                           <td style="text-align: center;"><a style="color: #3D9CFF;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">低估</a></td>
                                        <? }else if (catInfo[i]['cbsRanking'] == '观望'){ ?>
-                                           <td style="height: 20px; text-align: center;"><a style="color: #999999;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">觀望</a></td>
+                                           <td style="text-align: center;"><a style="color: #999999;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">觀望</a></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: center;"><?=catInfo[i]['cbsRanking']?></td>
+                                           <td style="text-align: center;"><?=catInfo[i]['cbsRanking']?></td>
                                        <? }?>
             
-                                       <td style="height: 20px; text-align: center;">
+                                       <td style="text-align: center; white-space: nowrap">
                                            <a href="<?= catInfo[i]['url']?>" target="_blank">
-                                               <?= catInfo[i]['companyName'] ?> ( <?= catInfo[i]['symbol']?> ) 
+                                               <?= catInfo[i]['companyName'] ?><br/>( <?= catInfo[i]['symbol']?> ) 
                                                <?if(catInfo[i]['volumeMark']){?><?=catInfo[i]['volumeMark']?><?}?>
                                                <?if(catInfo[i]['news']){?><?=catInfo[i]['news']?><?}?>
                                                <?if(catInfo[i]['beatAnalyst']){?><?=catInfo[i]['beatAnalyst']?><?}?>
                                            </a>
                                        </td>
-                                       <td style="height: 20px; text-align: center;"><?= catInfo[i]['price'] ?></td>
+                                       <td style="text-align: center;"><?= catInfo[i]['price'] ?></td>
             
                                        <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
-                                           <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>
+                                           <td style="text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: center;"><?= catInfo[i]['52weekHigh'] ?></td>
+                                           <td style="text-align: center;"><?= catInfo[i]['52weekHigh'] ?></td>
                                        <? }?>
             
                                        <? if ((catInfo[i]['price'] - catInfo[i]['52weekLow'])/catInfo[i]['price'] < 0.05){ ?>
-                                           <td style="height: 20px; text-align: center;"><span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span></td>
+                                           <td style="text-align: center;"><span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: center;"><?= catInfo[i]['52weekLow'] ?></td>
+                                           <td style="text-align: center;"><?= catInfo[i]['52weekLow'] ?></td>
                                        <? }?>
             
                                        <? if (catInfo[i]['delta'] > 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #339966;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
                                        <? }else if (catInfo[i]['delta'] < 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #ff0000;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</strong></td>
+                                           <td style="text-align: center; white-space: nowrap"><strong><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</strong></td>
                                        <? }?>
             
                                        <? if (catInfo[i]['TTM'] > 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
+                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
                                        <? }else if (catInfo[i]['TTM'] < 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
+                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
                                        <? }else{ ?>
                                            <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['TTM']) ?></strong></td>
                                        <? }?>
                                        
                                        <? if (catInfo[i]['pb'] > 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
-                                       <? }else if (catInfo[i]['TTM'] < 0){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                       <? }else if (catInfo[i]['pb'] < 0){ ?>
+                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['pb']) ?></strong></td>
+                                           <td style="height: 20px text-align: center;"><strong><?= Math.round(catInfo[i]['pb']) ?></strong></td>
                                        <? }?>
                                        
-                                       <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['ps']) ?></strong></td>
-                                       <td style="height: 20px text-align: center;;"><strong><?= catInfo[i]['thisRevenue'] ?>/<?= catInfo[i]['nextRevenue'] ?>/<?= catInfo[i]['next5Year'] ?></strong></td>
+                                       <td style="height: 20px text-align: center;"><strong><?= Math.round(catInfo[i]['ps']) ?></strong></td>
+                                       
+                                       <? if(catInfo[i]['thisEPS']){?>
+                                           <? var speg = catInfo[i]['TTM']/catInfo[i]['thisEPS']?>
+                                           <? if (catInfo[i]['TTM'] < 0 || catInfo[i]['thisEPS'] < 0){ ?>
+                                               <td style="text-align: center;"></td>
+                                           <? }else if (speg > 1){ ?>
+                                               <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(speg*10)/10 ?></span></strong></td>
+                                           <? }else{ ?>
+                                               <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(speg*10)/10 ?></span></strong></td>
+                                           <? }?>
+                                       <? }else{ ?>
+                                           <td style="text-align: center;"></td>
+                                       <? }?>
+                                       
+                                       <? if(catInfo[i]['nextEPS']){?>
+                                           <? var peg = catInfo[i]['TTM']/catInfo[i]['nextEPS']?>
+                                           <? if (catInfo[i]['TTM'] < 0 || catInfo[i]['nextEPS'] < 0){ ?>
+                                               <td style="text-align: center;"></td>
+                                           <? }else if (peg > 1){ ?>
+                                               <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(peg*10)/10 ?></span></strong></td>
+                                           <? }else{ ?>
+                                               <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(peg*10)/10 ?></span></strong></td>
+                                           <? }?>
+                                       <? }else{ ?>
+                                           <td style="text-align: center;"></td>
+                                       <? }?>
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisEPS'] ?>/<?= catInfo[i]['nextEPS']?></strong></td>
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisRevenue'] ?>/<?= catInfo[i]['nextRevenue']?></strong></td>
                                        
                                        <? if (catInfo[i]['analysis'].includes("↗")){ ?>
-                                           <td style="height: 20px; text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+                                           <td style="text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
                                        <? }else if (catInfo[i]['analysis'].includes("↘")){ ?>
-                                           <td style="height: 20px; text-align: left;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analysis'] ?></span></strong></td>
+                                           <td style="text-align: left;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analysis'] ?></span></strong></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: left;"><?= catInfo[i]['analysis'] ?></td>
+                                           <td style="text-align: left; white-space: nowrap;"><?= catInfo[i]['analysis'] ?></td>
                                        <? }?>
             
                                        <? if (String(catInfo[i]['analystPopularity']).includes("↗")){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #339966;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #339966;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
                                        <? }else if (String(catInfo[i]['analystPopularity']).includes("↘")){ ?>
-                                           <td style="height: 20px; text-align: center;"><strong><span style="color: #ff0000;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
+                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #ff0000;"><?= catInfo[i]['analystPopularity'] ?></span></strong></td>
                                        <? }else{ ?>
-                                           <td style="height: 20px; text-align: center;"><?= catInfo[i]['analystPopularity'] ?></td>
+                                           <td style="text-align: center; white-space: nowrap"><?= catInfo[i]['analystPopularity'] ?></td>
                                        <? }?>
             
                                      </tr>

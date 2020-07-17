@@ -30,7 +30,7 @@ function fixMissingValue(){
           stockDoc.deleteRow(3)
         }
         if(stockDoc.getSheetValues(2,1,1,1)[0][0]==''){
-          Logger.log(fileName + ": 3rd row null")
+          Logger.log(fileName + ": 2nd row null")
           stockDoc.deleteRow(2)
         }
       }else{
