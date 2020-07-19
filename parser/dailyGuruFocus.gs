@@ -204,7 +204,7 @@ function dailyGuruFocus(){
 
 function dailyGuruFocusRecord(){
   // Check if market closed
-  //if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   for(var cat in STOCK_SYMBOLS){
     for(var stockNo in STOCK_SYMBOLS[cat]){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')

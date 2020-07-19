@@ -17,6 +17,8 @@ function dataRecordandProcess(){
 }
 
 function logGenerateAndCrossDayCompare(){
+  // Check if market closed
+  if(!checkifClosed()) return;
   // Financial Forecast Data Prepare 
   var YahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
   var logObj = {}
@@ -54,6 +56,9 @@ function logGenerateAndCrossDayCompare(){
 
 function dataRecord(stockInfo){
   var fileName = stockInfo['symbol']
+  var today = new Date();
+  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
+  
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var documentId = DriveApp.getFilesByName(fileName).next().getId()
     var stockDoc = SpreadsheetApp.openById(documentId);
@@ -61,10 +66,28 @@ function dataRecord(stockInfo){
       Logger.log(fileName + ": 2nd row null")
       stockDoc.deleteRow(2)
     }
+    var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
+    if(!(targetRow)){
+      Logger.log("Recording: " + fileName)
+      stockDoc.insertRowBefore(2);
+      stockDoc.getRange('A2:X2').setValues([[
+        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
+        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
+        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
+        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
+        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
+    }
   }else{
     var documentId = DriveApp.getFileById(STOCK_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
+    Logger.log("New File: " + fileName)
     var stockDoc = SpreadsheetApp.openById(documentId);
+    stockDoc.getRange('A2:X2').setValues([[
+      todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
+      stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
+      stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
+      stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
+      stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
     if(stockInfo['exchange'] == 'NSQ'){
       var googleSymbol = 'NASDAQ:' + fileName.toUpperCase()
       insertGoogleHisData(stockDoc, googleSymbol)
@@ -78,19 +101,7 @@ function dataRecord(stockInfo){
       Logger.log("Can not find " + fileName + " in Google Finance Database")
     }
   }
-  today = new Date();
-  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
-  var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
-  if(!(targetRow)){
-    Logger.log("Recording: " + fileName)
-    stockDoc.insertRowBefore(2);
-    stockDoc.getRange('A2:X2').setValues([[
-      todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
-      stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
-      stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
-      stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
-      stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
-  }
+  
 }
 
 function dailyComparison(noteObj, noteObjOld){
