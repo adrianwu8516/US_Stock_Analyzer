@@ -67,7 +67,16 @@ function dataRecord(stockInfo){
       stockDoc.deleteRow(2)
     }
     var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
-    if(!(targetRow)){
+    if(targetRow){
+      Logger.log("Writeover: " + fileName)
+      targetRow += 1
+      stockDoc.getRange('A'+ targetRow + ':X' + targetRow).setValues([[
+        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
+        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
+        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
+        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
+        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
+    }else{
       Logger.log("Recording: " + fileName)
       stockDoc.insertRowBefore(2);
       stockDoc.getRange('A2:X2').setValues([[

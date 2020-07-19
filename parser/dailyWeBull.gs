@@ -81,6 +81,8 @@ function getWeBullData(urlSymbol='nasdaq-aapl', category=''){
       stockInfo['open'] = parseFloat(tickerRTJSON.tickerRT.open)
       stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
       stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
+      stockInfo['forwardPe'] = parseFloat(tickerRTJSON.tickerRT.forwardPe)
+      stockInfo['yield'] = Math.round(parseFloat(tickerRTJSON.tickerRT.yield)*1000)/10 + "%"
       // Test
       stockInfo = weBullAnalystMark(stockInfo)
       Logger.log(stockInfo)

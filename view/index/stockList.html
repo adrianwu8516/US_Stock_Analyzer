@@ -32,12 +32,15 @@
                                      <th scope="col" style="text-align: center;"><strong>52L</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>漲跌</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PE</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>預估PE</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PB</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PS</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>今年PEG</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>明年PEG</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>EPS成長</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>營收成長</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>殖利率</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>市值(億)</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>分析</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>關注</strong></th>
                                    </tr>
@@ -98,6 +101,14 @@
                                            <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['TTM']) ?></strong></td>
                                        <? }?>
                                        
+                                       <? if (catInfo[i]['forwardPe'] > 0){ ?>
+                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['forwardPe']) ?></span></strong></td>
+                                       <? }else if (catInfo[i]['forwardPe'] < 0){ ?>
+                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['forwardPe']) ?></span></strong></td>
+                                       <? }else{ ?>
+                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['forwardPe']) ?></strong></td>
+                                       <? }?>
+                                       
                                        <? if (catInfo[i]['pb'] > 0){ ?>
                                            <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
                                        <? }else if (catInfo[i]['pb'] < 0){ ?>
@@ -133,8 +144,44 @@
                                        <? }else{ ?>
                                            <td style="text-align: center;"></td>
                                        <? }?>
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisEPS'] ?>/<?= catInfo[i]['nextEPS']?></strong></td>
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisRevenue'] ?>/<?= catInfo[i]['nextRevenue']?></strong></td>
+                                       
+                                       <? if (catInfo[i]['thisEPS'] < 0){ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #ff0000;"><?= catInfo[i]['thisEPS'] ?></span>/
+                                       <? }else if (catInfo[i]['thisEPS'] > 30){ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #339966;"><?= catInfo[i]['thisEPS'] ?></span>/
+                                       <? }else{ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisEPS'] ?>/
+                                       <? }?>
+                                       <? if (catInfo[i]['nextEPS'] < 0){ ?>
+                                           <span style="color: #ff0000;"><?= catInfo[i]['nextEPS'] ?></span></strong></td>
+                                       <? }else if (catInfo[i]['nextEPS'] > 30){ ?>
+                                           <span style="color: #339966;"><?= catInfo[i]['nextEPS'] ?></span></strong></td>
+                                       <? }else{ ?>
+                                           <?= catInfo[i]['nextEPS'] ?></strong></td>
+                                       <? }?>
+                                       
+                                       <? if (catInfo[i]['thisRevenue'] < 0){ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #ff0000;"><?= catInfo[i]['thisRevenue'] ?></span>/
+                                       <? }else if (catInfo[i]['thisRevenue'] > 30){ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #339966;"><?= catInfo[i]['thisRevenue'] ?></span>/
+                                       <? }else{ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisRevenue'] ?>/
+                                       <? }?>
+                                       <? if (catInfo[i]['nextRevenue'] < 0){ ?>
+                                           <span style="color: #ff0000;"><?= catInfo[i]['nextRevenue'] ?></span></strong></td>
+                                       <? }else if (catInfo[i]['nextRevenue'] > 30){ ?>
+                                           <span style="color: #339966;"><?= catInfo[i]['nextRevenue'] ?></span></strong></td>
+                                       <? }else{ ?>
+                                           <?= catInfo[i]['nextRevenue'] ?></strong></td>
+                                       <? }?>
+                                       
+                                       <? if(catInfo[i]['yield'] == '0%'){ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"></td>
+                                       <? }else{ ?>
+                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['yield'] ?></strong></td>
+                                       <? } ?>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value']) ?></strong></td>
                                        
                                        <? if (catInfo[i]['analysis'].includes("↗")){ ?>
                                            <td style="text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>
