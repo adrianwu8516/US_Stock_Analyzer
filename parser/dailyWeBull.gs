@@ -20,9 +20,8 @@ function weBullAnalystMark(stockInfo){
   }
   
   // Post-Earning Announcement Effect, Get Fast / Positive News
-  var lastFRDate = Date.parse(stockInfo.latestEarningsDate)
   var today = new Date()
-  if((today - lastFRDate < 86400000 * 3)&&(today > lastFRDate)){ // within 3 days
+  if((today - stockInfo.latestEarningsDate < 86400000 * 10)&&(today > stockInfo.latestEarningsDate)){ // within 10 days
     stockInfo['news'] = "🗞"
     let forecastLast = JSON.parse(stockInfo.forecastEps)['points'][4]
     let forecast2ndLast = JSON.parse(stockInfo.forecastEps)['points'][3]
@@ -35,7 +34,7 @@ function weBullAnalystMark(stockInfo){
   return stockInfo
 }
 
-function getWeBullData(urlSymbol='nasdaq-aapl', category=''){
+function getWeBullData(urlSymbol='nyse-unh', category=''){
   Logger.log("Handling: " + urlSymbol)
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var retry = 1
@@ -75,7 +74,7 @@ function getWeBullData(urlSymbol='nasdaq-aapl', category=''){
       stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
       stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
       stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
-      
+      stockInfo['latestEarningsDate'] = Date.parse(tickerRTJSON.tickerRT.latestEarningsDate)
       stockInfo['high'] = parseFloat(tickerRTJSON.tickerRT.high)
       stockInfo['low'] = parseFloat(tickerRTJSON.tickerRT.low)
       stockInfo['open'] = parseFloat(tickerRTJSON.tickerRT.open)
