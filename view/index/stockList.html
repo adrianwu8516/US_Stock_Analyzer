@@ -32,37 +32,50 @@
                                      <th scope="col" style="text-align: center;"><strong>52L</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>漲跌</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PE</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>預估PE</strong></th>
+                                     <th scope="col" style="text-align: center; white-space: nowrap;"><strong>預估PE</strong></th>
+                                     <th scope="col" style="text-align: center; white-space: nowrap;"><strong>價值乘數</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PB</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>PTBV</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PS</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>今年PEG</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>明年PEG</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>EPS成長</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>營收成長</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>殖利率</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>回購率</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>市值(億)</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>分析</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>關注</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>FScore</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>ZScore</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>MScroe</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>DCF</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>預估FCF</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>林奇估值</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>葛拉漢估值</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>PS回歸估值</strong></th>
                                    </tr>
                                    <? for(var i in catInfo){ ?>
                                      <tr>
                                        <td style="text-align: center;"> <?= catInfo[i]['sign'] ?> </td>
                                        <td style="text-align: center;"><a href="https://script.google.com/macros/s/AKfycbzbzeGJ836vYiPAtquSFeMPGCVzGDSWYTlyaPrX3tpv7KzRBJg/exec?mode=historyData&symbol=<?= catInfo[i]['symbol'].toLowerCase()?>" target="_blank">📈</a></td>
-            
+                                       
+                                       <td style="text-align: center;">
                                        <? if (catInfo[i]['cbsRanking'] == '过热'){ ?>
-                                           <td style="text-align: center;"><a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a></td>
+                                           <a style="color: #D44D44;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">過熱</a>
                                        <? }else if (catInfo[i]['cbsRanking'] == '中等'){ ?>
-                                           <td style="text-align: center;"><a style="color: #FCCC79;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">中等</a></td>
+                                           <a style="color: #FCCC79;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">中等</a>
                                        <? }else if (catInfo[i]['cbsRanking'] == '低价'){ ?>
-                                           <td style="text-align: center;"><a style="color: #8FD17F;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">偏低</a></td>
+                                           <a style="color: #8FD17F;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">偏低</a>
                                        <? }else if (catInfo[i]['cbsRanking'] == '低估'){ ?>
-                                           <td style="text-align: center;"><a style="color: #3D9CFF;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">低估</a></td>
+                                           <a style="color: #3D9CFF;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">低估</a>
                                        <? }else if (catInfo[i]['cbsRanking'] == '观望'){ ?>
-                                           <td style="text-align: center;"><a style="color: #999999;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">觀望</a></td>
+                                           <a style="color: #999999;" href="https://caibaoshuo.com/companies/<?= catInfo[i]['symbol']?>" target="_blank">觀望</a>
                                        <? }else{ ?>
-                                           <td style="text-align: center;"><?=catInfo[i]['cbsRanking']?></td>
+                                           <?=catInfo[i]['cbsRanking']?>
                                        <? }?>
-            
+                                       </td>
+                                       
                                        <td style="text-align: center; white-space: nowrap">
                                            <a href="<?= catInfo[i]['url']?>" target="_blank">
                                                <?= catInfo[i]['companyName'] ?><br/>( <?= catInfo[i]['symbol']?> ) 
@@ -72,114 +85,145 @@
                                            </a>
                                        </td>
                                        <td style="text-align: center;"><?= catInfo[i]['price'] ?></td>
-            
+                                       
+                                       <td style="text-align: center;">
                                        <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
-                                           <td style="text-align: center;"><span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?></span></td>
+                                           <span style="color: #ffffff; background-color: #008000;"><?= catInfo[i]['52weekHigh'] ?>
                                        <? }else{ ?>
-                                           <td style="text-align: center;"><?= catInfo[i]['52weekHigh'] ?></td>
+                                           <?= catInfo[i]['52weekHigh'] ?>
                                        <? }?>
-            
+                                       </span></td>
+                                       
+                                       <td style="text-align: center;">
                                        <? if ((catInfo[i]['price'] - catInfo[i]['52weekLow'])/catInfo[i]['price'] < 0.05){ ?>
-                                           <td style="text-align: center;"><span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span></td>
+                                           <span style="color: #ffffff; background-color: #ff0000;"><?= catInfo[i]['52weekLow'] ?></span>
                                        <? }else{ ?>
-                                           <td style="text-align: center;"><?= catInfo[i]['52weekLow'] ?></td>
+                                           <?= catInfo[i]['52weekLow'] ?>
                                        <? }?>
-            
+                                       </td>
+                                       
+                                       <td style="text-align: center; white-space: nowrap"><strong>
                                        <? if (catInfo[i]['delta'] > 0){ ?>
-                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #339966;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+                                           <span style="color: #339966;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span>
                                        <? }else if (catInfo[i]['delta'] < 0){ ?>
-                                           <td style="text-align: center; white-space: nowrap"><strong><span style="color: #ff0000;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span></strong></td>
+                                           <span style="color: #ff0000;"><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</span>
                                        <? }else{ ?>
-                                           <td style="text-align: center; white-space: nowrap"><strong><?= (catInfo[i]['delta']* 100).toFixed(1) ?> %</strong></td>
+                                           <?= (catInfo[i]['delta']* 100).toFixed(1) ?> %
                                        <? }?>
-            
+                                       </strong></td>
+                                       
+                                       <td style="text-align: center;"><strong>
                                        <? if (catInfo[i]['TTM'] > 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
+                                           <span style="color: #339966;"><?= Math.round(catInfo[i]['TTM']) ?></span>
                                        <? }else if (catInfo[i]['TTM'] < 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['TTM']) ?></span></strong></td>
+                                           <span style="color: #ff0000;"><?= Math.round(catInfo[i]['TTM']) ?></span>
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['TTM']) ?></strong></td>
+                                           <?= Math.round(catInfo[i]['TTM']) ?>
                                        <? }?>
+                                       </strong></td>
                                        
+                                       <td style="text-align: center;"><strong>
                                        <? if (catInfo[i]['forwardPe'] > 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['forwardPe']) ?></span></strong></td>
+                                           <span style="color: #339966;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
                                        <? }else if (catInfo[i]['forwardPe'] < 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['forwardPe']) ?></span></strong></td>
+                                           <span style="color: #ff0000;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['forwardPe']) ?></strong></td>
+                                           <?= Math.round(catInfo[i]['forwardPe']) ?>
                                        <? }?>
+                                       </strong></td>
                                        
+                                       <td style="text-align: center;"><strong>
+                                       <? if (catInfo[i]['ev2ebitdaNow'] > 0){ ?>
+                                           <span style="color: #339966;"><?= Math.round(catInfo[i]['ev2ebitdaNow']) ?></span>
+                                       <? }else if (catInfo[i]['ev2ebitdaNow'] < 0){ ?>
+                                           <span style="color: #ff0000;"><?= Math.round(catInfo[i]['ev2ebitdaNow']) ?></span>
+                                       <? }else{ ?>
+                                           <?= Math.round(catInfo[i]['ev2ebitdaNow']) ?>
+                                       <? }?>
+                                       </strong></td>
+                                       
+                                       <td style="text-align: center;"><strong>
                                        <? if (catInfo[i]['pb'] > 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                           <span style="color: #339966;"><?= Math.round(catInfo[i]['pb']) ?></span>
                                        <? }else if (catInfo[i]['pb'] < 0){ ?>
-                                           <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(catInfo[i]['pb']) ?></span></strong></td>
+                                           <span style="color: #ff0000;"><?= Math.round(catInfo[i]['pb']) ?></span>
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center;"><strong><?= Math.round(catInfo[i]['pb']) ?></strong></td>
+                                           <?= Math.round(catInfo[i]['pb']) ?>
                                        <? }?>
+                                       </strong></td>
                                        
+                                       <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['p2tangible_bookNow']) ?></strong></td>
                                        <td style="height: 20px text-align: center;"><strong><?= Math.round(catInfo[i]['ps']) ?></strong></td>
                                        
+                                       <td style="text-align: center;"><strong>
                                        <? if(catInfo[i]['thisEPS']){?>
                                            <? var speg = catInfo[i]['TTM']/catInfo[i]['thisEPS']?>
                                            <? if (catInfo[i]['TTM'] < 0 || catInfo[i]['thisEPS'] < 0){ ?>
-                                               <td style="text-align: center;"></td>
                                            <? }else if (speg > 1){ ?>
-                                               <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(speg*10)/10 ?></span></strong></td>
+                                               <span style="color: #ff0000;"><?= Math.round(speg*10)/10 ?></span>
                                            <? }else{ ?>
-                                               <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(speg*10)/10 ?></span></strong></td>
+                                               <span style="color: #339966;"><?= Math.round(speg*10)/10 ?></span>
                                            <? }?>
-                                       <? }else{ ?>
-                                           <td style="text-align: center;"></td>
-                                       <? }?>
+                                       <? }else{} ?>
+                                       </strong></td>
                                        
+                                       <td style="text-align: center;"><strong>
                                        <? if(catInfo[i]['nextEPS']){?>
                                            <? var peg = catInfo[i]['TTM']/catInfo[i]['nextEPS']?>
                                            <? if (catInfo[i]['TTM'] < 0 || catInfo[i]['nextEPS'] < 0){ ?>
-                                               <td style="text-align: center;"></td>
                                            <? }else if (peg > 1){ ?>
-                                               <td style="text-align: center;"><strong><span style="color: #ff0000;"><?= Math.round(peg*10)/10 ?></span></strong></td>
+                                               <span style="color: #ff0000;"><?= Math.round(peg*10)/10 ?></span>
                                            <? }else{ ?>
-                                               <td style="text-align: center;"><strong><span style="color: #339966;"><?= Math.round(peg*10)/10 ?></span></strong></td>
+                                               <span style="color: #339966;"><?= Math.round(peg*10)/10 ?></span>
                                            <? }?>
-                                       <? }else{ ?>
-                                           <td style="text-align: center;"></td>
-                                       <? }?>
+                                       <? }else{} ?>
+                                       </strong></td>
                                        
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
                                        <? if (catInfo[i]['thisEPS'] < 0){ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #ff0000;"><?= catInfo[i]['thisEPS'] ?></span>/
+                                           <span style="color: #ff0000;"><?= catInfo[i]['thisEPS'] ?></span>/
                                        <? }else if (catInfo[i]['thisEPS'] > 30){ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #339966;"><?= catInfo[i]['thisEPS'] ?></span>/
+                                           <span style="color: #339966;"><?= catInfo[i]['thisEPS'] ?></span>/
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisEPS'] ?>/
+                                           <?= catInfo[i]['thisEPS'] ?>/
                                        <? }?>
                                        <? if (catInfo[i]['nextEPS'] < 0){ ?>
-                                           <span style="color: #ff0000;"><?= catInfo[i]['nextEPS'] ?></span></strong></td>
+                                           <span style="color: #ff0000;"><?= catInfo[i]['nextEPS'] ?></span>
                                        <? }else if (catInfo[i]['nextEPS'] > 30){ ?>
-                                           <span style="color: #339966;"><?= catInfo[i]['nextEPS'] ?></span></strong></td>
+                                           <span style="color: #339966;"><?= catInfo[i]['nextEPS'] ?></span>
                                        <? }else{ ?>
-                                           <?= catInfo[i]['nextEPS'] ?></strong></td>
+                                           <?= catInfo[i]['nextEPS'] ?>
                                        <? }?>
+                                       </strong></td>
                                        
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
                                        <? if (catInfo[i]['thisRevenue'] < 0){ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #ff0000;"><?= catInfo[i]['thisRevenue'] ?></span>/
+                                           <span style="color: #ff0000;"><?= catInfo[i]['thisRevenue'] ?></span>/
                                        <? }else if (catInfo[i]['thisRevenue'] > 30){ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><span style="color: #339966;"><?= catInfo[i]['thisRevenue'] ?></span>/
+                                           <span style="color: #339966;"><?= catInfo[i]['thisRevenue'] ?></span>/
                                        <? }else{ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['thisRevenue'] ?>/
+                                           <?= catInfo[i]['thisRevenue'] ?>/
                                        <? }?>
                                        <? if (catInfo[i]['nextRevenue'] < 0){ ?>
-                                           <span style="color: #ff0000;"><?= catInfo[i]['nextRevenue'] ?></span></strong></td>
+                                           <span style="color: #ff0000;"><?= catInfo[i]['nextRevenue'] ?></span>
                                        <? }else if (catInfo[i]['nextRevenue'] > 30){ ?>
-                                           <span style="color: #339966;"><?= catInfo[i]['nextRevenue'] ?></span></strong></td>
+                                           <span style="color: #339966;"><?= catInfo[i]['nextRevenue'] ?></span>
                                        <? }else{ ?>
-                                           <?= catInfo[i]['nextRevenue'] ?></strong></td>
+                                           <?= catInfo[i]['nextRevenue'] ?>
                                        <? }?>
+                                       </strong></td>
                                        
-                                       <? if(catInfo[i]['yield'] == '0%'){ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"></td>
-                                       <? }else{ ?>
-                                           <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= catInfo[i]['yield'] ?></strong></td>
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <? if(catInfo[i]['yield'] != '0%'){ ?>
+                                           <?= catInfo[i]['yield'] ?>
                                        <? } ?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <? if(catInfo[i]['buyback_yield'] != 0){ ?>
+                                           <?= Math.round(catInfo[i]['buyback_yield']*10)/10?>%
+                                       <? } ?>
+                                       </strong></td>
                                        
                                        <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value']) ?></strong></td>
                                        
@@ -198,7 +242,76 @@
                                        <? }else{ ?>
                                            <td style="text-align: center; white-space: nowrap"><?= catInfo[i]['analystPopularity'] ?></td>
                                        <? }?>
-            
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['fscore']>6){?>
+                                         <span style="color: #339966;"><?=catInfo[i]['fscore']?></span>
+                                       <?}else if(catInfo[i]['fscore']>5){?>
+                                         <span style="color: #E19223;"><?=catInfo[i]['fscore']?></span>
+                                       <?}else{?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['fscore']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['zscore']<=1.81){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['zscore']?></span>
+                                       <?}else if(catInfo[i]['zscore']<=2.99){?>
+                                         <span style="color: #E19223;"><?=catInfo[i]['zscore']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['zscore']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['mscore']>-2.22){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['mscore']?></span>
+                                       <?}else if(catInfo[i]['mscore']>0){?>
+                                         <span style="color: #E19223;"><?=catInfo[i]['mscore']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['mscore']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['price'] > catInfo[i]['iv_dcf']){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['iv_dcf']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['iv_dcf']?></span>
+                                       <?}?>
+                                       
+                                       </strong></td>
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['price'] > catInfo[i]['iv_dcf_share']){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['iv_dcf_share']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['iv_dcf_share']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['price'] > catInfo[i]['lynchvalue']){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['lynchvalue']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['lynchvalue']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['price'] > catInfo[i]['grahamnumber']){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['grahamnumber']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['grahamnumber']?></span>
+                                       <?}?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <?if(catInfo[i]['price'] > catInfo[i]['medpsvalue']){?>
+                                         <span style="color: #ff0000;"><?=catInfo[i]['medpsvalue']?></span>
+                                       <?}else{?>
+                                         <span style="color: #339966;"><?=catInfo[i]['medpsvalue']?></span>
+                                       <?}?>
+                                       </strong></td>
                                      </tr>
                                    <? } ?>
                                  </tbody>

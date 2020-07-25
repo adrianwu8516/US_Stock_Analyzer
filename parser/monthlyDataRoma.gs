@@ -26,8 +26,8 @@ function monthlyDataRomaSnP500Compare(){
   var snpCompare = {}
   var today = new Date();
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月';
-  var lastTime = investorDoc.getRange(2, 1, 1, 1).getValue()
-  if(lastTime == todayStr){return;}
+//  var lastTime = investorDoc.getRange(2, 1, 1, 1).getValue()
+//  if(lastTime == todayStr){return;}
   
   var urlPositive = 'https://www.dataroma.com/m/grid.php?s=q';
   var xmlPositive = UrlFetchApp.fetch(urlPositive).getContentText();

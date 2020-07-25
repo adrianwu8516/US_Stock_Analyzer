@@ -28,7 +28,7 @@ function logGenerateAndCrossDayCompare(){
     for(var i in STOCK_SYMBOLS[catName]){
       var stockSymbol = STOCK_SYMBOLS[catName][i].split(/-(.+)/)[1].toUpperCase()
       var stockInfo = CACHE.get(stockSymbol);
-      if(stockInfo != null){
+      if(stockInfo){
         stockInfo = JSON.parse(stockInfo)
         var forecast = checkYahooForecast(YahooSheet, stockSymbol)
         stockInfo.thisRevenue = forecast.thisRevenue
@@ -40,13 +40,33 @@ function logGenerateAndCrossDayCompare(){
         delete stockInfo.rating;
         delete stockInfo.targetPrice;
         delete stockInfo.forecastEps;
+        // GuruData Included
+        var guruData = CACHE.get(STOCK_SYMBOLS[catName][i].split(/-(.+)/)[1].replace('-', '.')+'-Guru');
+        if(guruData){
+          guruData = JSON.parse(guruData)
+          stockInfo.fscore = guruData.fscore
+          stockInfo.mscore = guruData.mscore
+          stockInfo.zscore = guruData.zscore
+          stockInfo.ev2ebitdaNow = guruData.ev2ebitdaNow
+          stockInfo.p2tangible_bookNow = guruData.p2tangible_bookNow
+          stockInfo.buyback_yield = guruData.buyback_yield
+          stockInfo.lynchvalue = guruData.lynchvalue
+          stockInfo.grahamnumber = guruData.grahamnumber
+          stockInfo.iv_dcf = guruData.iv_dcf
+          stockInfo.iv_dcf_share = guruData.iv_dcf_share
+          stockInfo.medpsvalue = guruData.medpsvalue
+        }else{
+          Logger.log("No GuruFOcus Info Data of" + stockSymbol)
+        }
         logObj[catName][stockSymbol] = stockInfo
+      }else{
+        Logger.log("No Stock Info Data of" + stockSymbol)
       }
     }
   }
   // Process - compare the data with yesterday
   var logObjOld = JSON.parse(readLog("LoggerYesterday.txt"))
-  saveLog(JSON.stringify(logObj), "LoggerYesterday.txt")
+  //saveLog(JSON.stringify(logObj), "LoggerYesterday.txt")
   
   // Log Compare
   logObj = dailyComparison(logObj, logObjOld)
