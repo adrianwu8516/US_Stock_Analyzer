@@ -8,10 +8,10 @@ function getForecasting(data, symbol) {
   data[symbol].currentYearSalesGrowth = revenueEstimateXml.replace(/[\s\S]*?data-reactid="175">([\s\S]*?)<[\s\S]*/, '$1')
   data[symbol].nextYearSalesGrowth = revenueEstimateXml.replace(/[\s\S]*?data-reactid="177">([\s\S]*?)<[\s\S]*/, '$1')
   var growthEstimateXml = xml.match(/data-reactid="391">[\s\S]*?<\/table>/)[0]
-  data[symbol].currentYearEpsGrowth = growthEstimateXml.replace(/[\s\S]*?data-reactid="417">([\s\S]*?)<[\s\S]*/, '$1')
-  data[symbol].nextYearEpsGrowth = growthEstimateXml.replace(/[\s\S]*?data-reactid="424">([\s\S]*?)<[\s\S]*/, '$1')
-  data[symbol].next5Year = growthEstimateXml.replace(/[\s\S]*?data-reactid="431">([\s\S]*?)<[\s\S]*/, '$1')
-  data[symbol].past5Year = growthEstimateXml.replace(/[\s\S]*?data-reactid="438">([\s\S]*?)<[\s\S]*/, '$1')
+  data[symbol].currentYearEpsGrowth = growthEstimateXml.replace(/[\s\S]*Current Year<\/span><\/td><td class="Ta\(end\) Py\(10px\)" data-reactid="[0-9]+">([\s\S]*?)<[\s\S]*/, '$1')
+  data[symbol].nextYearEpsGrowth = growthEstimateXml.replace(/[\s\S]*Next Year<\/span><\/td><td class="Ta\(end\) Py\(10px\)" data-reactid="[0-9]+">([\s\S]*?)<[\s\S]*/, '$1')
+  data[symbol].next5Year = growthEstimateXml.replace(/[\s\S]*Next 5 Years \(per annum\)<\/span><\/td><td class="Ta\(end\) Py\(10px\)" data-reactid="[0-9]+">([\s\S]*?)<[\s\S]*/, '$1')
+  data[symbol].past5Year = growthEstimateXml.replace(/[\s\S]*Past 5 Years \(per annum\)<\/span><\/td><td class="Ta\(end\) Py\(10px\)" data-reactid="[0-9]+">([\s\S]*?)<[\s\S]*/, '$1')
   return data
 }
 

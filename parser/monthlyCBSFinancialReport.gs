@@ -117,7 +117,7 @@ function monthlyFinancialReport(){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
       let sleepDurationSec = 0.5
       let retry = 0
-      while(retry < 2){
+      while(retry < 3){
         try{
           Logger.log('Handling: ' + symbol)
           getCBSFinancialReport(symbol)
@@ -131,7 +131,7 @@ function monthlyFinancialReport(){
       }
     }
   }
-  monthlyFinancialReportRecording()
+  //monthlyFinancialReportRecording()
 }
 
 // Record 

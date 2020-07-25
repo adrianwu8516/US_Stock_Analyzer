@@ -1,40 +1,41 @@
 CACHE = CacheService.getScriptCache();
 CACHELIFETIME = 10800
 SPECIFICCLOSEDAY = ['2020-1-2', '2020-1-21', '2020-2-18', '2020-4-11', '2020-5-26', '2020-7-4', '2020-9-8', '2020-11-27', '2020-12-26']
-CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI', 'WFC', 'C', 'SCHW', 'USB', 'AIG', 'MS', 'LVMUY', 'IBN', 'HDB']
+CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI', 'WFC', 'C', 'SCHW', 'USB', 'AIG', 'MS', 'LVMUY', 'IBN', 'HDB', 'STNE', 'DFS', 'FISV']
 STOCK_SYMBOLS = {
-  'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w'],
-  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nasdaq-pypl', 'nyse-sq', 'nyse-four', 'nyse-bill', 'nyse-net', 'nyse-fsly', 'nasdaq-akam', 'nasdaq-crwd', 'nasdaq-fivn', 'nasdaq-bl', 'nasdaq-iac', 'nasdaq-tree', 'nasdaq-intu', 'nyse-uber', 'nasdaq-lyft', 'nasdaq-upwk', 'nyse-fvrr', 'nyse-infy'],
-  'SaaS':['nasdaq-zm', 'nyse-twlo', 'nyse-work', 'nasdaq-team', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-zs', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar'],
-  'ChinaConcept':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-kc', 'nasdaq-sy', 'nasdaq-sina'],
-  'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-cmcsa', 'nasdaq-iq', 'nasdaq-bili', 'nasdaq-roku', 'nyse-spot', 'nasdaq-tme'],
+  'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w', 'nasdaq-meli', 'nasdaq-bzun', 'nasdaq-ostk', 'nyse-jmia'],
+  'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-net', 'nyse-fsly', 'nasdaq-llnw', 'nasdaq-akam', 'nasdaq-crwd', 'nasdaq-fivn', 'nasdaq-bl', 'nasdaq-iac', 'nasdaq-tree', 'nasdaq-intu', 'nyse-uber', 'nasdaq-lyft', 'nasdaq-upwk', 'nyse-fvrr', 'nyse-infy', 'nyse-lmnd'],
+  'SaaS':['nasdaq-zm', 'nyse-twlo', 'nyse-work', 'nasdaq-team', 'nasdaq-dbx', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-zs', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar', 'nyse-rng', 'nasdaq-ftnt', 'nasdaq-mdb', 'nyse-zuo'],
+  'FinTech':['nasdaq-pypl', 'nyse-sq', 'nyse-four', 'nyse-bill', 'nasdaq-stne', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-dfs', 'nasdaq-fisv'],
+  'ChinaConcept':['nyse-se', 'nyse-baba', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-kc', 'nasdaq-sy', 'nasdaq-sina', 'nasdaq-futu', 'nasdaq-tcom'],
+  'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-cmcsa', 'nasdaq-iq', 'nasdaq-bili', 'nasdaq-roku', 'nasdaq-sono', 'nyse-spot', 'nasdaq-tme'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch', 'nasdaq-momo', 'nasdaq-yy', 'nyse-huya', 'nasdaq-doyu', 'nasdaq-wb'], 
   'Edu':['nasdaq-twou', 'nyse-chgg', 'nyse-lrn','nyse-edu', 'nyse-tal'],
-  'AdTech':['nyse-crm', 'nasdaq-ttd', 'nyse-hubs', 'nyse-omc', 'nasdaq-lamr'],
+  'AdTech':['nyse-crm', 'nyse-hubs', 'nasdaq-ttd', 'nasdaq-mgni',  'nyse-omc', 'nasdaq-lamr'],
   'Military':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nasdaq-grmn'],
   'Airlines':['nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv'],
   'Traveling':['nasdaq-bkng', 'nasdaq-expe', 'nasdaq-trip', 'nasdaq-mar', 'nyse-hlt', 'nyse-ccl', 'nasdaq-mmyt'],
-  'IC':['nasdaq-amd', 'nasdaq-nvda', 'nasdaq-intc', 'nasdaq-avgo', 'nasdaq-qcom', 'nasdaq-mu', 'nasdaq-xlnx', 'nasdaq-nxpi', 'nasdaq-txn', 'nasdaq-asml', 'nasdaq-swks', 'nasdaq-qrvo', 'nasdaq-mrvl'],
+  'IC':['nasdaq-amd', 'nasdaq-nvda', 'nasdaq-intc', 'nasdaq-avgo', 'nasdaq-qcom', 'nasdaq-mu', 'nasdaq-xlnx', 'nasdaq-nxpi', 'nasdaq-txn', 'nasdaq-asml', 'nasdaq-swks', 'nasdaq-qrvo', 'nasdaq-mrvl', 'nasdaq-lite', 'nasdaq-insg', 'nasdaq-lrcx'],
   'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nyse-cgc', 'nasdaq-tlry'],
   'Space':['nyse-spce', 'nyse-ajrd', 'nyse-maxr'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy', 'nyse-et'],
-  'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora'], //VWSYF - Vestas Wind
-  'Hardware':['nasdaq-logi', 'nasdaq-aapl'],
+  'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora', 'nyse-bep'], //VWSYF - Vestas Wind
+  'Hardware':['nasdaq-logi', 'nyse-anet', 'nasdaq-aapl', 'nasdaq-pi', 'nasdaq-irbt'],
   'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'otcmkts-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg'],
-  'Medicine':['nyse-mrk', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy'],
+  'Medicine':['nyse-mrk', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy', 'nasdaq-crsp', 'nasdaq-blue'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus', 'nasdaq-eric', 'nyse-nok'],
-  'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb','nyse-rvlv',  'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy'], 
-  'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng'],
-  'Catering':['nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nasdaq-cake', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd', 'nyse-k', 'nyse-usfd'], 
+  'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb','nyse-rvlv',  'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy', 'nyse-rvlv'], 
+  'Gaming':['nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng', 'otcmkts-pdypy'],
+  'Catering':['nyse-yum', 'nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nasdaq-cake', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-sbux', 'nasdaq-bynd', 'nasdaq-fmci', 'nyse-k', 'nyse-usfd'], 
   'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nyse-chwy', 'nasdaq-dltr'],
   'Automotive':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv', 'nyse-shll', 'nyse-nio', 'nasdaq-niu'],
   'Railways':['nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
   'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-mmm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw'],
-  'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig', 'nyse-hdb', 'nyse-ibn'],
+  'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig', 'nyse-hdb', 'nyse-ibn', 'nasdaq-cinf'],
   'IT':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl', 'nyse-infy', 'nyse-sap'],
-  'RealEstate':['nyse-o', 'nyse-spg', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nyse-stor', 'nyse-wpc', 'nasdaq-reg', 'nyse-epr', 'nasdaq-bpy', 'nyse-apts', 'nyse-dhi', 'nyse-low', 'nasdaq-z', 'nasdaq-nymt', 'nyse-mfa', 'nyse-ivr'],
+  'RealEstate':['nyse-o', 'nyse-spg', 'nyse-mac', 'nasdaq-bpy', 'nyse-bam', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nyse-stor', 'nyse-wpc', 'nasdaq-reg', 'nyse-epr', 'nyse-apts', 'nyse-dhi', 'nyse-low', 'nasdaq-z', 'nasdaq-nymt', 'nyse-mfa', 'nyse-ivr'],  //, 'nyse-srg'
   'Logistics':['nyse-ups', 'nyse-fdx', 'nasdaq-dada', 'nyse-best'],
   'Consulting':['nasdaq-ctsh', 'nyse-wns']
 }
@@ -46,6 +47,17 @@ ETF_LIST = {
   'Emerging-Markets':['nysearca-vwo', 'nysearca-iemg', 'nysearca-eem', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'bats-inda', 'nysearca-ews', 'nysearca-efa'],
   'Bond':['nasdaq-tlt', 'nasdaq-iei', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
   'Commodities':['nysearca-gld', 'nysearca-gdx', 'nysearca-iau', 'nysearca-slv', 'nysearca-uso', 'nysearca-bno', 'nysearca-xle', 'nysearca-gsg']
+}
+
+function count(){
+  let total = 0
+  for(var cat in STOCK_SYMBOLS){
+    total += cat.length
+  }
+  for(var cat in ETF_LIST){
+    total += cat.length
+  }
+  Logger.log(total)
 }
 
 function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {

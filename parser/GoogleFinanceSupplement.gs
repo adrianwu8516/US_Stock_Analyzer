@@ -9,7 +9,7 @@ function addGoogleDataToAllExistedFiles(){
   }
 }
 
-function supplementForStock(googleSymbol='CAKE') {
+function supplementForStock(googleSymbol='CINF') {
   //var googleSymbol = symbol.replace('-', ':').toUpperCase()
   //var fileName = symbol.split('-')[1]
   var fileName = googleSymbol
