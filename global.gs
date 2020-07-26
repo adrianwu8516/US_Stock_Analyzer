@@ -165,13 +165,3 @@ function render(file, argsObject){
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
-
-Array.prototype.multiIndexOf = function (el) { 
-    var idxs = [];
-    for (var i = this.length - 1; i >= 0; i--) {
-        if (this[i] === el) {
-            idxs.unshift(i);
-        }
-    }
-    return idxs;
-};
