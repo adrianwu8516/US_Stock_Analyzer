@@ -1,7 +1,7 @@
 function weBullSingle(stockSymbol, span) {
   var cacheName = stockSymbol + '-history'
   var stockHistoryData = CACHE.get(cacheName);
-//  if(!stockHistoryData){
+  if(!stockHistoryData){
     var file = DriveApp.getFilesByName(stockSymbol).next();
     
     var Sheet = SpreadsheetApp.open(file);
@@ -57,9 +57,9 @@ function weBullSingle(stockSymbol, span) {
     var fRObj = getFRData(stockSymbol)
     stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj, forecastObj, fRObj); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
-//  }else{
-//    stockHistoryData = JSON.parse(stockHistoryData)
-//  }
+  }else{
+    stockHistoryData = JSON.parse(stockHistoryData)
+  }
   return stockHistoryData
 }
 
@@ -226,8 +226,9 @@ function etfIndexData(){
 }
 
 function macroData(span){
-  var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID)
-//  var macroData = macroDoc.getRange("A2:H2").getValues()[0]
+  var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每日數據')
+  var macroMonthlyDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每月數據')
+  //  var macroData = macroDoc.getRange("A2:H2").getValues()[0]
   var macroDataJSON = {
     date: macroDoc.getSheetValues(2, 1, span, 1).map(item => item[0].replace(/年|月/g, '-').replace(/日/g, '')).reverse(),
     fearGreed:  macroDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
@@ -235,16 +236,17 @@ function macroData(span){
     fearGreedRatio:  macroDoc.getSheetValues(2, 4, span, 1).map(item => parseFloat(item[0])).reverse(),
     globalRecession:  macroDoc.getSheetValues(2, 5, span, 1).map(item => parseFloat(item[0])).reverse(),
     mmCovid19:  macroDoc.getSheetValues(2, 6, span, 1).map(item => parseFloat(item[0])).reverse(),
-    mmShillerPE:  macroDoc.getSheetValues(2, 7, span, 1).map(item => parseFloat(item[0])).reverse(),
-    mmBuffettIndex:  macroDoc.getSheetValues(2, 8, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorBear:  macroDoc.getSheetValues(2, 9, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorNeutral:  macroDoc.getSheetValues(2, 10, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorBull:   macroDoc.getSheetValues(2, 11, span, 1).map(item => parseFloat(item[0])).reverse(),
-    gapYield10to2:   macroDoc.getSheetValues(2, 12, span, 1).map(item => parseFloat(item[0])).reverse(),
-    snp500Index:   macroDoc.getSheetValues(2, 13, span, 1).map(item => parseFloat(item[0])).reverse(),
-    usRecession:   macroDoc.getSheetValues(2, 14, span, 1).map(item => parseFloat(item[0])/100).reverse(),
-    vix:   macroDoc.getSheetValues(2, 15, span, 1).map(item => parseFloat(item[0])/100).reverse(),
-    requiredMarketReturn:   macroDoc.getSheetValues(2, 16, span, 1).map(item => parseFloat(item[0])*100).reverse(),
+    mmBuffettIndex:  macroDoc.getSheetValues(2, 7, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorBear:  macroDoc.getSheetValues(2, 8, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorNeutral:  macroDoc.getSheetValues(2, 9, span, 1).map(item => parseFloat(item[0])).reverse(),
+    sInvestorBull:   macroDoc.getSheetValues(2, 10, span, 1).map(item => parseFloat(item[0])).reverse(),
+    gapYield10to2:   macroDoc.getSheetValues(2, 11, span, 1).map(item => parseFloat(item[0])).reverse(),
+    snp500Index:   macroDoc.getSheetValues(2, 12, span, 1).map(item => parseFloat(item[0])).reverse(),
+    vix:   macroDoc.getSheetValues(2, 13, span, 1).map(item => parseFloat(item[0])/100).reverse(),
+    requiredMarketReturn:   macroDoc.getSheetValues(2, 14, span, 1).map(item => parseFloat(item[0])*100).reverse(),
+    week:         macroMonthlyDoc.getSheetValues(2, 1, span, 1).map(item => item[0].replace(/年|月/g, '-').replace(/日/g, '')).reverse(),
+    mmShillerPE:  macroMonthlyDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
+    usRecession:  macroMonthlyDoc.getSheetValues(2, 3, span, 1).map(item => parseFloat(item[0])/100).reverse(),
   }
   Logger.log(macroDataJSON)
   return macroDataJSON
