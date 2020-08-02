@@ -16,7 +16,6 @@
             google.charts.setOnLoadCallback(drawFearGreedChart);
             google.charts.setOnLoadCallback(drawCovid19Chart);
             google.charts.setOnLoadCallback(drawRecessionChart);
-            google.charts.setOnLoadCallback(drawShillerPEChart);
             google.charts.setOnLoadCallback(drawBuffettIndexChart);
             google.charts.setOnLoadCallback(drawSInvestorChart);
             google.charts.setOnLoadCallback(drawSnpChart);
@@ -64,18 +63,6 @@
                chart.draw(dataTable, options);
             }
             
-            function drawShillerPEChart() {
-               var dataTable = new google.visualization.DataTable();
-               dataTable.addColumn('date', '日期');
-               dataTable.addColumn('number','席勒本益比');
-               for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmShillerPE[i]]]);
-               }
-               var chart = new google.visualization.LineChart (document.getElementById('mmShillerPEChart'));
-               var options = {width: 500, height: 375,title: '席勒本益比'};
-               chart.draw(dataTable, options);
-            }
-            
             function drawBuffettIndexChart() {
                var dataTable = new google.visualization.DataTable();
                dataTable.addColumn('date', '日期');
@@ -84,21 +71,21 @@
                   dataTable.addRows([[new Date(macroData.date[i]), macroData.mmBuffettIndex[i]]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('mmBuffettIndexChart'));
-               var options = {width: 500, height: 375,title: '巴菲特指數'};
+               var options = {width: 500, height: 375,title: '巴菲特指數，美股市值/GDP，超過 120 為高估'};
                chart.draw(dataTable, options);
             }
             
             function drawSInvestorChart() {
                var dataTable = new google.visualization.DataTable();
                dataTable.addColumn('date', '日期');
-               dataTable.addColumn('number','散戶看空指數');
-               dataTable.addColumn('number','散戶中性指數');
-               dataTable.addColumn('number','散戶看多指數');
+               dataTable.addColumn('number','看空');
+               dataTable.addColumn('number','中性');
+               dataTable.addColumn('number','看多');
                for(var i = 0 ; i < span ; i++){
                   dataTable.addRows([[new Date(macroData.date[i]), macroData.sInvestorBear[i], macroData.sInvestorNeutral[i], macroData.sInvestorBull[i]]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('sInvestorChart'));
-               var options = {width: 500, height: 375,title: '散戶指標'};
+               var options = {width: 500, height: 375,title: '散戶指標，散戶越看多越危險，越看空越安全'};
                chart.draw(dataTable, options);
             }
             
@@ -149,7 +136,7 @@
           <td><div id="fearGreedChart" style="border: 1px solid #ccc"></div></td>
         </tr>
         <tr>
-          <td><div id="mmShillerPEChart" style="border: 1px solid #ccc"></div></td>
+          <td><div id="mmCovid19Chart" style="border: 1px solid #ccc"></div></td>
           <td><div id="mmBuffettIndexChart" style="border: 1px solid #ccc"></div></td>
         </tr>
         <tr>
@@ -159,9 +146,6 @@
         <tr>
           <td><div id="gapYieldChart" style="border: 1px solid #ccc"></div></td>
           <td><div id="askedReturnsChart" style="border: 1px solid #ccc"></div></td>
-        </tr>
-        <tr>
-          <td><div id="mmCovid19Chart" style="border: 1px solid #ccc"></div></td>
         </tr>
       </table>
     </div>
