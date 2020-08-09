@@ -10,9 +10,6 @@ function FedMonthlyModule() {
     unemployedLessThan5Weeks : FedWebParser('https://fred.stlouisfed.org/series/UEMPLT5', 8),
     unemployed27WeeksOver : FedWebParser('https://fred.stlouisfed.org/series/UEMP27OV', 9),
     coreCPI: FedWebParser('https://fred.stlouisfed.org/series/CPILFESL', 10),
-    // Weekly Record
-    //initialClaim: FedWebParser('https://fred.stlouisfed.org/series/ICSA', 11)
-    
   }
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('FED每月數據');
   for(var item in FedObj){

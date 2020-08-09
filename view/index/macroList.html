@@ -21,8 +21,10 @@
             google.charts.setOnLoadCallback(drawSnpChart);
             google.charts.setOnLoadCallback(drawAskedReturnsChart);
             google.charts.setOnLoadCallback(drawGapYieldChart);
+            google.charts.setOnLoadCallback(drawGDPDashboard);
             
             var macroData = JSON.parse('<?= JSON.stringify(macroJSON) ?>')
+            var macroFED = JSON.parse('<?= JSON.stringify(macroFED) ?>')
             var span = parseInt('<?= span ?>')
             
             function drawFearGreedChart() {
@@ -124,6 +126,304 @@
                var options = {width: 500, height: 375,title: '公債10年/2年利差，越低景氣越熱'};
                chart.draw(dataTable, options);
             }
+            
+            function drawGDPDashboard() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+
+                //define columns
+                dataTable.addColumn('date', '日期');
+                dataTable.addColumn('number', '名目GDP');
+                dataTable.addColumn('number', '實質GDP');
+                dataTable.addColumn('number', '出口額');
+                dataTable.addColumn('number', '進口額');
+                dataTable.addColumn('number', '淨出口');
+                
+                dataTable.addColumn('number', '民間投資'); //6
+                dataTable.addColumn('number', '住房投資');
+                dataTable.addColumn('number', '非住房投資');
+                
+                dataTable.addColumn('number', '消費'); //9
+                dataTable.addColumn('number', '耐久財');
+                dataTable.addColumn('number', '耐久財-交通');
+                dataTable.addColumn('number', '耐久財-住家');
+                dataTable.addColumn('number', '耐久財-休閒');
+                
+                dataTable.addColumn('number', '非耐久財'); // 14
+                dataTable.addColumn('number', '非耐久財-服飾');
+                dataTable.addColumn('number', '非耐久財-食品');
+                dataTable.addColumn('number', '非耐久財-汽油');
+                
+                dataTable.addColumn('number', '服務'); // 18
+                dataTable.addColumn('number', '服務-家戶');
+                dataTable.addColumn('number', '服務-健康');
+                dataTable.addColumn('number', '服務-通勤');
+                dataTable.addColumn('number', '服務-休閒');
+                dataTable.addColumn('number', '服務-餐飲');
+                dataTable.addColumn('number', '服務-金融');
+                
+                dataTable.addColumn('number', '投資'); // 25
+                dataTable.addColumn('number', '固定投資');
+                dataTable.addColumn('number', '投資-非住屋');
+                dataTable.addColumn('number', '投資-商辦');
+                
+                dataTable.addColumn('number', '投資-設備'); //29
+                dataTable.addColumn('number', '投資-資訊');
+                dataTable.addColumn('number', '投資-工業');
+                dataTable.addColumn('number', '投資-通勤');
+                
+                dataTable.addColumn('number', '投資-智財'); //33
+                dataTable.addColumn('number', '投資-軟體');
+                dataTable.addColumn('number', '投資-研發');
+                dataTable.addColumn('number', '投資-文娛');
+                
+                dataTable.addColumn('number', '投資-住房'); //37
+                dataTable.addColumn('number', '投資-存貨');
+
+                dataTable.addColumn('number', '政府開支'); //39
+                dataTable.addColumn('number', '政府-國防');
+                dataTable.addColumn('number', '出口');
+                dataTable.addColumn('number', '進口');
+                dataTable.addColumn('number', 'GDP指標');
+                
+                //define rows of data
+                for(var i = 0 ; i <= span ; i++)
+                {
+                    dataTable.addRows([[
+                        new Date(macroFED.period[i]), macroFED.nominalGDP[i], macroFED.realGDP[i], 
+                        macroFED.realExports[i], macroFED.realImports[i], macroFED.netExports[i], // 0-5
+                        
+                        macroFED.privateDomesticInvestment[i], 
+                        macroFED.privateResidentialFixedInvestment[i], 
+                        macroFED.privateNonresidentialFixedInvestment[i],
+
+                        macroFED.GDPContrConsumption[i],  //9
+                        macroFED.GDPContrConsumptionDurable[i], 
+                        macroFED.GDPContrConsumptionDurableVehicles[i], 
+                        macroFED.GDPContrConsumptionDurableHousehold[i], 
+                        macroFED.GDPContrConsumptionDurableRecreational[i],
+
+                        macroFED.GDPContrConsumptionNonDurable[i], 
+                        macroFED.GDPContrConsumptionNonDurableClothing[i], 
+                        macroFED.GDPContrConsumptionNonDurableFood[i], 
+                        macroFED.GDPContrConsumptionNonDurableGasoline[i], 
+
+                        macroFED.GDPContrConsumptionService[i], 
+                        macroFED.GDPContrConsumptionServiceHousing[i], 
+                        macroFED.GDPContrConsumptionServiceHealth[i], 
+                        macroFED.GDPContrConsumptionServiceTransportation[i], 
+                        macroFED.GDPContrConsumptionServiceRecreation[i], 
+                        macroFED.GDPContrConsumptionServiceFood[i], 
+                        macroFED.GDPContrConsumptionServiceFinancial[i], 
+
+                        macroFED.GDPContrInvestment[i], 
+                        macroFED.GDPContrInvestmentFixed[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidential[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialStructures[i], 
+
+                        macroFED.GDPContrInvestmentFixedNonResidentialEquipment[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialEquipmentInformationProcessing[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialEquipmentIndustrial[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialEquipmentTransportation[i], 
+
+                        macroFED.GDPContrInvestmentFixedNonResidentialIP[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialIPSoftware[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialIPRD[i], 
+                        macroFED.GDPContrInvestmentFixedNonResidentialIPEntertainment[i], 
+
+                        macroFED.GDPContrInvestmentFixedResidential[i], 
+                        macroFED.GDPContrInvestmentInventories[i], 
+
+                        macroFED.GDPContrGov[i], 
+                        macroFED.GDPContrGovDefense[i], 
+                        macroFED.GDPContrExport[i], 
+                        macroFED.GDPContrImport[i],
+                        (macroFED.nominalGDP[i] - macroFED.realGDP[i]) 
+                    ]]);
+                } 
+                console.log(dataTable)
+                // Create a dashboard.
+                var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+                const chartArea = {'height': '80%', 'width': '60%'}
+                const crosshair = { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'}
+                const hAxis = { format:'yyyy', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } }
+                const vAxis = { gridlines: { color: 'transparent' } }
+                var netExportChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'netExportChart_div',
+                  'view': {'columns': [0, 3, 4, 5]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '淨出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var domesticInvestChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'domesticInvest_div',
+                  'view': {'columns': [0, 6, 7, 8]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '國內投資',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var gdpContriChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'gdpContri_div',
+                  'view': {'columns': [0, 9, 25, 39, 41, 42]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var consumptionDurableChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'consumptionDurable_div',
+                  'view': {'columns': [0, 10, 11, 12, 13]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 耐久財',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var consumptionNonDurableChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'consumptionNonDurable_div',
+                  'view': {'columns': [0, 14, 15, 16, 17]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 耐久財',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var consumptionServiceChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'consumptionService_div',
+                  'view': {'columns': [0, 20, 21, 22, 23, 24]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 服務消費',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var investChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'invest_div',
+                  'view': {'columns': [0, 27, 37, 38]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 投資', 
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var investFixedChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'investFixed_div',
+                  'view': {'columns': [0, 28, 29, 33]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 固定投資', 
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var investFixedEquipmentChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'investFixedEquipment_div',
+                  'view': {'columns': [0, 30, 31, 32]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 設備投資',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var investFixedIPChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'investFixedIP_div',
+                  'view': {'columns': [0, 34, 35, 36]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 智財投資',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var govChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'gov_div',
+                  'view': {'columns': [0, 39, 40]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 政府消費',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var exportChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'export_div',
+                  'view': {'columns': [0, 41, 42]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP貢獻 - 進出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                var gdpIndicatorChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'gdpIndicator_div',
+                  'view': {'columns': [0, 43]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: 'GDP指標',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                // Create a date slider, passing some options
+                var gdpSlider = new google.visualization.ControlWrapper({
+                  'controlType': 'ChartRangeFilter',
+                  'containerId': 'filter_div',
+                  'options': { 'filterColumnIndex': 0,
+                               'ui': { 'chartType': 'AreaChart', 
+                                       'chartView': { 'columns': [0, 2] },
+                                       'chartOptions': {
+                                           'chartArea': chartArea, 'hAxis': hAxis,
+                                           'legend': {'position': 'none'},
+                                           'series': { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                                        },
+                                        'minRangeSize': 86400000
+                               }
+                             },
+                'state':{
+                           'range': {
+                                     'start': new Date(macroFED.period[span-20]),
+                                     'end': new Date(macroFED.period[span-1])
+                            }
+                         }
+                });
+
+                dashboard.bind(gdpSlider, [
+                    netExportChart, domesticInvestChart, gdpContriChart, 
+                    consumptionDurableChart, consumptionNonDurableChart, consumptionServiceChart,
+                    investChart, investFixedChart, investFixedEquipmentChart, investFixedIPChart,
+                    govChart, exportChart, gdpIndicatorChart
+                ]);
+                dashboard.draw(dataTable);
+
+            }
          </script> 
     </head>
  
@@ -148,6 +448,34 @@
           <td><div id="askedReturnsChart" style="border: 1px solid #ccc"></div></td>
         </tr>
       </table>
+    <br>
+    <h2>GDP Research</h2>
+    <br>
+    <div id="dashboard_div" align='center'>
+     <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div id="netExportChart_div"></div>
+          <div id="domesticInvest_div"></div>
+          <div id="gdpContri_div"></div>
+          <div id="consumptionDurable_div"></div>
+          <div id="consumptionNonDurable_div"></div>
+          <div id="consumptionService_div"></div>
+        </div>
+        <div class="col-sm">
+          <div id="invest_div"></div>
+          <div id="investFixed_div"></div>
+          <div id="investFixedEquipment_div"></div>
+          <div id="investFixedIP_div"></div>
+          <div id="gov_div"></div>
+          <div id="export_div"></div>
+          <div id="gdpIndicator_div"></div>
+        </div>
+      </div>
+     </div>
+     <div id="filter_div"></div>
+    </div>
+    
     </div>
     </body>
 </html>

@@ -70,7 +70,8 @@ function monthlyMacroRecord(){
     usUnemploymentRate: usUnemploymentRate,
     usCCI: usCCI,
     usCCIMich: usCCIMich,
-    usCCIDiff: usCCIDiff
+    usCCIDiff: usCCIDiff,
+    initialClaim: FedWebParser('https://fred.stlouisfed.org/series/ICSA', 1).data
   }
   
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每月數據');
@@ -79,19 +80,19 @@ function monthlyMacroRecord(){
   var targetRow = onSearch(macroDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    macroDoc.getRange('A' + targetRow + ':X' + targetRow).setValues([[
+    macroDoc.getRange('A' + targetRow + ':Y' + targetRow).setValues([[
       todayStr, MMObj.ShillerPE, MMObj.USRecession, MMObj.usGDPSAAR, MMObj.usGDPSA, MMObj.usCoreCPI, 
       MMObj.usGDPContributionConsumption, MMObj.usGDPContributionInvest, MMObj.usGDPContributionInvestNonResidential, MMObj.usGDPContributionInvestResidential, MMObj.usGDPContributionInvestInventory, MMObj.usGDPContributionGov, MMObj.usGDPContributionExport, MMObj.usGDPContributionImport, 
       MMObj.usExport,MMObj.usImport, MMObj.usUnemployment5w, MMObj.usUnemployment6to14w, MMObj.usUnemployment15w, MMObj.usNonFarm, MMObj.usUnemploymentRate,
-      MMObj.usCCI, MMObj.usCCIMich, MMObj.usCCIDiff
+      MMObj.usCCI, MMObj.usCCIMich, MMObj.usCCIDiff, MMObj.initialClaim
     ]]);
   }else{
     macroDoc.insertRowBefore(2);
-    macroDoc.getRange('A2:X2').setValues([[
+    macroDoc.getRange('A2:Y2').setValues([[
       todayStr, MMObj.ShillerPE, MMObj.USRecession, MMObj.usGDPSAAR, MMObj.usGDPSA, MMObj.usCoreCPI, 
       MMObj.usGDPContributionConsumption, MMObj.usGDPContributionInvest, MMObj.usGDPContributionInvestNonResidential, MMObj.usGDPContributionInvestResidential, MMObj.usGDPContributionInvestInventory, MMObj.usGDPContributionGov, MMObj.usGDPContributionExport, MMObj.usGDPContributionImport, 
       MMObj.usExport,MMObj.usImport, MMObj.usUnemployment5w, MMObj.usUnemployment6to14w, MMObj.usUnemployment15w, MMObj.usNonFarm, MMObj.usUnemploymentRate,
-      MMObj.usCCI, MMObj.usCCIMich, MMObj.usCCIDiff
+      MMObj.usCCI, MMObj.usCCIMich, MMObj.usCCIDiff, MMObj.initialClaim
     ]]);
   }
 }
