@@ -13,14 +13,15 @@ function FedMonthlyModule() {
   }
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('FED每月數據');
   for(var item in FedObj){
-    var peroid = FedObj[item].period
-    var targetRow = onSearch(macroDoc, peroid, searchTargetCol=0)
+    let peroid = new Date(FedObj[item].period)
+    let peroidStr = peroid.getFullYear() + '-' + String(peroid.getMonth()+1).padStart(2, '0') + '-' + String(peroid.getDate()).padStart(2, '0')
+    var targetRow = onSearch(macroDoc, peroidStr, searchTargetCol=0)
     if(targetRow){
       macroDoc.getRange(1, FedObj[item].index).setValue(item);
       macroDoc.getRange(targetRow+1, FedObj[item].index).setValue(FedObj[item].data);
     }else{
       macroDoc.insertRowAfter(1);
-      macroDoc.getRange(2, 1).setValues([[FedObj[item].period]]);
+      macroDoc.getRange(2, 1).setValue(peroidStr);
       macroDoc.getRange(2, FedObj[item].index).setValue(FedObj[item].data);
     }
   }
@@ -74,14 +75,15 @@ function FedQuarterlyModule(){
   }
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('FED每季數據');
   for(var item in FedObj){
-    var peroid = FedObj[item].period
-    var targetRow = onSearch(macroDoc, peroid, searchTargetCol=0)
+    let peroid = new Date(FedObj[item].period.replace('Q1', 'Jan').replace('Q2', 'Apr').replace('Q3', 'Jul').replace('Q4', 'Oct'))
+    let peroidStr = peroid.getFullYear() + '-' + String(peroid.getMonth()+1).padStart(2, '0') + '-' + String(peroid.getDate()).padStart(2, '0')
+    var targetRow = onSearch(macroDoc, peroidStr, searchTargetCol=0)
     if(targetRow){
       macroDoc.getRange(1, FedObj[item].index).setValue(item);
       macroDoc.getRange(targetRow+1, FedObj[item].index).setValue(FedObj[item].data);
     }else{
       macroDoc.insertRowAfter(1);
-      macroDoc.getRange(2, 1).setValues([[FedObj[item].period]]);
+      macroDoc.getRange(2, 1).setValue(peroidStr);
       macroDoc.getRange(2, FedObj[item].index).setValue(FedObj[item].data);
     }
   }

@@ -1,25 +1,25 @@
-function macroData(span){
+function macroData(span=5){
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每日數據')
   var macroMonthlyDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每月數據')
-  //  var macroData = macroDoc.getRange("A2:H2").getValues()[0]
+  var rawData = transpose(macroDoc.getSheetValues(2, 1, span, 14))
+  var rawMonthlyData = transpose(macroMonthlyDoc.getSheetValues(2, 1, span, 25))
   var macroDataJSON = {
-    date: macroDoc.getSheetValues(2, 1, span, 1).map(item => item[0].replace(/年|月/g, '-').replace(/日/g, '')).reverse(),
-    fearGreed:  macroDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
-    fearGreedNote:  macroDoc.getSheetValues(2, 3, span, 1).map(item => item[0]).reverse(),
-    fearGreedRatio:  macroDoc.getSheetValues(2, 4, span, 1).map(item => parseFloat(item[0])).reverse(),
-    globalRecession:  macroDoc.getSheetValues(2, 5, span, 1).map(item => parseFloat(item[0])).reverse(),
-    mmCovid19:  macroDoc.getSheetValues(2, 6, span, 1).map(item => parseFloat(item[0])).reverse(),
-    mmBuffettIndex:  macroDoc.getSheetValues(2, 7, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorBear:  macroDoc.getSheetValues(2, 8, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorNeutral:  macroDoc.getSheetValues(2, 9, span, 1).map(item => parseFloat(item[0])).reverse(),
-    sInvestorBull:   macroDoc.getSheetValues(2, 10, span, 1).map(item => parseFloat(item[0])).reverse(),
-    gapYield10to2:   macroDoc.getSheetValues(2, 11, span, 1).map(item => parseFloat(item[0])).reverse(),
-    snp500Index:   macroDoc.getSheetValues(2, 12, span, 1).map(item => parseFloat(item[0])).reverse(),
-    vix:   macroDoc.getSheetValues(2, 13, span, 1).map(item => parseFloat(item[0])/100).reverse(),
-    requiredMarketReturn:   macroDoc.getSheetValues(2, 14, span, 1).map(item => parseFloat(item[0])*100).reverse(),
-    week:         macroMonthlyDoc.getSheetValues(2, 1, span, 1).map(item => item[0].replace(/年|月/g, '-').replace(/日/g, '')).reverse(),
-    mmShillerPE:  macroMonthlyDoc.getSheetValues(2, 2, span, 1).map(item => parseFloat(item[0])).reverse(),
-    usRecession:  macroMonthlyDoc.getSheetValues(2, 3, span, 1).map(item => parseFloat(item[0])/100).reverse(),
+    date:                rawData[0].reverse(),
+    fearGreed:           rawData[1].reverse(),
+    fearGreedNote:       rawData[2].reverse(),
+    fearGreedRatio:      rawData[3].reverse(),
+    globalRecession:     rawData[4].reverse(),
+    mmCovid19:           rawData[5].reverse(),
+    mmBuffettIndex:      rawData[6].reverse(),
+    sInvestorBear:       rawData[7].reverse(),
+    sInvestorNeutral:    rawData[8].reverse(),
+    sInvestorBull:       rawData[9].reverse(),
+    gapYield10to2:       rawData[10].reverse(),
+    snp500Index:         rawData[11].reverse(),
+    vix:                 rawData[12].reverse(),
+    requiredMarketReturn:rawData[13].reverse(),
+    week:         rawMonthlyData[0].reverse(),
+    mmShillerPE:  rawMonthlyData[1].reverse()
   }
   Logger.log(macroDataJSON)
   return macroDataJSON
@@ -30,14 +30,14 @@ function macroFEDQuarterlyData(span){
   var rawData = transpose(macroQuarterlyData.getSheetValues(2, 1, span, 43))
   var fedJSON = {
     period: rawData[0].reverse(),
-    nominalGDP: rawData[1].reverse(),
-    realGDP: rawData[2].reverse(),
-    realExports: rawData[3].reverse(),
-    realImports: rawData[4].reverse(),
-    netExports: rawData[5].reverse(),
-    privateDomesticInvestment: rawData[6].reverse(),
-    privateResidentialFixedInvestment: rawData[7].reverse(),
-    privateNonresidentialFixedInvestment: rawData[8].reverse(),
+    nominalGDP: changeRate(rawData[1].reverse()),
+    realGDP: changeRate(rawData[2].reverse()),
+    realExports: changeRate(rawData[3].reverse()),
+    realImports: changeRate(rawData[4].reverse()),
+    netExports: changeRate(rawData[5].reverse()),
+    privateDomesticInvestment: changeRate(rawData[6].reverse()),
+    privateResidentialFixedInvestment: changeRate(rawData[7].reverse()),
+    privateNonresidentialFixedInvestment: changeRate(rawData[8].reverse()),
     GDPContrConsumption: rawData[9].reverse(),
     GDPContrConsumptionDurable: rawData[10].reverse(),
     GDPContrConsumptionDurableVehicles: rawData[11].reverse(),
@@ -75,4 +75,30 @@ function macroFEDQuarterlyData(span){
   }
   Logger.log(fedJSON)
   return fedJSON
+}
+
+function macroFEDMonthlyData(span){
+  var macroQuarterlyData = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('FED每月數據')
+  var rawData = transpose(macroQuarterlyData.getSheetValues(2, 1, span, 10))
+  var fedJSON = {
+    period: rawData[0].reverse(),
+    personalConsumptionExpenditures: changeRate(rawData[1].reverse()),
+    personalDisposableIncome: changeRate(rawData[2].reverse()),
+    realRetailandFoodServicesSales: changeRate(rawData[3].reverse()),
+    durableGoodsOrder: changeRate(rawData[4].reverse()),
+    durableGoodsPersonal: changeRate(rawData[5].reverse()),
+    totalBusinessInventories: changeRate(rawData[6].reverse()),
+    unemployedLessThan5Weeks: rawData[7].reverse(),
+    unemployed27WeeksOver: rawData[8].reverse(),
+    coreCPI: changeRate(rawData[9].reverse()),
+  }
+  return fedJSON
+}
+
+function changeRate(lst=[1, 2, 3, 4, 5, 6]){
+  let changeRateLst = [0]
+  for(let i=1; i< lst.length; i++){
+    changeRateLst.push(Math.round((lst[i] - lst[i-1])/lst[i] * 1000)/1000)
+  }
+  return changeRateLst
 }

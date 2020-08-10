@@ -27,8 +27,9 @@ function loadCompareList(){
 function loadMacroList(span=100){
   var html_page = HtmlService.createTemplateFromFile('view/index/macroList')
   html_page.macroJSON = macroData(span)
-  html_page.macroFED = macroFEDQuarterlyData(span=200)
-  html_page.span = span
+  html_page.macroFED = macroFEDQuarterlyData(span=240)
+  html_page.macroFEDMonthly = macroFEDMonthlyData(span=240)
+  html_page.span = 240
   return html_page.evaluate().getContent();
 }
 

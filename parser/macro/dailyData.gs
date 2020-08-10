@@ -57,7 +57,7 @@ function FGModule() {
 function dailyMacroRecord(){
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每日數據');
   var today = new Date();
-  var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
+  var todayStr = String(today.getFullYear()) + "-" + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
   var FGObj = FGModule()
   var MMObj = MMModule()
   var targetRow = onSearch(macroDoc, todayStr, searchTargetCol=0)

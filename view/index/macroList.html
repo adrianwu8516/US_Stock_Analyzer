@@ -22,17 +22,19 @@
             google.charts.setOnLoadCallback(drawAskedReturnsChart);
             google.charts.setOnLoadCallback(drawGapYieldChart);
             google.charts.setOnLoadCallback(drawGDPDashboard);
+            google.charts.setOnLoadCallback(drawFedMonthlyDashboard);
             
             var macroData = JSON.parse('<?= JSON.stringify(macroJSON) ?>')
             var macroFED = JSON.parse('<?= JSON.stringify(macroFED) ?>')
+            var macroFEDMonthly = JSON.parse('<?= JSON.stringify(macroFEDMonthly) ?>')
             var span = parseInt('<?= span ?>')
-            
+            console.log(macroData)
             function drawFearGreedChart() {
                var dataTable = new google.visualization.DataTable();
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','恐懼貪婪指數');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.fearGreed[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.fearGreed[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('fearGreedChart'));
                var options = {width: 500, height: 375,title: '恐懼貪婪指數'};
@@ -44,7 +46,7 @@
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','疫情信心指數');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmCovid19[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.mmCovid19[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('mmCovid19Chart'));
                var options = {width: 500, height: 375,title: '疫情信心指數'};
@@ -55,10 +57,9 @@
                var dataTable = new google.visualization.DataTable();
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','全球衰退機率');
-               dataTable.addColumn('number','美國衰退機率');
                dataTable.addColumn('number','恐慌指數');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.globalRecession[i], macroData.usRecession[i], macroData.vix[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.globalRecession[i] * 100), parseFloat(macroData.vix[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('mmRecessionChart'));
                var options = {width: 500, height: 375,title: '經濟衰退機率'};
@@ -70,7 +71,7 @@
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','巴菲特指數');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.mmBuffettIndex[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.mmBuffettIndex[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('mmBuffettIndexChart'));
                var options = {width: 500, height: 375,title: '巴菲特指數，美股市值/GDP，超過 120 為高估'};
@@ -84,7 +85,7 @@
                dataTable.addColumn('number','中性');
                dataTable.addColumn('number','看多');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.sInvestorBear[i], macroData.sInvestorNeutral[i], macroData.sInvestorBull[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.sInvestorBear[i]), parseFloat(macroData.sInvestorNeutral[i]), parseFloat(macroData.sInvestorBull[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('sInvestorChart'));
                var options = {width: 500, height: 375,title: '散戶指標，散戶越看多越危險，越看空越安全'};
@@ -96,7 +97,7 @@
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','S&P 500');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.snp500Index[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.snp500Index[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('snpChart'));
                var options = {width: 500, height: 375,title: 'S&P500 指標'};
@@ -108,7 +109,7 @@
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','要求報酬');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.requiredMarketReturn[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.requiredMarketReturn[i])*100]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('askedReturnsChart'));
                var options = {width: 500, height: 375,title: '市場要求報酬（％），越高越危機入市'};
@@ -120,7 +121,7 @@
                dataTable.addColumn('date', '日期');
                dataTable.addColumn('number','公債利差');
                for(var i = 0 ; i < span ; i++){
-                  dataTable.addRows([[new Date(macroData.date[i]), macroData.gapYield10to2[i]]]);
+                  dataTable.addRows([[new Date(macroData.date[i]), parseFloat(macroData.gapYield10to2[i])]]);
                }
                var chart = new google.visualization.LineChart (document.getElementById('gapYieldChart'));
                var options = {width: 500, height: 375,title: '公債10年/2年利差，越低景氣越熱'};
@@ -239,7 +240,7 @@
                         macroFED.GDPContrGovDefense[i], 
                         macroFED.GDPContrExport[i], 
                         macroFED.GDPContrImport[i],
-                        (macroFED.nominalGDP[i] - macroFED.realGDP[i]) 
+                        (macroFED.nominalGDP[i] - macroFED.realGDP[i])*100
                     ]]);
                 } 
                 console.log(dataTable)
@@ -398,9 +399,10 @@
                   'containerId': 'filter_div',
                   'options': { 'filterColumnIndex': 0,
                                'ui': { 'chartType': 'AreaChart', 
-                                       'chartView': { 'columns': [0, 2] },
+                                       'chartView': { 'columns': [0, 3] },
                                        'chartOptions': {
-                                           'chartArea': chartArea, 'hAxis': hAxis,
+                                           'chartArea': {'height': '50%', 'width': '80%'},
+                                           'hAxis': hAxis,
                                            'legend': {'position': 'none'},
                                            'series': { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
                                         },
@@ -409,17 +411,128 @@
                              },
                 'state':{
                            'range': {
-                                     'start': new Date(macroFED.period[span-20]),
+                                     'start': new Date(macroFED.period[span-10]),
                                      'end': new Date(macroFED.period[span-1])
                             }
                          }
                 });
-
                 dashboard.bind(gdpSlider, [
                     netExportChart, domesticInvestChart, gdpContriChart, 
                     consumptionDurableChart, consumptionNonDurableChart, consumptionServiceChart,
                     investChart, investFixedChart, investFixedEquipmentChart, investFixedIPChart,
                     govChart, exportChart, gdpIndicatorChart
+                ]);
+                dashboard.draw(dataTable);
+
+            }
+            function drawFedMonthlyDashboard() {
+ 
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+
+                //define columns
+                dataTable.addColumn('date', '日期');
+                dataTable.addColumn('number', '個人消費');
+                dataTable.addColumn('number', '可支配所得');
+                dataTable.addColumn('number', '消費總額');
+                dataTable.addColumn('number', '耐久財訂單');
+                dataTable.addColumn('number', '個人耐久才');
+                dataTable.addColumn('number', '商業投資');
+                dataTable.addColumn('number', '5週內失業');
+                dataTable.addColumn('number', '27週以上失業');
+                dataTable.addColumn('number', '核心CPI');
+                
+                //define rows of data
+                for(var i = 0 ; i <= span ; i++)
+                {
+                    dataTable.addRows([[
+                        new Date(macroFEDMonthly.period[i]), 
+                        macroFEDMonthly.personalConsumptionExpenditures[i],
+                        macroFEDMonthly.personalDisposableIncome[i], 
+                        macroFEDMonthly.realRetailandFoodServicesSales[i], 
+                        macroFEDMonthly.durableGoodsOrder[i], 
+                        macroFEDMonthly.durableGoodsPersonal[i], 
+                        macroFEDMonthly.totalBusinessInventories[i], 
+                        macroFEDMonthly.unemployedLessThan5Weeks[i], 
+                        macroFEDMonthly.unemployed27WeeksOver[i], 
+                        macroFEDMonthly.coreCPI[i] * 100
+                    ]]);
+                }
+                // Create a dashboard.
+                var dashboard = new google.visualization.Dashboard(document.getElementById('dashboardMonthly_div'));
+                const chartArea = {'height': '80%', 'width': '60%'}
+                const crosshair = { trigger: 'selection', orientation: 'horizontal', color: 'Gainsboro'}
+                const hAxis = { format:'yyyy', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } }
+                const vAxis = { gridlines: { color: 'transparent' } }
+                
+                var personalConsumptionChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'personalConsumption_div',
+                  'view': {'columns': [0, 1, 2, 3]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '淨出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                var durableGoodsChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'durableGoods_div',
+                  'view': {'columns': [0, 4, 5, 6]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '淨出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                var cpiChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'cpi_div',
+                  'view': {'columns': [0, 9]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '淨出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                var unemploymentChart = new google.visualization.ChartWrapper({
+                  'chartType': 'LineChart',
+                  'containerId': 'unemployment_div',
+                  'view': {'columns': [0, 7, 8]},
+                  'options': {
+                      chartArea: chartArea, crosshair: crosshair, focusTarget: 'category', hAxis: hAxis, vAxis: vAxis,
+                      title: '淨出口',
+                      series: { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                  }
+                });
+                
+                // Create a date slider, passing some options
+                var gdpSlider = new google.visualization.ControlWrapper({
+                  'controlType': 'ChartRangeFilter',
+                  'containerId': 'filterMonthly_div',
+                  'options': { 'filterColumnIndex': 0,
+                               'ui': { 'chartType': 'AreaChart', 
+                                       'chartView': { 'columns': [0, 1] },
+                                       'chartOptions': {
+                                           'chartArea': {'height': '50%', 'width': '80%'},
+                                           'hAxis': hAxis,
+                                           'legend': {'position': 'none'},
+                                           'series': { 0:{color: '#71C6AD'}, 1:{color: '#81BF65'}, 2:{color: '#A7B0BA'}, 3:{color: '#FB9D2E'}, 4:{color: '#FF526D'} }
+                                        },
+                                        'minRangeSize': 86400000
+                               }
+                             },
+                'state':{
+                           'range': {
+                                     'start': new Date(macroFEDMonthly.period[span-20]),
+                                     'end': new Date(macroFEDMonthly.period[span-1])
+                            }
+                         }
+                });
+                console.log(new Date(macroFEDMonthly.period[span-20]))
+                console.log(new Date(macroFEDMonthly.period[span-1]))
+                dashboard.bind(gdpSlider, [
+                    personalConsumptionChart, durableGoodsChart, cpiChart, unemploymentChart, 
                 ]);
                 dashboard.draw(dataTable);
 
@@ -475,7 +588,24 @@
      </div>
      <div id="filter_div"></div>
     </div>
-    
+    <br>
+    <h2>GDP Monthly Research</h2>
+    <br>
+    <div id="dashboardMonthly_div" align='center'>
+     <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div id="personalConsumption_div"></div>
+          <div id="durableGoods_div"></div>
+        </div>
+        <div class="col-sm">
+          <div id="cpi_div"></div>
+          <div id="unemployment_div"></div>
+        </div>
+      </div>
+     </div>
+     <div id="filterMonthly_div"></div>
+    </div>
     </div>
     </body>
 </html>
