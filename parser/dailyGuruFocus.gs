@@ -73,7 +73,7 @@ function calculateFreeCashFlowValuation(symbol='hlf'){
   Logger.log('currentPrice: ' + factor.currentPrice)
 }
 
-function getGuruFocusData(symbol) {
+function getGuruFocusData(symbol='MSFT') {
   var data = {}
   let url = 'https://www.gurufocus.com/term/wacc/' + symbol + '/WACC-Percentage'
   let xml = UrlFetchApp.fetch(url).getContentText();
@@ -146,6 +146,12 @@ function getGuruFocusData(symbol) {
     data.p2tangible_bookHigh = p2tangible_book[3]
     data.p2tangible_bookNow = p2tangible_book[4]
   }
+  
+  url = 'https://www.gurufocus.com/term/NCAV/' + symbol + '/Net-Net-Working-Capital'
+  xml = UrlFetchApp.fetch(url).getContentText();
+  let netnetTempLst = xml.replace(/[\s\S]*Net-Net Working Capital of \$?([\s\S]*) as of today[\s\S]*/, '$1').split(' ')
+  data.nnwc = parseFloat(netnetTempLst[netnetTempLst.length-1])
+  
   Logger.log(data)
   CACHE.put(symbol+'-Guru', JSON.stringify(data), CACHELIFETIME)
 }
@@ -163,14 +169,14 @@ function recordValuation(symbol, data){
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('Y' + targetRow + ':AQ' + targetRow).setValues([[
+    stockDoc.getRange('Y' + targetRow + ':AR' + targetRow).setValues([[
       data.wacc, data.roic, data.zscore, data.mscore, data.fscore, data.ev2ebitdaLow, data.ev2ebitdaMid, data.ev2ebitdaHigh, data.ev2ebitdaNow, 
       data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue,
-      data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow
+      data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow, data.nnwc
     ]]);
     // For new stocks
-    stockDoc.getRange('Y1:AQ1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow']])
-    stockDoc.getRange('Y2:AQ2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+    stockDoc.getRange('Y1:AR1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc']])
+    stockDoc.getRange('Y2:AR2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
   }else{
     Logger.log('Cannot find original record of that day in ' + symbol)
   }
