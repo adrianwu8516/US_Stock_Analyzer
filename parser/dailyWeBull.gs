@@ -26,16 +26,16 @@ function weBullAnalystMark(stockInfo){
     let forecastEPSLst = JSON.parse(stockInfo.forecastEps)['points']
     let forecastLast = forecastEPSLst.pop()
     let forecast2ndLast = forecastEPSLst.pop()
-    if(forecastLast.valueForecast != null){
+    if(forecastLast.valueActual != null){
       stockInfo['beatAnalyst'] = (forecastLast.valueActual >= forecastLast.valueForecast)? "😎" : "😨"
-    }else if(forecast2ndLast.valueForecast != null){
+    }else if(forecast2ndLast.valueActual != null){
       stockInfo['beatAnalyst'] = (forecast2ndLast.valueActual >= forecast2ndLast.valueForecast)? "😎" : "😨"
     }
   }
   return stockInfo
 }
 
-function getWeBullData(urlSymbol='nyse-four', category=''){
+function getWeBullData(urlSymbol='nyse-rvlv', category=''){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   // If there's no rating for that stock
@@ -81,6 +81,7 @@ function getWeBullData(urlSymbol='nyse-four', category=''){
   stockInfo['yield'] = Math.round(parseFloat(tickerRTJSON.tickerRT.yield)*1000)/10 + "%"
   // Test
   stockInfo = weBullAnalystMark(stockInfo)
+  Logger.log(stockInfo)
   return stockInfo
 }
 

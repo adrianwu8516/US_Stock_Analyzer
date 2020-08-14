@@ -5,12 +5,12 @@ CBSMUSTFAIL = ['MA', 'V', 'PYPL', 'CME', 'ICE', 'AXP', 'GS', 'BAC', 'JPM', 'SPGI
 STOCK_SYMBOLS = {
   'EC':['nasdaq-pdd', 'nasdaq-jd', 'nyse-shop', 'nasdaq-wix', 'nasdaq-ebay', 'nasdaq-etsy', 'nyse-w', 'nasdaq-meli', 'nasdaq-bzun', 'nasdaq-ostk', 'nyse-jmia'],
   'Internet':['nasdaq-goog', 'nasdaq-amzn', 'nasdaq-msft', 'nasdaq-adbe', 'nyse-veev', 'nyse-net', 'nyse-fsly', 'nasdaq-llnw', 'nasdaq-akam', 'nasdaq-crwd', 'nasdaq-fivn', 'nasdaq-bl', 'nasdaq-iac', 'nasdaq-tree', 'nasdaq-intu', 'nyse-uber', 'nasdaq-lyft', 'nasdaq-upwk', 'nyse-fvrr', 'nyse-infy', 'nyse-lmnd', 'nyse-sstk'],
-  'SaaS':['nasdaq-zm', 'nyse-twlo', 'nyse-rng', 'nyse-work', 'nasdaq-team', 'nasdaq-dbx', 'nyse-now', 'nasdaq-wday', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-zs', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar', 'nyse-rng', 'nasdaq-ftnt', 'nasdaq-mdb', 'nyse-zuo', 'nasdaq-pega', 'nasdaq-amba', 'nyse-pstg', 'nasdaq-tlnd'],
+  'SaaS':['nasdaq-zm', 'nyse-twlo', 'nyse-rng', 'nyse-work', 'nasdaq-team', 'nasdaq-dbx', 'nyse-now', 'nasdaq-wday', 'nasdaq-ddog', 'nyse-estc', 'nyse-dt', 'nyse-pd', 'nasdaq-splk', 'nyse-ayx', 'nasdaq-zs', 'nasdaq-docu', 'nasdaq-okta', 'nyse-smar', 'nyse-rng', 'nasdaq-ftnt', 'nasdaq-mdb', 'nyse-zuo', 'nasdaq-pega', 'nasdaq-amba', 'nyse-pstg', 'nasdaq-tlnd', 'nyse-zen'],
   'FinTech':['nasdaq-pypl', 'nyse-sq', 'nyse-four', 'nyse-bill', 'nasdaq-stne', 'nyse-axp', 'nyse-ma', 'nyse-v', 'nyse-dfs', 'nasdaq-fisv'],
   'ChinaConcept':['nyse-se', 'nyse-baba', 'otcmkts-tcehy', 'nasdaq-bidu', 'nasdaq-vnet', 'nasdaq-gds', 'nasdaq-kc', 'nasdaq-sy', 'nasdaq-sina', 'nasdaq-futu', 'nasdaq-tcom'],
   'Streaming':['nyse-dis', 'nasdaq-nflx', 'nasdaq-cmcsa', 'nasdaq-iq', 'nasdaq-bili', 'nasdaq-roku', 'nasdaq-sono', 'nyse-spot', 'nasdaq-tme'],
   'SNS':['nyse-twtr', 'nyse-snap', 'nasdaq-fb', 'nyse-pins', 'nasdaq-mtch', 'nasdaq-momo', 'nasdaq-yy', 'nyse-huya', 'nasdaq-doyu', 'nasdaq-wb'], 
-  'Edu':['nasdaq-twou', 'nyse-chgg', 'nyse-lrn','nyse-edu', 'nyse-tal'],
+  'Edu':['nasdaq-twou', 'nasdaq-boxl', 'nyse-chgg', 'nyse-lrn','nyse-edu', 'nyse-tal'],
   'AdTech':['nyse-crm', 'nyse-hubs', 'nasdaq-ttd', 'nasdaq-mgni',  'nyse-omc', 'nasdaq-lamr', 'nasdaq-apps'],
   'Military':['nyse-lmt', 'nyse-ba', 'nyse-rtx', 'nyse-gd', 'nyse-noc', 'nyse-hei'],
   'Aerospace':['nyse-spce', 'nyse-ajrd', 'nyse-maxr', 'nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv', 'nyse-spr'],
@@ -19,7 +19,7 @@ STOCK_SYMBOLS = {
   'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nyse-cgc', 'nasdaq-tlry', 'otcmkts-cwbhf'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy', 'nyse-et', 'nyse-atco'],
   'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora', 'nyse-bep'], //VWSYF - Vestas Wind
-  'Hardware':['nasdaq-logi', 'nasdaq-aapl', 'nasdaq-pi', 'nasdaq-irbt', 'nasdaq-vicr'],
+  'Hardware':['nasdaq-logi', 'nasdaq-aapl', 'nasdaq-pi', 'nasdaq-irbt', 'nasdaq-vicr', 'nasdaq-gpro'],
   'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-jnj', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'otcmkts-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg', 'nyse-vapo', 'nasdaq-srne'],//
   'Medicine':['nyse-mrk', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy', 'nasdaq-crsp', 'nasdaq-blue'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus', 'otcmkts-sftby', 'nasdaq-eric', 'nyse-nok', 'nasdaq-comm', 'nyse-cien', 'nyse-jnpr', 'otcmkts-ifnny'],
@@ -93,6 +93,10 @@ function RECORDER_PACKAGE(){
   dataRecordandProcess()
   if(!checkifClosed()) return;
   renewCache()
+}
+
+function REGENERATELOG(){
+  collectDataFromWeBull()
 }
 
 function renewCache(){
