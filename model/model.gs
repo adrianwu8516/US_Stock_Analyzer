@@ -63,7 +63,7 @@ function weBullSingle(stockSymbol, span) {
   return stockHistoryData
 }
 
-function getFRData(stockSymbol='DFS'){
+function getFRData(stockSymbol='VNET'){
   var fRSheet = SpreadsheetApp.openById('1YHPDD8404yU6za3al4x0TYQaqfb0s4IgxLDf9tu0QGE')
   var listForSearch = fRSheet.getSheetValues(1, 2, fRSheet.getLastRow(), 1).flat()
   var searchTarget = stockSymbol.toLowerCase()
@@ -116,6 +116,7 @@ function getFRData(stockSymbol='DFS'){
       final.freeCash.unshift(0)
     }
   }
+  Logger.log(final)
   return final
 }
 
