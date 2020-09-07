@@ -66,7 +66,7 @@ function logGenerateAndCrossDayCompare(){
   }
   // Process - compare the data with yesterday
   var logObjOld = JSON.parse(readLog("LoggerYesterday.txt"))
-  //saveLog(JSON.stringify(logObj), "LoggerYesterday.txt")
+  saveLog(JSON.stringify(logObj), "LoggerYesterday.txt")
   
   // Log Compare
   logObj = dailyComparison(logObj, logObjOld)
