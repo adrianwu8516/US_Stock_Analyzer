@@ -47,8 +47,13 @@ function getWeBullData(urlSymbol='nyse-rvlv', category=''){
   }
   var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
   var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":'))
+  
+  var xmlHolding = '{' + xml.match(/institutionHolding:{[\s\S]*?}}/g)[0] + '}'
+  var holdingJSON = JSON.parse(xmlHolding.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')).institutionHolding
+  
   var stockInfo = {};
   stockInfo['category'] = category
+  stockInfo['tickerId'] = tickerRTJSON.tickerRT.tickerId
   stockInfo['symbol'] = tickerRTJSON.tickerRT.symbol.replace(/ /g, '-')
   stockInfo['companyName'] = LanguageApp.translate((tickerRTJSON.tickerRT.name).replace(/ |0|,/g, ''), 'zh-CN', 'zh-TW')
   stockInfo['exchange'] = tickerRTJSON.tickerRT.exchangeCode
@@ -79,6 +84,13 @@ function getWeBullData(urlSymbol='nyse-rvlv', category=''){
   stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
   stockInfo['forwardPe'] = parseFloat(tickerRTJSON.tickerRT.forwardPe)
   stockInfo['yield'] = Math.round(parseFloat(tickerRTJSON.tickerRT.yield)*1000)/10 + "%"
+  
+  // Institutional Holding
+  let outstandingShares = parseFloat(tickerRTJSON.tickerRT.outstandingShares)
+  stockInfo['holdingRatio'] = Math.round((holdingJSON.stat.holdingCount / outstandingShares) * 100)
+  stockInfo['holdingChangeRatio'] = (holdingJSON.newPosition.holdingCountChange + holdingJSON.increase.holdingCountChange - holdingJSON.soldOut.holdingCountChange - holdingJSON.decrease.holdingCountChange)/outstandingShares
+  stockInfo['holding'] = JSON.stringify(holdingJSON)
+  
   // Test
   stockInfo = weBullAnalystMark(stockInfo)
   Logger.log(stockInfo)
@@ -90,6 +102,7 @@ function collectDataFromWeBull(){
   if(!checkifClosed()) return;
   Logger.log("Today Handling: " + JSON.stringify(STOCK_SYMBOLS))
   var pool = []
+  var tickerPool = []
   for (var catName in STOCK_SYMBOLS){
     for(var i in STOCK_SYMBOLS[catName]){
       let urlSymbol = STOCK_SYMBOLS[catName][i]
@@ -101,6 +114,7 @@ function collectDataFromWeBull(){
           stockInfo = weBullAnalystMark(stockInfo)
           CACHE.put(stockInfo.symbol, JSON.stringify(stockInfo), CACHELIFETIME); // Cached for 3 hrs
           pool.push(stockInfo.symbol)
+          tickerPool.push(stockInfo.symbol + '-' + stockInfo.tickerId)
           break
         }catch(e){
           Logger.log(e)
@@ -111,5 +125,6 @@ function collectDataFromWeBull(){
     }
   }
   CACHE.put("pool", pool, CACHELIFETIME)
+  CACHE.put("tickerPool", tickerPool, CACHELIFETIME)
   return
 }

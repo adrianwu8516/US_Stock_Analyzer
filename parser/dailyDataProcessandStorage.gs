@@ -90,33 +90,39 @@ function dataRecord(stockInfo){
     if(targetRow){
       Logger.log("Passover: " + fileName)
 //      targetRow += 1
-//      stockDoc.getRange('A'+ targetRow + ':X' + targetRow).setValues([[
+//      stockDoc.getRange('A'+ targetRow + ':AU' + targetRow).setValues([[
 //        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
 //        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
 //        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
 //        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
-//        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
+//        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
+//        '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
+//        stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     }else{
       Logger.log("Recording: " + fileName)
       stockDoc.insertRowBefore(2);
-      stockDoc.getRange('A2:X2').setValues([[
+      stockDoc.getRange('A2:AU2').setValues([[
         todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
         stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
         stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
         stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
-        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
+        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
+        '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
+        stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     }
   }else{
     var documentId = DriveApp.getFileById(STOCK_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
     Logger.log("New File: " + fileName)
     var stockDoc = SpreadsheetApp.openById(documentId);
-    stockDoc.getRange('A2:X2').setValues([[
+    stockDoc.getRange('A2:AU2').setValues([[
       todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
       stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
       stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
       stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
-      stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume']]]);
+      stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
+      '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
+      stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     if(stockInfo['exchange'] == 'NSQ'){
       var googleSymbol = 'NASDAQ:' + fileName.toUpperCase()
       insertGoogleHisData(stockDoc, googleSymbol)

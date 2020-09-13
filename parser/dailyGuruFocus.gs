@@ -175,8 +175,8 @@ function recordValuation(symbol, data){
       data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow, data.nnwc
     ]]);
     // For new stocks
-    stockDoc.getRange('Y1:AR1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc']])
-    stockDoc.getRange('Y2:AR2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+    stockDoc.getRange('Y1:AU1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc', '機構持股比例', '機構持股變化比例', '機構持股']])
+    stockDoc.getRange('Y2:AT2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
   }else{
     Logger.log('Cannot find original record of that day in ' + symbol)
   }
