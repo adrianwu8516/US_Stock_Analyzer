@@ -169,14 +169,19 @@ function recordValuation(symbol, data){
   var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
   if(targetRow){
     targetRow += 1
-    stockDoc.getRange('Y' + targetRow + ':AR' + targetRow).setValues([[
-      data.wacc, data.roic, data.zscore, data.mscore, data.fscore, data.ev2ebitdaLow, data.ev2ebitdaMid, data.ev2ebitdaHigh, data.ev2ebitdaNow, 
-      data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue,
-      data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow, data.nnwc
-    ]]);
-    // For new stocks
-    stockDoc.getRange('Y1:AU1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc', '機構持股比例', '機構持股變化比例', '機構持股']])
-    stockDoc.getRange('Y2:AT2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+    let testValue = stockDoc.getRange('Z' + targetRow).getValue()
+    if(testValue && testValue != ''){
+      Logger.log(symbol + '-GuruFocus Data Existed!')
+    }else{
+      stockDoc.getRange('Y' + targetRow + ':AR' + targetRow).setValues([[
+        data.wacc, data.roic, data.zscore, data.mscore, data.fscore, data.ev2ebitdaLow, data.ev2ebitdaMid, data.ev2ebitdaHigh, data.ev2ebitdaNow, 
+        data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue,
+        data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow, data.nnwc
+      ]]);
+      // For new stocks
+      //stockDoc.getRange('Y1:AU1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc', '機構持股比例', '機構持股變化比例', '機構持股']])
+      //stockDoc.getRange('Y2:AT2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+    }
   }else{
     Logger.log('Cannot find original record of that day in ' + symbol)
   }
@@ -235,5 +240,23 @@ function dailyGuruFocusRecord(){
         }
       }
     }
+  }
+}
+
+function buildSymbolPool(poolName='test'){
+  let existLst = CACHE.get(poolName)
+  if(existLst == null){
+    let emptyLst = []
+    for(let cat in STOCK_SYMBOLS){
+      emptyLst.push(STOCK_SYMBOLS[cat])
+    }
+    let symbolPool = emptyLst.flat().map(item => item.split('-')[1].toUpperCase())
+    Logger.log(symbolPool)
+    CACHE.put(poolName, symbolPool, CACHELIFETIME); // Cached for 3 hrs
+    return symbolPool
+  }else{
+    Logger.log("Existed")
+    Logger.log(existLst)
+    return existLst
   }
 }
