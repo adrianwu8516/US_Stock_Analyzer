@@ -35,7 +35,7 @@ function weBullAnalystMark(stockInfo){
   return stockInfo
 }
 
-function getWeBullData(urlSymbol='nyse-rvlv', category=''){
+function getWeBullData(urlSymbol='nasdaq-bigc', category=''){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   // If there's no rating for that stock
@@ -47,9 +47,10 @@ function getWeBullData(urlSymbol='nyse-rvlv', category=''){
   }
   var xmlTickerRT = '{' + xml.match(/tickerRT:([\s\S]*?)}/g)[0] + '}'
   var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":'))
-  
-  var xmlHolding = '{' + xml.match(/institutionHolding:{[\s\S]*?}}/g)[0] + '}'
-  var holdingJSON = JSON.parse(xmlHolding.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')).institutionHolding
+  if(xml.match(/institutionHolding:{[\s\S]*?}}/g)){
+    var xmlHolding = '{' + xml.match(/institutionHolding:{[\s\S]*?}}/g)[0] + '}'
+    var holdingJSON = JSON.parse(xmlHolding.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')).institutionHolding
+  }
   
   var stockInfo = {};
   stockInfo['category'] = category
@@ -86,10 +87,12 @@ function getWeBullData(urlSymbol='nyse-rvlv', category=''){
   stockInfo['yield'] = Math.round(parseFloat(tickerRTJSON.tickerRT.yield)*1000)/10 + "%"
   
   // Institutional Holding
-  let outstandingShares = parseFloat(tickerRTJSON.tickerRT.outstandingShares)
-  stockInfo['holdingRatio'] = Math.round((holdingJSON.stat.holdingCount / outstandingShares) * 100)
-  stockInfo['holdingChangeRatio'] = (holdingJSON.newPosition.holdingCountChange + holdingJSON.increase.holdingCountChange - holdingJSON.soldOut.holdingCountChange - holdingJSON.decrease.holdingCountChange)/outstandingShares
-  stockInfo['holding'] = JSON.stringify(holdingJSON)
+  if(holdingJSON){
+    let outstandingShares = parseFloat(tickerRTJSON.tickerRT.outstandingShares)
+    stockInfo['holdingRatio'] = Math.round((holdingJSON.stat.holdingCount / outstandingShares) * 100)
+    stockInfo['holdingChangeRatio'] = (holdingJSON.newPosition.holdingCountChange + holdingJSON.increase.holdingCountChange - holdingJSON.soldOut.holdingCountChange - holdingJSON.decrease.holdingCountChange)/outstandingShares
+    stockInfo['holding'] = JSON.stringify(holdingJSON)
+  }
   
   // Test
   stockInfo = weBullAnalystMark(stockInfo)

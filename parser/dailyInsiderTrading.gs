@@ -1,3 +1,8 @@
+function collectInsiderTradingDataRecover(){
+  var str = ''
+  CACHE.put("tickerPool", str, CACHELIFETIME);
+}
+
 function collectInsiderTradingData(){
   // Check if market closed
   if(!checkifClosed()) return;
@@ -36,7 +41,7 @@ function collectInsiderTradingUnit(ticketSymbol = 'DADA', tickerId = 950164518){
       let insiderLst = xml.replace(/\[{|}\]/g,'').split('},{').map(item => JSON.parse("{" + item + "}"))
       for(let i in insiderLst){
         let insertId = (insiderLst[i].transactionDate + '-' + insiderLst[i].name + '-' + insiderLst[i].netAmount).hash()
-        if(listForSearch.includes(insertId)){Logger.log(ticketSymbol + ": NData Existed");break;}
+        if(listForSearch.includes(insertId)){Logger.log(ticketSymbol + ": Data Existed");break;}
         insiderLst[i].netAmount = insiderLst[i].isAcquire == 1? insiderLst[i].netAmount : insiderLst[i].netAmount * -1
         finalMetrix.push([
           insertId, todayStr, ticketSymbol, insiderLst[i].transactionDate, 
