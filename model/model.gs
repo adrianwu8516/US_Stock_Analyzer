@@ -1,4 +1,4 @@
-function weBullSingle(stockSymbol, span) {
+function weBullSingle(stockSymbol='tsla', span=100) {
   var cacheName = stockSymbol + '-history'
   var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
@@ -38,7 +38,7 @@ function weBullSingle(stockSymbol, span) {
       'analystHigh': analystHigh, 'analystMid': analystMid, 'analystLow': analystLow, 'volume': volume,
       'tickerRT': Sheet.getSheetValues(2, 17, 1, 1)[0], 'rating': Sheet.getSheetValues(2, 18, 1, 1)[0], 
       'targetPrice': Sheet.getSheetValues(2, 19, 1, 1)[0], 'forecastEps': Sheet.getSheetValues(2, 20, 1, 1)[0],
-      'MACD': MACD(close), 'BollMean': BOLL.mean, 'BollUpper': BOLL.upper, 'BollLower': BOLL.lower,
+      'MACD': MACD(close), 'BollMean': BOLL.mean, 'BollUpper': BOLL.upper, 'BollLower': BOLL.lower, 'MA60': SMA(close, 60)
     }
     var forecastObj = {}
     var yahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
@@ -56,6 +56,8 @@ function weBullSingle(stockSymbol, span) {
     
     var fRObj = getFRData(stockSymbol)
     stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj, forecastObj, fRObj); //, targetPriceObj
+    Logger.log(stockHistoryData.MA20)
+    Logger.log(stockHistoryData.MA60)
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)

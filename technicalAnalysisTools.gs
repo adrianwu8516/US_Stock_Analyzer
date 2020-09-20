@@ -19,7 +19,7 @@ function changeRatio(target, base){
 
 
 // Formatting Numbers
-function formartNumber(n){
+function formatNumber(n){
       return Number(n.toFixed(2));
 }
 
@@ -65,16 +65,17 @@ function pearsonCorrelation(prefs, p1, p2) {
 }
 
 // Simple Moving Average
-function SMA(lst, span){
+function SMA(lst=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], span=3){
   var final = []
   for(var i=0; i<lst.length; i++){
-    if(i < span){
+    if(i < span-1){
       final.push(0)
     }else{
-      var avg = Sum(lst.slice(0+i,span+i))
-      final.push(formartNumber(avg))
+      var avg = Sum(lst.slice(1+i-span,1+i))/span
+      final.push(formatNumber(avg))
     }
   }
+  Logger.log(final)
   return final
 }
 
@@ -93,7 +94,7 @@ function DIF(priceLst){
   let EMAL = EMA(priceLst, 26);
   let DIFs = new Array();
   for(let i =0;i<EMAL.length;i++){
-    DIFs.push(formartNumber(EMAS[i]-EMAL[i]));
+    DIFs.push(formatNumber(EMAS[i]-EMAL[i]));
   }
   return DIFs;
 }
@@ -114,7 +115,7 @@ function MACD(priceLst){
   let dea = DEA(priceLst,9);
   let bar = new Array();
   for(let i=0;i<priceLst.length;i++){
-    bar.push(2*(formartNumber(dif[i]-dea[i])));
+    bar.push(2*(formatNumber(dif[i]-dea[i])));
   }
   return bar;
 }
@@ -127,8 +128,8 @@ function Boll(priceLst, span=20){
       mean.push(null); upper.push(null); lower.push(null)
     }else{
       var sampleData = priceLst.slice(i-span, i)
-      var ma = formartNumber(Sum(sampleData)/span)
-      var std = formartNumber(Std(sampleData))
+      var ma = formatNumber(Sum(sampleData)/span)
+      var std = formatNumber(Std(sampleData))
       mean.push(ma)
       upper.push(ma + 2 * std)
       lower.push(ma - 2 * std)

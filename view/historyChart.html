@@ -62,6 +62,7 @@
                 var strongBuy = '<?= strongBuy ?>'.split(',').map(Number)
                 var hold = '<?= hold ?>'.split(',').map(Number)
                 var MACD = '<?= MACD ?>'.split(',').map(Number)
+                var MA60 = '<?= MA60 ?>'.split(',').map(Number)
                 var BollMean = '<?= BollMean ?>'.split(',').map(Number)
                 var BollUpper = '<?= BollUpper ?>'.split(',').map(Number)
                 var BollLower = '<?= BollLower ?>'.split(',').map(Number)
@@ -102,6 +103,7 @@
                 dataTable.addColumn('number', '布林均線');
                 dataTable.addColumn('number', '布林上通道');
                 dataTable.addColumn('number', '布林下通道');
+                dataTable.addColumn('number', '季線');
                 
                 //define rows of data
                 for(var i = 0 ; i <= span ; i++)
@@ -115,7 +117,7 @@
                         eps[i], epsTtm[i], //15, 16
                         pb[i], ps[i], //17, 18
                         sell[i], underPerform[i], hold[i], buy[i], strongBuy[i], // 19-23
-                        MACD[i], BollMean[i], BollUpper[i], BollLower[i]
+                        MACD[i], BollMean[i], BollUpper[i], BollLower[i], MA60[i]
                     ]]);
                 } 
                 // Create a dashboard.
@@ -141,7 +143,7 @@
                 var bollChart = new google.visualization.ChartWrapper({
                   'chartType': 'LineChart',
                   'containerId': 'bollChart_div',
-                  'view': {'columns': [0, 4, 25, 26, 27]},
+                  'view': {'columns': [0, 4, 25, 26, 27, 28]},
                   'options': {
                       chartArea: {'height': '80%', 'width': '60%'},
                       title: '布林通道',
@@ -150,7 +152,7 @@
                       curveType: 'function',
                       hAxis: { format:'MMM d', gridlines: { color: 'Gainsboro' }, minorGridlines: { color: 'transparent' } },
                       vAxis: { gridlines: { color: 'transparent' } },
-                      series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}, 2:{color: '#76da91'}, 3:{color: '#76da91'} }
+                      series: { 0:{color: '#7898e1'}, 1:{color: '#38cb7d'}, 2:{color: '#76da91'}, 3:{color: '#76da91'}, 4:{color: '#FDDB00'} }
                   }
                 });
                 
