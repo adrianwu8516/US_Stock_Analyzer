@@ -24,7 +24,7 @@ function fetchEmailList(){
 function personalContent(email, noteObj){
   
   var title = "美股分析早報";
-  var htmlTemp = HtmlService.createTemplateFromFile('view/dailyReport')
+  var htmlTemp = HtmlService.createTemplateFromFile('view/mailer/dailyReport')
   var targetLst = ['EC', 'Internet', 'SaaS', 'Streaming', 'SNS', 'Airlines', 'Energy']
   
   var personalOutput = {}

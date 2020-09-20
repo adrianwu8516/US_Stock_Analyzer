@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+  <? for(let symbol in noteObj){ ?>
+  <h3><?= symbol ?></h3>
+  <table>
+    <tbody>
+      <tr>
+        <td style="text-align: center; white-space: nowrap;">交易時間</td>
+        <td style="text-align: center; white-space: nowrap;">關係</td>
+        <td style="text-align: center; white-space: nowrap;">職稱</td>
+        <td style="text-align: center; white-space: nowrap;">張數</td>
+        <td style="text-align: center; white-space: nowrap;">價格</td>
+        <td style="text-align: center; white-space: nowrap;">剩餘部位</td>
+      </tr>
+      <? for(let no in noteObj[symbol]){ ?>
+      <tr>
+        <td><?= String(noteObj[symbol][no][0].getMonth() + 1) + '/' + String(noteObj[symbol][no][0].getDate())?></td>
+        <td><?= noteObj[symbol][no][1] ?></td>
+        <td><?= noteObj[symbol][no][2] ?></td>
+        <?if(noteObj[symbol][no][4] > 0){ ?>
+          <td><strong><span style="color: #339966;"><?= noteObj[symbol][no][4] ?></span></strong></td>
+          <td><strong><span style="color: #339966;"><?= noteObj[symbol][no][5] ?></span></strong></td>
+        <?}else{ ?>
+          <td><strong><span style="color: #ff0000;"><?= noteObj[symbol][no][4] ?></span></strong></td>
+          <td><strong><span style="color: #ff0000;"><?= noteObj[symbol][no][5] ?></span></strong></td>
+        <?} ?>
+        <td><?= noteObj[symbol][no][6] ?></td>
+      </tr>
+      <?}?>
+    </tbody>
+  </table>  
+  <?}?>
+  </body>
+</html>
+
+
