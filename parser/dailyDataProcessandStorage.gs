@@ -19,6 +19,7 @@ function dataRecordandProcess(){
 function logGenerateAndCrossDayCompare(){
   // Check if market closed
   if(!checkifClosed()) return;
+  
   // Financial Forecast Data Prepare 
   var YahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
   var logObj = {}
@@ -30,16 +31,20 @@ function logGenerateAndCrossDayCompare(){
       var stockInfo = CACHE.get(stockSymbol);
       if(stockInfo){
         stockInfo = JSON.parse(stockInfo)
+        
+        // Yahoo Data Included
         var forecast = checkYahooForecast(YahooSheet, stockSymbol)
         stockInfo.thisRevenue = forecast.thisRevenue
         stockInfo.nextRevenue = forecast.nextRevenue
         stockInfo.thisEPS = forecast.thisEPS
         stockInfo.nextEPS = forecast.nextEPS
         stockInfo.next5Year = forecast.next5Year
+        
         delete stockInfo.tickerRT; // In case the cache might be too large to load
         delete stockInfo.rating;
         delete stockInfo.targetPrice;
         delete stockInfo.forecastEps;
+        
         // GuruData Included
         var guruData = CACHE.get(STOCK_SYMBOLS[catName][i].split(/-(.+)/)[1].replace('-', '.')+'-Guru');
         if(guruData){
@@ -58,6 +63,19 @@ function logGenerateAndCrossDayCompare(){
         }else{
           Logger.log("No GuruFOcus Info Data of" + stockSymbol)
         }
+        
+        try{
+          // Technical Analysis Part
+          let priceLst = getPriceLst(stockSymbol)
+          let ma60Support = Sum(priceLst)/priceLst.length
+          if(Math.abs(stockInfo.price - ma60Support)/ma60Support < 0.05){
+            stockInfo.ma60support = '🛡'
+          }
+        }catch(e){
+          Logger.log(e)
+          Logger.log(stockSymbol + ' failed to generate 60 ma support data')
+        }
+        
         logObj[catName][stockSymbol] = stockInfo
       }else{
         Logger.log("No Stock Info Data of" + stockSymbol)
@@ -182,4 +200,11 @@ function checkYahooForecast(sheet, symbol){
     forecast.next5Year = Math.round(value[5] * 100)
   }
   return forecast
+}
+
+function getPriceLst(stockSymbol='KC', span=60){
+  var file = DriveApp.getFilesByName(stockSymbol).next();
+  var Sheet = SpreadsheetApp.open(file);
+  let close = Sheet.getSheetValues(2, 5, span, 1).map(element => parseFloat(element[0])||null).reverse()
+  return close
 }
