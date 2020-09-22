@@ -20,8 +20,8 @@ function collectInsiderTradingData(){
       collectInsiderTradingUnit(ticketSymbol, ticketId)
       collectInsiderTradingData()
       poolLst = [""]
-      insiderTradingMailer()
     }
+    insiderTradingMailer()
   }
 }
 

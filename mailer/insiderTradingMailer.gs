@@ -1,6 +1,6 @@
 function insiderTradingMailer(){
   // Check if market closed
-  //if(!checkifClosed()) return;
+  if(!checkifClosed()) return;
   
   let today = new Date();
   let todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()-2).padStart(2, '0') + '日';
@@ -21,12 +21,14 @@ function insiderTradingMailer(){
     }
   }
   
-  let title = todayStr + '：內部人交易追蹤'
-  let email = 'adrianwu8516@gmail.com'
-  let htmlTemp = HtmlService.createTemplateFromFile('view/mailer/dailyInsider')
-  htmlTemp.noteObj = mailElement
-  
-  let htmlBody = htmlTemp.evaluate().getContent();
-  Logger.log("Mail to: " + email)
-  MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+  if(mailElement != {}){
+    let title = todayStr + '：內部人交易追蹤'
+    let email = 'adrianwu8516@gmail.com'
+    let htmlTemp = HtmlService.createTemplateFromFile('view/mailer/dailyInsider')
+    htmlTemp.noteObj = mailElement
+    
+    let htmlBody = htmlTemp.evaluate().getContent();
+    Logger.log("Mail to: " + email)
+    MailApp.sendEmail(email, title, '', {htmlBody:htmlBody})
+  }
 }
