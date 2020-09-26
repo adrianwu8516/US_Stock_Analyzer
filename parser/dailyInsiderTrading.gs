@@ -21,7 +21,6 @@ function collectInsiderTradingData(){
       collectInsiderTradingData()
       poolLst = [""]
     }
-    insiderTradingMailer()
   }
 }
 

@@ -6,15 +6,11 @@ function monthlyWebullFRDataGroup2(){
   getWebullFRData(groupNo=1)
 }
 
-function monthlyWebullFRDataGroup3(){
-  getWebullFRData(groupNo=2)
-}
-
 function getWebullFRData(groupNo) {
   var dataPackage = {"quarterly":{}, "yearly":{}} // dataPackage > quarterly > nasdaq-omab > date > cf/bs/is 
   for (var catName in STOCK_SYMBOLS){
     for(var i in STOCK_SYMBOLS[catName]){
-      if(i%3==groupNo){
+      if(i%2==groupNo){
         var symbol = STOCK_SYMBOLS[catName][i]
         Logger.log(symbol)
         dataPackage.quarterly[symbol] = {}
@@ -39,14 +35,14 @@ function webullFRDataDetailProcessing(dataPackage, symbol, type){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
       var xmlRaw = xml.replace(/[\s\S]*?datas:\[([\s\S]*?})\][\s\S]*/g, '$1')
-      var dataLst = xmlRaw.match(/({currencyName[\s\S]*?}}})/g).map(item => JSON.parse(item.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')))
+      var dataLst = xmlRaw.match(/({currencyName[\s\S]*?}}})/g).map(item => JSON.parse(item.replace(/{[\s\S]*?rows:{}},/g, '').replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')))
       for(var i in dataLst){
         if(dataLst[i].reportType == 2){ // Quarterly
-          var dateInfo = dataLst[i].reportEndDate
+          var dateInfo = dataLst[i].reportEndDate.split('-')[0]
           if(dataPackage.quarterly[symbol][dateInfo] == null) dataPackage.quarterly[symbol][dateInfo] = {}
           dataPackage.quarterly[symbol][dateInfo][type] = {currencyName: dataLst[i].currencyName, data: dataLst[i].rows}
         }else if(dataLst[i].reportType == 1){ // Yearly
-          var dateInfo = dataLst[i].reportEndDate
+          var dateInfo = dataLst[i].reportEndDate.split('-')[0]
           if(dataPackage.yearly[symbol][dateInfo] == null) dataPackage.yearly[symbol][dateInfo] = {}
           dataPackage.yearly[symbol][dateInfo][type] = {currencyName: dataLst[i].currencyName, data: dataLst[i].rows}
         }
@@ -62,6 +58,17 @@ function webullFRDataDetailProcessing(dataPackage, symbol, type){
   return dataPackage
 }
 
+function ttttttest(){
+  var url = 'https://www.webull.com/cash-flow/nyse-nio'
+  var xml = UrlFetchApp.fetch(url).getContentText();
+  var xmlRaw = xml.replace(/[\s\S]*?datas:\[([\s\S]*?})\][\s\S]*/g, '$1')
+  var dataLst = xmlRaw.match(/({currencyName[\s\S]*?}}})/g).map(item => item.replace(/{[\s\S]*?rows:{}},/g, '').replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":'))
+  for(var i in dataLst){
+    Logger.log(dataLst[i])
+    JSON.parse(dataLst[i])
+  }
+}
+
 function weBullFRDataRecorder(dataPackage){
   var file = SpreadsheetApp.openById('1Vsz0aZ11kBd-c2OOa3S45_9jhmXfRf4vpQU47Ae7n_o')
   for(var recType in dataPackage){
@@ -71,8 +78,8 @@ function weBullFRDataRecorder(dataPackage){
       for(var date in dataPackage[recType][symbol]){
         var FRData = dataPackage[recType][symbol][date]
         var id = String(symbol+date).hash()
-        var period = recType=='yearly'? date.split(' ')[1].split('-')[0] : date.split(' ')[0]
-        var recordDate = date.split(' ')[1]
+        var period = date.split(' ')[0]
+        var recordYear = date.split(' ')[1]
         
         var index = sheet.getRange("A1:A").getValues()
         
@@ -82,7 +89,7 @@ function weBullFRDataRecorder(dataPackage){
         var is = FRData['income-statement']? FRData['income-statement'].data : 'XXXX'
         
         if(!(index.includes(id))){
-          recodeMetrix.push([id, symbol, period, recordDate, currency, bs, is, cf])
+          recodeMetrix.push([id, symbol, period, recordYear, currency, bs, is, cf])
         }
       }
     }
