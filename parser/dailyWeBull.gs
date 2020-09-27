@@ -102,13 +102,16 @@ function getWeBullData(urlSymbol='nasdaq-bigc', category=''){
 
 function collectDataFromWeBull(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  //if(!checkifClosed()) return;
   Logger.log("Today Handling: " + JSON.stringify(STOCK_SYMBOLS))
-  var pool = []
-  var tickerPool = []
+  
+  var pool = CACHE.get('pool')? (CACHE.get('pool')).split(',') : []
+  var tickerPool = CACHE.get('tickerPool')? (CACHE.get('tickerPool')).split(',') : []
+  
   for (var catName in STOCK_SYMBOLS){
     for(var i in STOCK_SYMBOLS[catName]){
       let urlSymbol = STOCK_SYMBOLS[catName][i]
+      if(CACHE.get(urlSymbol.split('-')[1].toUpperCase())){Logger.log("Exist"); continue;}
       Logger.log("Handling: " + urlSymbol)
       var retry = 1
       while(retry < 3){
@@ -127,6 +130,7 @@ function collectDataFromWeBull(){
       }
     }
   }
+  Logger.log(pool)
   CACHE.put("pool", pool, CACHELIFETIME)
   CACHE.put("tickerPool", tickerPool, CACHELIFETIME)
   return

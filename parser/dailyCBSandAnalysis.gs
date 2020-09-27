@@ -1,4 +1,4 @@
-function getCBSRanking(stockName){
+function getCBSRanking(stockName=''){
   // CBS does not support financial companise
   if(CBSMUSTFAIL.includes(stockName)) return ""
   var sleepDurationSec = 0.5

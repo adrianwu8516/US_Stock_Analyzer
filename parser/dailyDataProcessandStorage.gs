@@ -92,7 +92,7 @@ function logGenerateAndCrossDayCompare(){
   // Use txt file instead of cache, so we can change to another mail server if we want to change the mailer
 }
 
-function dataRecord(stockInfo){
+function dataRecord(stockInfo={'symbol':'KL'}){
   var fileName = stockInfo['symbol']
   var today = new Date();
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
@@ -100,23 +100,24 @@ function dataRecord(stockInfo){
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var documentId = DriveApp.getFilesByName(fileName).next().getId()
     var stockDoc = SpreadsheetApp.openById(documentId);
+    // If 2nd row is null (means the previous writing process fiailed)
     if(stockDoc.getSheetValues(2,1,1,1)[0][0]==''){
       Logger.log(fileName + ": 2nd row null")
-      stockDoc.deleteRow(2)
+      stockDoc.getRange('A2:AU2').setValues([[
+        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
+        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
+        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
+        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
+        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
+        '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
+        stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
+      return
     }
     var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
     if(targetRow){
       Logger.log("Passover: " + fileName)
-//      targetRow += 1
-//      stockDoc.getRange('A'+ targetRow + ':AU' + targetRow).setValues([[
-//        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
-//        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
-//        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
-//        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
-//        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
-//        '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
-//        stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     }else{
+      // If data of today does not been recorded yet
       Logger.log("Recording: " + fileName)
       stockDoc.insertRowBefore(2);
       stockDoc.getRange('A2:AU2').setValues([[
@@ -129,6 +130,7 @@ function dataRecord(stockInfo){
         stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     }
   }else{
+    // If document do not even exist
     var documentId = DriveApp.getFileById(STOCK_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
     Logger.log("New File: " + fileName)
