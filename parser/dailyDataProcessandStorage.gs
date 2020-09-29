@@ -68,8 +68,11 @@ function logGenerateAndCrossDayCompare(){
           // Technical Analysis Part
           let priceLst = getPriceLst(stockSymbol)
           let ma60Support = Sum(priceLst)/priceLst.length
+          let priceLstShort = priceLst.slice(0, 20)
+          let ma20Support = Sum(priceLstShort)/priceLstShort.length
           if(Math.abs(stockInfo.price - ma60Support)/ma60Support < 0.05){
-            stockInfo.ma60support = '🛡'
+            stockInfo.ma60support = ma20Support >= ma60Support? '↘️🛡' : '↗🛡'
+            
           }
         }catch(e){
           Logger.log(e)
@@ -207,6 +210,6 @@ function checkYahooForecast(sheet, symbol){
 function getPriceLst(stockSymbol='KC', span=60){
   var file = DriveApp.getFilesByName(stockSymbol).next();
   var Sheet = SpreadsheetApp.open(file);
-  let close = Sheet.getSheetValues(2, 5, span, 1).map(element => parseFloat(element[0])||null).reverse()
+  let close = Sheet.getSheetValues(2, 5, span, 1).map(element => parseFloat(element[0])||null) // List order [T, T-1, T-2 ......]
   return close
 }

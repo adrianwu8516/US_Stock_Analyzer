@@ -119,7 +119,7 @@ function onSearch(sheetName, searchString, searchTargetCol) {
   }
 }
 
-function saveLog(contents, filename, folder = STOCKFILE) {
+function saveLog(contents, filename, folder = LOGFILE) {
   var children = folder.getFilesByName(filename);
   var file = null;
   if (children.hasNext()) {
@@ -130,7 +130,7 @@ function saveLog(contents, filename, folder = STOCKFILE) {
   }
 }
 
-function readLog(filename, folder = STOCKFILE) {
+function readLog(filename, folder = LOGFILE) {
   var children = folder.getFilesByName(filename);
   var file = null;
   if (children.hasNext()) {
