@@ -1,6 +1,6 @@
-function weBullSingle(stockSymbol='tsla', span=100) {
+function weBullSingle(stockSymbol='tsla', span=2) {
   var cacheName = stockSymbol + '-history'
-  var stockHistoryData = CACHE.get(cacheName);
+  //var stockHistoryData = CACHE.get(cacheName);
   if(!stockHistoryData){
     var file = DriveApp.getFilesByName(stockSymbol).next();
     
@@ -54,10 +54,9 @@ function weBullSingle(stockSymbol='tsla', span=100) {
       forecastObj.next5Y = Math.round(forecastData[6] * 1000)/10 + "%"
     }
     
-    var fRObj = getFRData(stockSymbol)
-    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj, forecastObj, fRObj); //, targetPriceObj
-    Logger.log(stockHistoryData.MA20)
-    Logger.log(stockHistoryData.MA60)
+    var fRObj = getFRData(stockSymbol.replace('-', '.'))
+    var fRObjWebull = getFRDataFromWebull(stockSymbol.split('-')[0])
+    stockHistoryData = Object.assign(stockHistoryData, tickerObj, ratingObj, guruObj, forecastObj, fRObj, fRObjWebull); //, targetPriceObj
     CACHE.put(cacheName, JSON.stringify(stockHistoryData), CACHELIFETIME)
   }else{
     stockHistoryData = JSON.parse(stockHistoryData)
@@ -65,7 +64,45 @@ function weBullSingle(stockSymbol='tsla', span=100) {
   return stockHistoryData
 }
 
-function getFRData(stockSymbol='VNET'){
+function getFRDataFromWebull(stockSymbol='rds'){
+  var fRSheet = SpreadsheetApp.openById('1Vsz0aZ11kBd-c2OOa3S45_9jhmXfRf4vpQU47Ae7n_o').getSheetByName("Quarterly")
+  var listForSearch = fRSheet.getSheetValues(1, 2, fRSheet.getLastRow(), 1).flat()
+  var searchTarget = stockSymbol.toLowerCase()
+  var searchResult = []
+  for (var i = listForSearch.length - 1; i >= 0; i--) {
+    if (listForSearch[i] === searchTarget) {
+      searchResult.unshift(i);
+    }
+  }
+  let final = {
+    'periodQ':[], 'revenueQ':[], 'profitQ':[], 'incomeMarginQ':[], 'profitMarginQ':[], 'totalAssetQ':[], 'totalDebtQ':[], 'cashFlowRatioQ':[]
+  };
+  for(let i=0; i<searchResult.length; i++){
+    var parsedData = fRSheet.getSheetValues(searchResult[i]+1, 3, 1, 5)[0]
+    let periodQ = parsedData[1] + '/' +  parsedData[0], bLTable = parsedData[3], iSTable = parsedData[4], cFTable = parsedData[5]
+    final.periodQ.unshift(periodQ)
+    if(bLTable!='XXXX'){
+      bLTable = JSON.parse(bLTable)
+      final.totalAssetQ.unshift(parseInt(bLTable.totalAsset.value) / 100000000 || 0)      // 億美金
+      final.totalDebtQ.unshift(parseInt(bLTable.totalLiability.value)/100000000 || 0)
+      final.cashFlowRatioQ.unshift(parseInt(bLTable.cash.value) / parseInt(bLTable.totalCurrentLiability.value) || 0)
+    }else{
+      final.totalAsset.unshift(0); final.totalDebt.unshift(0); final.cashFlowRatio.unshift(0)
+    }
+    if(iSTable!='XXXX'){
+      iSTable = JSON.parse(iSTable)
+      final.revenueQ.unshift(parseInt(iSTable.revenue.value) / 100000000 || 0)      // 億美金
+      final.profitQ.unshift(parseInt(iSTable.netIncomeAfterTax.value) / 100000000 || 0)
+      final.incomeMarginQ.unshift(parseInt(iSTable.grossProfit.value) / parseInt(iSTable.revenue.value) || 0)
+      final.profitMarginQ.unshift(parseInt(iSTable.netIncomeBeforeTax.value) / parseInt(iSTable.revenue.value) || 0)
+    }else{
+      final.revenueQ.unshift(0); final.profitQ.unshift(0); final.incomeMarginQ.unshift(0); final.profitMarginQ.unshift(0)
+    }
+  }
+  return final
+}
+
+function getFRData(stockSymbol='rds.b'){
   var fRSheet = SpreadsheetApp.openById('1YHPDD8404yU6za3al4x0TYQaqfb0s4IgxLDf9tu0QGE')
   var listForSearch = fRSheet.getSheetValues(1, 2, fRSheet.getLastRow(), 1).flat()
   var searchTarget = stockSymbol.toLowerCase()
@@ -77,7 +114,8 @@ function getFRData(stockSymbol='VNET'){
   }
   let final = {
     'period':[], 'incomeMargin':[], 'profitMargin':[], 'revenueGrowth':[], 'profitGrowth':[], 'assetGrowth':[], 'cashFlowRatio':[], 'cashAdaquacyRatio':[], 'reinvestment':[], 
-    'totalAsset':[], 'totalDebt':[], 'revenue':[], 'profit':[], 'ebitda':[], 'freeCash':[]};
+    'totalAsset':[], 'totalDebt':[], 'revenue':[], 'profit':[], 'ebitda':[], 'freeCash':[]
+  };
   for(let i=0; i<searchResult.length; i++){
     var parsedData = fRSheet.getSheetValues(searchResult[i]+1, 3, 1, 6)[0]
     let period = parsedData[0], financialRate = parsedData[1], bLTable = parsedData[3], iSTable = parsedData[4], cFTable = parsedData[5]
@@ -118,7 +156,6 @@ function getFRData(stockSymbol='VNET'){
       final.freeCash.unshift(0)
     }
   }
-  Logger.log(final)
   return final
 }
 

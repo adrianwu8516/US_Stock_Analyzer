@@ -57,31 +57,18 @@ function webullFRDataDetailProcessing(dataPackage, symbol, type){
   }
   return dataPackage
 }
-
-function ttttttest(){
-  var url = 'https://www.webull.com/cash-flow/nyse-nio'
-  var xml = UrlFetchApp.fetch(url).getContentText();
-  var xmlRaw = xml.replace(/[\s\S]*?datas:\[([\s\S]*?})\][\s\S]*/g, '$1')
-  var dataLst = xmlRaw.match(/({currencyName[\s\S]*?}}})/g).map(item => item.replace(/{[\s\S]*?rows:{}},/g, '').replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":'))
-  for(var i in dataLst){
-    Logger.log(dataLst[i])
-    JSON.parse(dataLst[i])
-  }
-}
-
 function weBullFRDataRecorder(dataPackage){
   var file = SpreadsheetApp.openById('1Vsz0aZ11kBd-c2OOa3S45_9jhmXfRf4vpQU47Ae7n_o')
   for(var recType in dataPackage){
     var recodeMetrix = []
     var sheet = recType=='yearly'? file.getSheetByName('Yearly') : file.getSheetByName('Quarterly')
+    var index = sheet.getRange("A2:A").getValues().flat()
     for(var symbol in dataPackage[recType]){
       for(var date in dataPackage[recType][symbol]){
         var FRData = dataPackage[recType][symbol][date]
-        var id = String(symbol+date).hash()
+        var id = String(symbol.split('-')[0]+date).hash()
         var period = date.split(' ')[0]
         var recordYear = date.split(' ')[1]
-        
-        var index = sheet.getRange("A1:A").getValues()
         
         var currency = FRData['balance-sheet']? FRData['balance-sheet'].currencyName : 'XXXX'
         var bs = FRData['balance-sheet']? FRData['balance-sheet'].data : 'XXXX'
@@ -89,15 +76,17 @@ function weBullFRDataRecorder(dataPackage){
         var is = FRData['income-statement']? FRData['income-statement'].data : 'XXXX'
         
         if(!(index.includes(id))){
-          recodeMetrix.push([id, symbol, period, recordYear, currency, bs, is, cf])
+          recodeMetrix.push([id, symbol.split('-')[1], period, recordYear, currency, JSON.stringify(bs), JSON.stringify(is), JSON.stringify(cf)])
         }
       }
     }
     var writeInNum = recodeMetrix.length
     Logger.log(writeInNum)
-    sheet.insertRowsBefore(2, writeInNum);
-    writeInNum += 1
-    sheet.getRange('A2:H' + writeInNum).setValues(recodeMetrix)
+    if(writeInNum > 0){
+      sheet.insertRowsBefore(2, writeInNum);
+      writeInNum += 1
+      sheet.getRange('A2:H' + writeInNum).setValues(recodeMetrix)
+    }
   }
   return
 }

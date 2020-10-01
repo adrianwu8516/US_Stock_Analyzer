@@ -23,6 +23,10 @@
             google.charts.setOnLoadCallback(drawBalanceSheetChart);
             google.charts.setOnLoadCallback(drawIncomeStatementChart);
             google.charts.setOnLoadCallback(drawEBITDAFreeCashChart);
+            google.charts.setOnLoadCallback(drawFRQChart);
+            google.charts.setOnLoadCallback(drawCashRatioQChart);
+            google.charts.setOnLoadCallback(drawBalanceSheetQChart);
+            google.charts.setOnLoadCallback(drawIncomeStatementQChart);
  
             // Callback that creates and populates a data table,
             // instantiates a dashboard, a range slider and a pie chart,
@@ -499,6 +503,136 @@
                 //draw our chart
                 chart.draw(dataTable, options); 
             }
+            
+            function drawFRQChart() {
+            
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                var period = '<?= periodQ ?>'.split(',')
+                var incomeMargin  = '<?= incomeMarginQ ?>'.split(',').map(Number)
+                var profitMargin  = '<?= profitMarginQ ?>'.split(',').map(Number)
+                
+                //define columns
+                dataTable.addColumn('string', '季度');
+                dataTable.addColumn('number', '毛利率');
+                dataTable.addColumn('number', '淨利率');
+                //define rows of data
+                for(var i = 0 ; i < period.length ; i++)
+                {
+                    if(incomeMargin[i] != 0 && profitMargin[i] != 0)
+                    dataTable.addRows([[period[i], incomeMargin[i], profitMargin[i]]]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.ComboChart (document.getElementById('frQ_div'));
+                
+                //define options for visualization
+                var options = {
+                     seriesType: 'bars',
+                     chartArea: {'height': '70%', 'width': '57%'},
+                     colors:['#AFEEEE', '#7898e1']
+                };
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
+            
+            function drawCashRatioQChart() {
+            
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                var period = '<?= periodQ ?>'.split(',')
+                var cashFlowRatio  = '<?= cashFlowRatioQ ?>'.split(',').map(Number)
+                
+                //define columns
+                dataTable.addColumn('string', '季度');
+                dataTable.addColumn('number', '現金比率');
+                //define rows of data
+                for(var i = 0 ; i < period.length ; i++)
+                {
+                    if(cashFlowRatio[i] != 0)
+                    dataTable.addRows([[period[i], cashFlowRatio[i]]]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.ComboChart (document.getElementById('cashRatioQ_div'));
+                
+                //define options for visualization
+                var options = {
+                     seriesType: 'bars',
+                     chartArea: {'height': '70%', 'width': '57%'},
+                     colors:['#AFEEEE', '#7898e1']
+                };
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
+            
+            function drawBalanceSheetQChart() {
+            
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                var period = '<?= periodQ ?>'.split(',')
+                var totalAsset  = '<?= totalAssetQ ?>'.split(',').map(Number)
+                var totalDebt  = '<?= totalDebtQ ?>'.split(',').map(Number)
+                
+                //define columns
+                dataTable.addColumn('string', '季度');
+                dataTable.addColumn('number', '總資產');
+                dataTable.addColumn('number', '總負債');
+                //define rows of data
+                for(var i = 0 ; i < period.length ; i++)
+                {
+                    if(totalAsset[i] != 0 && totalDebt[i] != 0)
+                    dataTable.addRows([[period[i], totalAsset[i], totalDebt[i]]]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.ComboChart (document.getElementById('balanceSheetQ_div'));
+                
+                //define options for visualization
+                var options = {
+                     seriesType: 'bars',
+                     chartArea: {'height': '70%', 'width': '57%'},
+                     colors:['#AFEEEE', '#7898e1']
+                };
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
+            
+            function drawIncomeStatementQChart() {
+            
+                //create data table object
+                var dataTable = new google.visualization.DataTable();
+                var period = '<?= periodQ ?>'.split(',')
+                var revenue  = '<?= revenueQ ?>'.split(',').map(Number)
+                var profit  = '<?= profitQ ?>'.split(',').map(Number)
+                
+                //define columns
+                dataTable.addColumn('string', '季度');
+                dataTable.addColumn('number', '營收');
+                dataTable.addColumn('number', '利潤');
+                //define rows of data
+                for(var i = 0 ; i < period.length ; i++)
+                {
+                    if(revenue[i] != 0 && profit[i] != 0)
+                    dataTable.addRows([[period[i], revenue[i], profit[i]]]);
+                } 
+                
+                //instantiate our chart object
+                var chart = new google.visualization.ComboChart (document.getElementById('incomeStatementQ_div'));
+                
+                //define options for visualization
+                var options = {
+                     seriesType: 'bars',
+                     chartArea: {'height': '70%', 'width': '57%'},
+                     colors:['#AFEEEE', '#7898e1']
+                };
+ 
+                //draw our chart
+                chart.draw(dataTable, options); 
+            }
         </script> 
         
     </head>
@@ -707,7 +841,7 @@
           <div id="analystChart_div"   style="height: 200px;"></div>
         </div>
         <br>
-        <h4>財報數據</h4>
+        <h4>年度財報數據</h4>
         <div class="row">
             <div class="col">
                <div id="fr_div" style="height: 250px; border: 1px solid #ccc"></div>
@@ -730,6 +864,24 @@
             </div>
             <div class="col">
                <div id="ebitdaFreeCash_div" style="height: 250px; border: 1px solid #ccc"></div>
+            </div>
+        </div>
+        <br><br>
+        <h4>季度財報數據</h4>
+        <div class="row">
+            <div class="col">
+               <div id="incomeStatementQ_div" style="height: 250px; border: 1px solid #ccc"></div>
+            </div>
+            <div class="col">
+               <div id="balanceSheetQ_div" style="height: 250px; border: 1px solid #ccc"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+               <div id="frQ_div" style="height: 250px; border: 1px solid #ccc"></div>
+            </div>
+            <div class="col">
+               <div id="cashRatioQ_div" style="height: 250px; border: 1px solid #ccc"></div>
             </div>
         </div>
         </div>
