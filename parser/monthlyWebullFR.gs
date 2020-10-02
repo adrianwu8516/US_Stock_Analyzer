@@ -26,7 +26,20 @@ function getWebullFRData(groupNo) {
   weBullFRDataRecorder(dataPackage)
 }
 
-function webullFRDataDetailProcessing(dataPackage, symbol, type){
+
+function fixingCertainWeBullFRData(symbol='nasdaq-pdd'){
+  var dataPackage = {"quarterly":{}, "yearly":{}}
+  dataPackage.quarterly[symbol] = {}
+  dataPackage.yearly[symbol] = {}
+  dataPackage = webullFRDataDetailProcessing(dataPackage, symbol, type='cash-flow')
+  dataPackage = webullFRDataDetailProcessing(dataPackage, symbol, type='balance-sheet')
+  dataPackage = webullFRDataDetailProcessing(dataPackage, symbol, type='income-statement')
+  Logger.log(dataPackage)
+  weBullFRDataRecorder(dataPackage)
+}
+
+
+function webullFRDataDetailProcessing(dataPackage = {"quarterly":{'nasdaq-nxst':{}}, "yearly":{'nasdaq-nxst':{}}}, symbol='nasdaq-nxst', type='cash-flow'){
   var url = 'https://www.webull.com/' + type + '/' + symbol
   Logger.log(url)
   let sleepDurationSec = 0.5
@@ -66,7 +79,7 @@ function weBullFRDataRecorder(dataPackage){
     for(var symbol in dataPackage[recType]){
       for(var date in dataPackage[recType][symbol]){
         var FRData = dataPackage[recType][symbol][date]
-        var id = String(symbol.split('-')[0]+date).hash()
+        var id = String(symbol.split('-')[1]+date).hash()
         var period = date.split(' ')[0]
         var recordYear = date.split(' ')[1]
         
