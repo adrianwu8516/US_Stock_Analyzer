@@ -83,6 +83,7 @@ function getWeBullData(urlSymbol='nasdaq-bigc', category=''){
   stockInfo['open'] = parseFloat(tickerRTJSON.tickerRT.open)
   stockInfo['volume'] = parseInt(tickerRTJSON.tickerRT.volume)
   stockInfo['volume10D'] = parseInt(tickerRTJSON.tickerRT.avgVol10D)
+  stockInfo['volumeRatio'] = Math.round((stockInfo['volume'] / stockInfo['volume10D']) * 100)
   stockInfo['forwardPe'] = parseFloat(tickerRTJSON.tickerRT.forwardPe)
   stockInfo['yield'] = Math.round(parseFloat(tickerRTJSON.tickerRT.yield)*1000)/10 + "%"
   
