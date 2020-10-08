@@ -27,7 +27,7 @@
                                      <th scope="col" style="text-align: center;"><strong>財報</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>公司</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>價格</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>交易量</strong></th>
+                                     <th scope="col" style="text-align: center; white-space: nowrap;"><strong>交易量</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>52H</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>52L</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>漲跌</strong></th>
@@ -87,15 +87,15 @@
                                        </td>
                                        <td style="text-align: center;"><?= catInfo[i]['price'] ?></td>
                                        
-                                       <td style="text-align: center;"><strong>
+                                       <td style="text-align: center;">
                                        <? if (catInfo[i]['volumeRatio'] > 200){ ?>
-                                           <span style="color: #339966;"><?= catInfo[i]['volumeRatio'] ?></span>
+                                           <span style="color: #339966;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
                                        <? }else if (catInfo[i]['volumeRatio'] < 50){ ?>
-                                           <span style="color: #ff0000;"><?= catInfo[i]['volumeRatio'] ?></span>
+                                           <span style="color: #ff0000;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
                                        <? }else{ ?>
-                                           <?= catInfo[i]['volumeRatio'] ?>
+                                           <?= catInfo[i]['volumeRatio'] ?>%
                                        <? }?>
-                                       </strong></td>
+                                       </td>
                                        
                                        <td style="text-align: center;">
                                        <? if ((catInfo[i]['52weekHigh'] - catInfo[i]['price'])/catInfo[i]['52weekHigh'] < 0.05){ ?>
