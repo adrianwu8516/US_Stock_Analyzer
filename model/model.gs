@@ -64,7 +64,7 @@ function weBullSingle(stockSymbol='tsla', span=2) {
   return stockHistoryData
 }
 
-function getFRDataFromWebull(stockSymbol='rds'){
+function getFRDataFromWebull(stockSymbol='dkng'){
   var fRSheet = SpreadsheetApp.openById('1Vsz0aZ11kBd-c2OOa3S45_9jhmXfRf4vpQU47Ae7n_o').getSheetByName("Quarterly")
   var listForSearch = fRSheet.getSheetValues(1, 2, fRSheet.getLastRow(), 1).flat()
   var searchTarget = stockSymbol.toLowerCase()
@@ -83,18 +83,34 @@ function getFRDataFromWebull(stockSymbol='rds'){
     final.periodQ.unshift(periodQ)
     if(bLTable!='XXXX'){
       bLTable = JSON.parse(bLTable)
-      final.totalAssetQ.unshift(parseInt(bLTable.totalAsset.value) / 100000000 || 0)      // 億美金
-      final.totalDebtQ.unshift(parseInt(bLTable.totalLiability.value)/100000000 || 0)
-      final.cashFlowRatioQ.unshift(parseInt(bLTable.cash.value) / parseInt(bLTable.totalCurrentLiability.value) || 0)
+      let totalAssetQ = bLTable.totalAsset? parseInt(bLTable.totalAsset.value) / 100000000 : 0       // 億美金
+      final.totalAssetQ.unshift(totalAssetQ)
+      let totalDebtQ = bLTable.totalLiability? parseInt(bLTable.totalLiability.value)/100000000 : 0
+      final.totalDebtQ.unshift(totalDebtQ)
+      if(bLTable.totalCurrentLiability && bLTable.cash){
+        final.cashFlowRatioQ.unshift(parseInt(bLTable.cash.value) / parseInt(bLTable.totalCurrentLiability.value) || 0)
+      }else{
+        final.cashFlowRatioQ.unshift(0)
+      }
     }else{
-      final.totalAsset.unshift(0); final.totalDebt.unshift(0); final.cashFlowRatio.unshift(0)
+      final.totalAssetQ.unshift(0); final.totalDebtQ.unshift(0); final.cashFlowRatioQ.unshift(0)
     }
     if(iSTable!='XXXX'){
       iSTable = JSON.parse(iSTable)
-      final.revenueQ.unshift(parseInt(iSTable.revenue.value) / 100000000 || 0)      // 億美金
-      final.profitQ.unshift(parseInt(iSTable.netIncomeAfterTax.value) / 100000000 || 0)
-      final.incomeMarginQ.unshift(parseInt(iSTable.grossProfit.value) / parseInt(iSTable.revenue.value) || 0)
-      final.profitMarginQ.unshift(parseInt(iSTable.netIncomeBeforeTax.value) / parseInt(iSTable.revenue.value) || 0)
+      let revenueQ = iSTable.revenue? parseInt(iSTable.revenue.value) / 100000000 : 0         // 億美金
+      final.revenueQ.unshift(revenueQ)
+      let profitQ = iSTable.netIncomeAfterTax? parseInt(iSTable.netIncomeAfterTax.value) / 100000000 : 0
+      final.profitQ.unshift(profitQ)
+      if(iSTable.grossProfit && iSTable.revenue){
+        final.incomeMarginQ.unshift(parseInt(iSTable.grossProfit.value) / parseInt(iSTable.revenue.value) || 0)
+      }else{
+        final.incomeMarginQ.unshift(0)
+      }
+      if(iSTable.netIncomeBeforeTax && iSTable.revenue){
+        final.profitMarginQ.unshift(parseInt(iSTable.netIncomeBeforeTax.value) / parseInt(iSTable.revenue.value) || 0)
+      }else{
+        final.profitMarginQ.unshift(0)
+      }
     }else{
       final.revenueQ.unshift(0); final.profitQ.unshift(0); final.incomeMarginQ.unshift(0); final.profitMarginQ.unshift(0)
     }

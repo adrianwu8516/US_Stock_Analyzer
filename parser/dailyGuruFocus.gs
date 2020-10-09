@@ -73,7 +73,7 @@ function calculateFreeCashFlowValuation(symbol='hlf'){
   Logger.log('currentPrice: ' + factor.currentPrice)
 }
 
-function getGuruFocusData(symbol='MSFT') {
+function getGuruFocusData(symbol='INTU') {
   var data = {}
   let url = 'https://www.gurufocus.com/term/wacc/' + symbol + '/WACC-Percentage'
   let xml = UrlFetchApp.fetch(url).getContentText();
@@ -114,23 +114,23 @@ function getGuruFocusData(symbol='MSFT') {
   
   url = 'https://www.gurufocus.com/term/iv_dcf_share/' + symbol + '/Intrinsic-Value:-Projected-FCF'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.iv_dcf_share = parseFloat(xml.replace(/[\s\S]*FCF of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  data.iv_dcf_share = parseFloat(xml.replace(/[\s\S]*FCF of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   url = 'https://www.gurufocus.com/term/iv_dcf/' + symbol + '/Intrinsic-Value:-DCF-(FCF-Based)'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.iv_dcf = parseFloat(xml.replace(/[\s\S]*DCF \(FCF Based\) of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  data.iv_dcf = parseFloat(xml.replace(/[\s\S]*DCF \(FCF Based\) of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   url = 'https://www.gurufocus.com/term/grahamnumber/' + symbol + '/Graham-Number'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.grahamnumber = parseFloat(xml.replace(/[\s\S]*Graham Number of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  data.grahamnumber = parseFloat(xml.replace(/[\s\S]*Graham Number of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   url = 'https://www.gurufocus.com/term/lynchvalue/' + symbol + '/Peter-Lynch-Fair-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.lynchvalue = parseFloat(xml.replace(/[\s\S]*Peter Lynch Fair Value of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  data.lynchvalue = parseFloat(xml.replace(/[\s\S]*Peter Lynch Fair Value of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   url = 'https://www.gurufocus.com/term/medpsvalue/' + symbol + '/Median-PS-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.medpsvalue = parseFloat(xml.replace(/[\s\S]*Median PS Value of \$?([\s\S]*) as of today[\s\S]*/, '$1'))
+  data.medpsvalue = parseFloat(xml.replace(/[\s\S]*Median PS Value of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   url = 'https://www.gurufocus.com/term/p2tangible_book/' + symbol + '/Price-to-Tangible-Book'
   xml = UrlFetchApp.fetch(url).getContentText();
@@ -147,10 +147,24 @@ function getGuruFocusData(symbol='MSFT') {
     data.p2tangible_bookNow = p2tangible_book[4]
   }
   
+  url = 'https://www.gurufocus.com/term/ROE/' + symbol + '/ROE-'
+  xml = UrlFetchApp.fetch(url).getContentText();
+  if(xml.replace(/[\s\S]*ROE \% of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
+    data.roeLow = NaN
+    data.roeMid = NaN
+    data.roeHigh = NaN
+    data.roeNow = NaN
+  }else{
+    var p2tangible_book = xml.replace(/[\s\S]*<strong>Min([\s\S]*?)<\/strong>[\s\S]*/, '$1').split(':').map(item => parseFloat(item))
+    data.roeLow = p2tangible_book[1]
+    data.roeMid = p2tangible_book[2]
+    data.roeHigh = p2tangible_book[3]
+    data.roeNow = p2tangible_book[4]
+  }
+  
   url = 'https://www.gurufocus.com/term/NCAV/' + symbol + '/Net-Net-Working-Capital'
   xml = UrlFetchApp.fetch(url).getContentText();
-  let netnetTempLst = xml.replace(/[\s\S]*Net-Net Working Capital of \$?([\s\S]*) as of today[\s\S]*/, '$1').split(' ')
-  data.nnwc = parseFloat(netnetTempLst[netnetTempLst.length-1])
+  data.nnwc = parseFloat(xml.replace(/[\s\S]*Net-Net Working Capital of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
   
   Logger.log(data)
   CACHE.put(symbol+'-Guru', JSON.stringify(data), CACHELIFETIME)
@@ -178,9 +192,13 @@ function recordValuation(symbol, data){
         data.buyback_yield, data.iv_dcf_share, data.iv_dcf, data.grahamnumber, data.lynchvalue, data.medpsvalue,
         data.p2tangible_bookLow, data.p2tangible_bookMid, data.p2tangible_bookHigh, data.p2tangible_bookNow, data.nnwc
       ]]);
+      stockDoc.getRange('AV' + targetRow + ':AY' + targetRow).setValues([[
+        data.roeLow, data.roeMid, data.roeHigh, data.roeNow
+      ]]);
       // For new stocks
-      //stockDoc.getRange('Y1:AU1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc', '機構持股比例', '機構持股變化比例', '機構持股']])
-      //stockDoc.getRange('Y2:AT2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+      stockDoc.getRange('Y1:AY1').setValues([['WACC', 'ROIC', "ZScore", "MScore", "FScore", "ev2ebitdaLow", "ev2ebitdaMid", "ev2ebitdaHigh", "ev2ebitdaNow", "buyback_yield", "iv_dcf_share", "iv_dcf", "GrahamNumber", "LynchValue", "MedPSValue", "p2tangible_bookLow", 'p2tangible_bookMid', 'p2tangible_bookHigh', 'p2tangible_bookNow', 'nnwc', '機構持股比例', '機構持股變化比例', '機構持股', 'rocLow', 'rocMid', 'rocHigh', 'rocNow']])
+      stockDoc.getRange('Y2:AT2').setNumberFormats([['0.00%', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00%', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']])
+      stockDoc.getRange('AV2:AY2').setNumberFormats([['0.00', '0.00', '0.00', '0.00']])
     }
   }else{
     Logger.log('Cannot find original record of that day in ' + symbol)
