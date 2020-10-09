@@ -31,6 +31,7 @@
                                      <th scope="col" style="text-align: center;"><strong>52H</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>52L</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>漲跌</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>市值(億)</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>PE</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;"><strong>預估PE</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;"><strong>價值乘數</strong></th>
@@ -43,7 +44,9 @@
                                      <th scope="col" style="text-align: center;"><strong>營收成長</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>殖利率</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>回購率</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>市值(億)</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>ROE</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>ROIC</strong></th>
+                                     <th scope="col" style="text-align: center;"><strong>回購率</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;;"><strong>分析師股票目標價追蹤</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;;"><strong>關注度</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>FScore</strong></th>
@@ -122,6 +125,8 @@
                                            <?= (catInfo[i]['delta']* 100).toFixed(1) ?> %
                                        <? }?>
                                        </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value']) ?></strong></td>
                                        
                                        <td style="text-align: center;"><strong>
                                        <? if (catInfo[i]['TTM'] > 0){ ?>
@@ -231,12 +236,22 @@
                                        </strong></td>
                                        
                                        <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <? if(catInfo[i]['roeNow']){ ?>
+                                           <?= catInfo[i]['roeNow'] ?> %
+                                       <? } ?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
+                                       <? if(catInfo[i]['roic']){ ?>
+                                           <?= catInfo[i]['roic'] ?>
+                                       <? } ?>
+                                       </strong></td>
+                                       
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
                                        <? if(catInfo[i]['buyback_yield'] != 0){ ?>
                                            <?= Math.round(catInfo[i]['buyback_yield']*10)/10?>%
                                        <? } ?>
                                        </strong></td>
-                                       
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value']) ?></strong></td>
                                        
                                        <? if (catInfo[i]['analysis'].includes("↗")){ ?>
                                            <td style="text-align: left;"><strong><span style="color: #339966;"><?= catInfo[i]['analysis'] ?></span></strong></td>

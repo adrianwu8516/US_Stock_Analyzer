@@ -54,6 +54,8 @@ function logGenerateAndCrossDayCompare(){
           stockInfo.zscore = guruData.zscore
           stockInfo.ev2ebitdaNow = guruData.ev2ebitdaNow
           stockInfo.p2tangible_bookNow = guruData.p2tangible_bookNow
+          stockInfo.roeNow = guruData.roeNow
+          stockInfo.roic = guruData.roic
           stockInfo.buyback_yield = guruData.buyback_yield
           stockInfo.lynchvalue = guruData.lynchvalue
           stockInfo.grahamnumber = guruData.grahamnumber
