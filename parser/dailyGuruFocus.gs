@@ -73,7 +73,7 @@ function calculateFreeCashFlowValuation(symbol='hlf'){
   Logger.log('currentPrice: ' + factor.currentPrice)
 }
 
-function getGuruFocusData(symbol='INTU') {
+function getGuruFocusData(symbol='lmnd') {
   var data = {}
   let url = 'https://www.gurufocus.com/term/wacc/' + symbol + '/WACC-Percentage'
   let xml = UrlFetchApp.fetch(url).getContentText();
@@ -92,7 +92,7 @@ function getGuruFocusData(symbol='INTU') {
   url = 'https://www.gurufocus.com/term/fscore/' + symbol + '/Piotroski-F-Score'
   xml = UrlFetchApp.fetch(url).getContentText();
   data.fscore = parseFloat(xml.replace(/[\s\S]*Piotroski F-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
-  
+  //Logger.log("1")
   url = 'https://www.gurufocus.com/term/ev2ebitda/' + symbol + '/EV-to-EBITDA'
   xml = UrlFetchApp.fetch(url).getContentText();
   if(xml.replace(/[\s\S]*EV-to-EBITDA of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
@@ -100,14 +100,20 @@ function getGuruFocusData(symbol='INTU') {
     data.ev2ebitdaMid = NaN
     data.ev2ebitdaHigh = NaN
     data.ev2ebitdaNow = NaN
-  }else{
+  }else if(xml.match(/<strong>Min([\s\S]*?)<\/strong>/)){
     var ev2ebitda = xml.replace(/[\s\S]*<strong>Min([\s\S]*?)<\/strong>[\s\S]*/, '$1').split(':').map(item => parseFloat(item))
     data.ev2ebitdaLow = ev2ebitda[1]
     data.ev2ebitdaMid = ev2ebitda[2]
     data.ev2ebitdaHigh = ev2ebitda[3]
     data.ev2ebitdaNow = ev2ebitda[4]
+  }else if(xml.match(/[\s\S]*<strong>highest([\s\S]*?)<\/strong>\.<\/p>[\s\S]*/)){
+    var ev2ebitda = xml.replace(/[\s\S]*<strong>highest([\s\S]*?)<\/strong>\.<\/p>[\s\S]*/, '$1').split('<strong>').map(item => parseFloat(item))
+    data.ev2ebitdaHigh = ev2ebitda[1]
+    data.ev2ebitdaLow = ev2ebitda[3]
+    data.ev2ebitdaMid = ev2ebitda[5]
+    data.ev2ebitdaNow = parseFloat(xml.replace(/[\s\S]*EV-to-EBITDA of ([\s\S]*) as of today[\s\S]*/, '$1'))
   }
-    
+  //Logger.log("2")
   url = 'https://www.gurufocus.com/term/buyback_yield/' + symbol + '/Buyback-Yield-Percentage'
   xml = UrlFetchApp.fetch(url).getContentText();
   data.buyback_yield = parseFloat(xml.replace(/[\s\S]*Buyback Yield % of ([\s\S]*) as of today[\s\S]*/, '$1'))
@@ -131,7 +137,7 @@ function getGuruFocusData(symbol='INTU') {
   url = 'https://www.gurufocus.com/term/medpsvalue/' + symbol + '/Median-PS-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
   data.medpsvalue = parseFloat(xml.replace(/[\s\S]*Median PS Value of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
+  //Logger.log("3")
   url = 'https://www.gurufocus.com/term/p2tangible_book/' + symbol + '/Price-to-Tangible-Book'
   xml = UrlFetchApp.fetch(url).getContentText();
   if(xml.replace(/[\s\S]*Price-to-Tangible-Book of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
@@ -146,26 +152,31 @@ function getGuruFocusData(symbol='INTU') {
     data.p2tangible_bookHigh = p2tangible_book[3]
     data.p2tangible_bookNow = p2tangible_book[4]
   }
-  
-  url = 'https://www.gurufocus.com/term/ROE/' + symbol + '/ROE-'
+  //Logger.log("4")
+  url = 'https://www.gurufocus.com/term/ROE/' + symbol + '/ROE-percentage'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.replace(/[\s\S]*ROE \% of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
+  var checkStr = parseFloat(xml.replace(/[\s\S]*ROE \% of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  if(!checkStr || checkStr==0){
     data.roeLow = NaN
     data.roeMid = NaN
     data.roeHigh = NaN
     data.roeNow = NaN
-  }else{
+  }else if(xml.match(/<strong>Min([\s\S]*?)<\/strong>/)){
     var p2tangible_book = xml.replace(/[\s\S]*<strong>Min([\s\S]*?)<\/strong>[\s\S]*/, '$1').split(':').map(item => parseFloat(item))
     data.roeLow = p2tangible_book[1]
     data.roeMid = p2tangible_book[2]
     data.roeHigh = p2tangible_book[3]
     data.roeNow = p2tangible_book[4]
+  }else{
+    data.roeLow = NaN
+    data.roeMid = NaN
+    data.roeHigh = NaN
+    data.roeNow = checkStr
   }
-  
+  //Logger.log("5")
   url = 'https://www.gurufocus.com/term/NCAV/' + symbol + '/Net-Net-Working-Capital'
   xml = UrlFetchApp.fetch(url).getContentText();
   data.nnwc = parseFloat(xml.replace(/[\s\S]*Net-Net Working Capital of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
   Logger.log(data)
   CACHE.put(symbol+'-Guru', JSON.stringify(data), CACHELIFETIME)
 }
