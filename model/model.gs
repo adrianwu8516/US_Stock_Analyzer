@@ -257,30 +257,6 @@ function weBullETFSingle(etfSymbol, span=20) {
   return etfHistoryData
 }
 
-function indexData(){
-//  var cacheName = 'index'
-//  var indexData = CACHE.get(cacheName);
-//  if(!indexData){
-    var indexData = JSON.parse(readLog("LoggerMailer.txt"))
-//    CACHE.put(cacheName, JSON.stringify(indexData), CACHELIFETIME)
-//  }else{
-//    indexData = JSON.parse(indexData)
-//  }  
-  return indexData
-}
-
-function etfIndexData(){
-  var cacheName = 'etfIndex'
-  var etfIndexData = CACHE.get(cacheName);
-  if(!etfIndexData){
-    var etfIndexData = JSON.parse(readLog("ETFIndex.txt", ETFFILE))
-    CACHE.put(cacheName, JSON.stringify(etfIndexData), CACHELIFETIME)
-  }else{
-    etfIndexData = JSON.parse(etfIndexData)
-  }
-  return etfIndexData
-}
-
 function superInvestorData(){
   var cacheName = 'superInvestorData'
   var SIFinalData = CACHE.get(cacheName);

@@ -24,6 +24,12 @@ function loadCompareList(){
   return html_page.evaluate().getContent();
 }
 
+function loadSelectorList(){
+  var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
+  html_page.noteObj = selectedIndexData()
+  return html_page.evaluate().getContent();
+}
+
 function loadMacroList(span=120){
   var html_page = HtmlService.createTemplateFromFile('view/index/macroList')
   html_page.macroJSON = macroData(span)

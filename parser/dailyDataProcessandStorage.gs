@@ -69,12 +69,11 @@ function logGenerateAndCrossDayCompare(){
         try{
           // Technical Analysis Part
           let priceLst = getPriceLst(stockSymbol)
-          let ma60Support = Sum(priceLst)/priceLst.length
+          stockInfo.ma60 = Sum(priceLst)/priceLst.length
           let priceLstShort = priceLst.slice(0, 20)
-          let ma20Support = Sum(priceLstShort)/priceLstShort.length
-          if(Math.abs(stockInfo.price - ma60Support)/ma60Support < 0.05){
-            stockInfo.ma60support = ma20Support >= ma60Support? '↘️🛡' : '↗🛡'
-            
+          stockInfo.ma20 = Sum(priceLstShort)/priceLstShort.length
+          if(Math.abs(stockInfo.price - stockInfo.ma60)/stockInfo.ma60 < 0.05){
+            stockInfo.ma60support = stockInfo.ma20 >= stockInfo.ma60? '↘️🛡' : '↗🛡'
           }
         }catch(e){
           Logger.log(e)
