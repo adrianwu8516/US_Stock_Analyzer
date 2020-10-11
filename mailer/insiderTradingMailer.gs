@@ -21,7 +21,7 @@ function insiderTradingMailer(){
     }
   }
   
-  if(mailElement != {}){
+  if(Object.keys(mailElement).length != 0){
     let title = todayStr + '：內部人交易追蹤'
     let email = 'adrianwu8516@gmail.com'
     let htmlTemp = HtmlService.createTemplateFromFile('view/mailer/dailyInsider')
