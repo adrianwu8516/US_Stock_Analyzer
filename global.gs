@@ -95,11 +95,22 @@ function PARSER_PACKAGE(){
 function RECORDER_PACKAGE(){
   dataRecordandProcess()
   if(!checkifClosed()) return;
-  renewCache()
+  //renewCache()
 }
 
 function REGENERATELOG(){
-  collectDataFromWeBull()
+  deprecateLog('static_stock_list.txt')
+  loadStockList()
+  deprecateLog('static_etf_list.txt')
+  loadETFList()
+  deprecateLog('static_compare_list.txt')
+  loadCompareList()
+  deprecateLog('static_selector_list.txt')
+  loadSelectorList()
+  deprecateLog('static_macro_list.txt')
+  loadMacroList()
+  deprecateLog('static_superinvestor_list.txt')
+  loadSuperInvestorList()
 }
 
 function renewCache(){
@@ -144,6 +155,13 @@ function readLog(filename, folder = LOGFILE) {
   }
 }
 
+function deprecateLog(filename, folder = LOGFILE) {
+  var children = folder.getFilesByName(filename);
+  if (children.hasNext()) children.next().setTrashed(true);
+  return
+}
+
+
 //Stop if the market is closed!
 function checkifClosed(){
   var today = new Date();
@@ -161,10 +179,7 @@ function render(file, argsObject){
       html_page[key] = argsObject[key]
     })
   }
-  return html_page
-        .evaluate()
-        .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-        .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  return html_page.evaluate().addMetaTag('viewport', 'width=device-width, initial-scale=1').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function include(filename) {

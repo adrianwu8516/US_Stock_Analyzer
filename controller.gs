@@ -3,47 +3,87 @@ function messageController(message){
 }
 
 function indexController(type){
-  Logger.log("Type = " + type)
   return render('view/index/index', {'type':type})
 }
 
 function loadStockList(){
-  var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
-  html_page.noteObj = indexData()
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_stock_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
+    html_page.noteObj = indexData()
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_stock_list.txt")
+    return html_file
+  }
 }
 
 function loadETFList(){
-  var html_page = HtmlService.createTemplateFromFile('view/index/etfList')
-  html_page.noteObj = etfIndexData()
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_etf_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/etfList')
+    html_page.noteObj = etfIndexData()
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_etf_list.txt")
+    return html_file
+  }
 }
 
 function loadCompareList(){
-  var html_page = HtmlService.createTemplateFromFile('view/index/compareList')
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_compare_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/compareList')
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_compare_list.txt")
+    return html_file
+  }
 }
 
 function loadSelectorList(){
-  var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
-  html_page.noteObj = selectedIndexData()
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_selector_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
+    html_page.noteObj = selectedIndexData()
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_selector_list.txt")
+    return html_file
+  }
 }
 
 function loadMacroList(span=120){
-  var html_page = HtmlService.createTemplateFromFile('view/index/macroList')
-  html_page.macroJSON = macroData(span)
-  html_page.macroFED = macroFEDQuarterlyData(span=240)
-  html_page.macroFEDMonthly = macroFEDMonthlyData(span=240)
-  html_page.span = 240
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_macro_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/macroList')
+    html_page.macroJSON = macroData(span)
+    html_page.macroFED = macroFEDQuarterlyData(span=240)
+    html_page.macroFEDMonthly = macroFEDMonthlyData(span=240)
+    html_page.span = 240
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_macro_list.txt")
+    return html_file
+  }
 }
 
 function loadSuperInvestorList(){
-  var html_page = HtmlService.createTemplateFromFile('view/index/superInvestorList')
-  html_page.superInvestorLst = superInvestorData()
-  Logger.log(superInvestorData())
-  return html_page.evaluate().getContent();
+  var html_file = readLog("static_superinvestor_list.txt")
+  if(html_file){
+    return html_file
+  }else{
+    var html_page = HtmlService.createTemplateFromFile('view/index/superInvestorList')
+    html_page.superInvestorLst = superInvestorData()
+    html_file = html_page.evaluate().getContent();
+    saveLog(html_file, "static_superinvestor_list.txt")
+    return html_file
+  }
 }
 
 function historyChartController(stockSymbol){
