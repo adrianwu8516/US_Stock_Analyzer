@@ -62,6 +62,7 @@ function logGenerateAndCrossDayCompare(){
           stockInfo.iv_dcf = guruData.iv_dcf
           stockInfo.iv_dcf_share = guruData.iv_dcf_share
           stockInfo.medpsvalue = guruData.medpsvalue
+          stockInfo.wacc = guruData.wacc
         }else{
           Logger.log("No GuruFOcus Info Data of" + stockSymbol)
         }

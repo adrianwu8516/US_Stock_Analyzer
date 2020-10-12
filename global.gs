@@ -21,7 +21,7 @@ STOCK_SYMBOLS = {
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy', 'nyse-et', 'nyse-ceqp', 'nyse-atco', 'nyse-tpl'],
   'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora', 'nyse-bep'], //VWSYF - Vestas Wind
   'Hardware':['nasdaq-logi', 'nasdaq-aapl', 'nasdaq-pi', 'nasdaq-irbt', 'nasdaq-vicr', 'nasdaq-gpro', 'nasdaq-wdc', 'nasdaq-stx'],
-  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'otcmkts-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg', 'nyse-vapo', 'nasdaq-srne', 'nasdaq-prsc', 'nasdaq-bli', 'nasdaq-txg', 'nasdaq-cort', 'nasdaq-inva', 'nyse-nvst', 'nyse-abbv', 'nyse-coo', 'nasdaq-abmd'],//
+  'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'otcmkts-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg', 'nyse-vapo', 'nasdaq-srne', 'nasdaq-prsc', 'nasdaq-bli', 'nasdaq-txg', 'nasdaq-cort', 'nasdaq-inva', 'nyse-nvst', 'nyse-abbv', 'nyse-coo', 'nasdaq-abmd', 'nasdaq-gdrx'],//
   'Medicine':['nyse-mrk', 'nyse-jnj', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy', 'nasdaq-crsp', 'nasdaq-blue', 'nasdaq-ino'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus', 'otcmkts-sftby', 'nasdaq-eric', 'nyse-nok', 'nasdaq-comm', 'nyse-cien', 'nyse-jnpr', 'otcmkts-ifnny'],
   'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb','nyse-rvlv',  'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy', 'nyse-rvlv', 'nyse-tjx', 'nasdaq-rost'], 
@@ -31,13 +31,14 @@ STOCK_SYMBOLS = {
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-nus', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc', 'nasdaq-grmn'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-jwn', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nasdaq-dltr', 'nyse-dg', 'nyse-azo', 'nasdaq-five'],
   'Transport':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv', 'nyse-hyln', 'nyse-nio', 'nasdaq-niu', 'nasdaq-li', 'nasdaq-gp', 'nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
-  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-dow', 'nyse-mmm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw', 'nyse-vsto', 'nyse-gold', 'nyse-nem', 'nyse-kl', 'nyse-trtn'],
+  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-dow', 'nyse-mmm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw', 'nyse-vsto', 'nyse-trtn'],
+  'Mining':['nyse-gold', 'nyse-nem', 'nyse-kl', 'nyse-lac', 'nyse-lthm', 'nasdaq-pll', 'nyse-alb', 'nyse-sqm', 'nyse-fmc'],
   'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig', 'nyse-hdb', 'nyse-ibn', 'nasdaq-cinf', 'nyse-pnc', 'nasdaq-slm'],
   'ITSolution':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl', 'nyse-infy', 'nyse-sap', 'nyse-pltr', 'nasdaq-ctsh', 'nasdaq-nvee', 'nyse-wns', 'nyse-anet', 'nasdaq-adp', 'nyse-tnet', 'nyse-cday', 'nyse-payc', 'nasdaq-wday'],
   'RealEstate':['nyse-o', 'nyse-spg', 'nyse-mac', 'nasdaq-bpy', 'nyse-bam', 'nyse-amt', 'nyse-cci', 'nyse-iipr', 'nyse-stor', 'nyse-wpc', 'nasdaq-reg', 'nyse-epr', 'nyse-apts', 'nyse-dhi', 'nyse-low', 'nasdaq-z', 'nasdaq-nymt', 'nyse-mfa', 'nyse-ivr', 'nyse-eqr', 'nyse-tol'],  //, 'nyse-srg'
   'Logistics':['nyse-ups', 'nyse-fdx', 'nyse-tfii', 'nasdaq-dada', 'nyse-best'], 
   'DailyLife':['nyse-sci', 'nyse-wm', 'nyse-cnk', 'nyse-amc', 'nyse-el', 'nasdaq-ulta', 'nyse-pg', 'nyse-kmb', 'nyse-cl', 'nyse-un', 'nyse-ntco', 'nasdaq-wdfc', 'nasdaq-mbuu', 'nasdaq-itri'],
-  'pets':['nyse-zts', 'nyse-chwy', 'nasdaq-cvet', 'nasdaq-frpt', 'nasdaq-idxx', 'nasdaq-pets']
+  'Pets':['nyse-zts', 'nyse-chwy', 'nasdaq-cvet', 'nasdaq-frpt', 'nasdaq-idxx', 'nasdaq-pets']
 }
 
 ETF_LIST = {

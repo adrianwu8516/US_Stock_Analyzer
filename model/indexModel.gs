@@ -10,7 +10,7 @@ function etfIndexData(){
 
 function selectedIndexData(){
   var indexData = JSON.parse(readLog("LoggerMailer.txt"))
-  var selectedItem = {'NewHight':{}, 'NiceFinancialReport':{}, 'NicePEG':{}, 'Supporting':{}, 'HighVolume':{}, 'DCF':{}, 'Graham':{}, 'Lynch':{}}
+  var selectedItem = {'NewHight':{}, 'NiceFinancialReport':{}, 'NicePEG':{}, 'Supporting':{}, 'HighVolume':{}, 'DCF':{}, 'Graham':{}, 'Lynch':{}, 'ROIC-WACC':{}}
   for(var catName in indexData){
     for(var no in indexData[catName]){
       var data = indexData[catName][no]
@@ -28,7 +28,7 @@ function selectedIndexData(){
       var DCF = data.price < data.iv_dcf && data.price < data.iv_dcf_share
       var Graham = data.price < data.grahamnumber
       var Lynch = data.price < data.lynchvalue
-      
+      var roicWaccDiff = data.roic - data.wacc > 0.05
       // Setting Indicators
       if(newHigh && peBetter && roe15) selectedItem.NewHight[data.symbol] = data
       if(strictScore && dividend) selectedItem.NiceFinancialReport[data.symbol] = data
@@ -38,6 +38,7 @@ function selectedIndexData(){
       if(DCF) selectedItem.DCF[data.symbol] = data
       if(Graham) selectedItem.Graham[data.symbol] = data
       if(Lynch) selectedItem.Lynch[data.symbol] = data
+      if(roicWaccDiff) selectedItem['ROIC-WACC'][data.symbol] = data
     }
   }
   return selectedItem

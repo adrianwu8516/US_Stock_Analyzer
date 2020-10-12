@@ -253,11 +253,11 @@
                                        </strong></td>
                                        
                                        <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
-                                       <? if (catInfo[i]['roic']){ ?>
-                                           <? if (catInfo[i]['roic']< 0){ ?>
-                                               <span style="color: #ff0000;"><?= Math.round(catInfo[i]['roic']*10)/10 ?> %</span>
+                                       <? if (catInfo[i]['roic'] && catInfo[i]['wacc']){ ?>
+                                           <? if (catInfo[i]['roic'] - catInfo[i]['wacc']< 0){ ?>
+                                               <span style="color: #ff0000;"><?= Math.round((catInfo[i]['roic']- catInfo[i]['wacc']) *1000)/10 ?> %</span>
                                            <? }else{ ?>
-                                               <span style="color: #339966;"><?= Math.round(catInfo[i]['roic']*10)/10 ?> %</span>
+                                               <span style="color: #339966;"><?= Math.round((catInfo[i]['roic']- catInfo[i]['wacc']) *1000)/10 ?> %</span>
                                            <? }?>
                                        <? }?>
                                        </strong></td>
