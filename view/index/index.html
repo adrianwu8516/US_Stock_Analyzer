@@ -28,8 +28,10 @@
           google.script.run.withSuccessHandler(show).loadMacroList();
       <? }else if (type=='selector'){ ?>
           google.script.run.withSuccessHandler(show).loadSelectorList();
-      <? }else{ ?> 
+       <? }else if (type=='test'){ ?>
           google.script.run.withSuccessHandler(show).loadStockList();
+      <? }else{ ?> 
+          google.script.run.withSuccessHandler(show).loadTestList();
       <? } ?>
       });
       function show(htmlPart) {

@@ -99,18 +99,13 @@ function RECORDER_PACKAGE(){
 }
 
 function REGENERATELOG(){
-  deprecateLog('static_stock_list.txt')
-  loadStockList()
-  deprecateLog('static_etf_list.txt')
-  loadETFList()
-  deprecateLog('static_compare_list.txt')
-  loadCompareList()
-  deprecateLog('static_selector_list.txt')
-  loadSelectorList()
-  deprecateLog('static_macro_list.txt')
-  loadMacroList()
-  deprecateLog('static_superinvestor_list.txt')
-  loadSuperInvestorList()
+  loadStockList(read=false)
+  loadETFList(read=false)
+  loadCompareList(read=false)
+  loadSelectorList(read=false)
+  loadMacroList(read=false)
+  loadSuperInvestorList(read=false)
+  return
 }
 
 function renewCache(){

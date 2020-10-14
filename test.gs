@@ -86,3 +86,110 @@ function fixMissingValue(){
   }
   return
 }
+
+function logtest(){
+  // Check if market closed
+  if(!checkifClosed()) return;
+  var logObj = {}
+  
+  // Loading Yahoo Data
+  var YahooSheet = SpreadsheetApp.openById('17enM_BO-EHxOr2sGl61umgNdXlfFZjdKsKlf2vA0hgE')
+  
+  // Record
+  for (var catName in STOCK_SYMBOLS){
+    logObj[catName] = {}
+    for(var i in STOCK_SYMBOLS[catName]){
+      var stockId = STOCK_SYMBOLS[catName][i]
+      var stockSymbol = stockId.split(/-(.+)/)[1].toUpperCase()
+      var stockJSON = collectLogDataFromSheet(stockId)
+      stockJSON.category = catName
+      // Yahoo Data Included
+      var forecast = checkYahooForecast(YahooSheet, stockSymbol)
+      stockJSON.thisRevenue = forecast.thisRevenue
+      stockJSON.nextRevenue = forecast.nextRevenue
+      stockJSON.thisEPS = forecast.thisEPS
+      stockJSON.nextEPS = forecast.nextEPS
+      stockJSON.next5Year = forecast.next5Year
+      logObj[catName][stockSymbol] = stockJSON
+    }
+  }
+  // Process - compare the data with yesterday
+  var logObjOld = JSON.parse(readLog("LoggerTesting.txt"))
+  
+  // Log Compare
+  logObj = dailyComparison(logObj, logObjOld)
+  saveLog(JSON.stringify(logObj), "LoggerTesting.txt") 
+  return
+}
+
+function collectLogDataFromSheet(stockId='nyse-de'){
+  var stockSymbol = stockId.split(/-(.+)/)[1].toUpperCase()
+  
+  // Spreadsheet Data Prep
+  var file = DriveApp.getFilesByName(stockSymbol).next();
+  var Sheet = SpreadsheetApp.open(file);
+  var dataToday = Sheet.getSheetValues(2, 1, 1, 51)[0]
+  var tickerJSON = JSON.parse(dataToday[16])
+
+  var stockJSON = {
+    "symbol": stockSymbol,
+    "companyName": tickerJSON.name,
+    "exchange": tickerJSON.disExchangeCode,
+    "price": tickerJSON.close,
+    "delta": tickerJSON.changeRatio, //Changed style
+    "52weekHigh": tickerJSON.fiftyTwoWkHigh,
+    "52weekLow": tickerJSON.fiftyTwoWkLow,
+    "value": tickerJSON.marketValue,
+    "TTM": tickerJSON.peTtm,
+    "pb":tickerJSON.pb,
+    "ps":tickerJSON.ps,
+    "analystPopularity":dataToday[9],
+    "analystAttitiude":dataToday[8],
+    "url":("https://www.webull.com/zh/quote/" + stockId),
+    "priceLow":dataToday[12],
+    "priceHigh":dataToday[10],
+    "priceMid":dataToday[11],
+    "latestEarningsDate":tickerJSON.latestEarningsDate,
+    "high":tickerJSON.high,
+    "low":tickerJSON.low,
+    "open":tickerJSON.open,
+    "volume":tickerJSON.volume,
+    "volume10D":tickerJSON.avgVol10D,
+    "volumeRatio":Math.round((tickerJSON.volume/tickerJSON.avgVol10D) * 100),
+    "forwardPe":tickerJSON.forwardPe,
+    "yield":tickerJSON.yield, //Changed style
+    "holdingRatio":dataToday[44],
+    "holdingChangeRatio":dataToday[45],
+    "holding":dataToday[46],
+    "cbsRanking":dataToday[15],
+    "fscore":dataToday[28],
+    "mscore":dataToday[27],
+    "zscore":dataToday[26],
+    "ev2ebitdaNow":dataToday[32],
+    "p2tangible_bookNow":dataToday[42],
+    "roeNow":dataToday[50],
+    "roic":dataToday[25],
+    "buyback_yield":dataToday[33],
+    "lynchvalue":dataToday[37],
+    "grahamnumber":dataToday[36],
+    "iv_dcf":dataToday[35],
+    "iv_dcf_share":dataToday[34],
+    "medpsvalue":dataToday[38],
+    "wacc":dataToday[24],
+  } 
+  try{
+    // Technical Analysis Part
+    let priceLst = getPriceLst(stockSymbol)
+    stockJSON.ma60 = Sum(priceLst)/priceLst.length
+    let priceLstShort = priceLst.slice(0, 20)
+    stockJSON.ma20 = Sum(priceLstShort)/priceLstShort.length
+    if(Math.abs(stockJSON.price - stockJSON.ma60)/stockJSON.ma60 < 0.05){
+      stockJSON.ma60support = stockJSON.ma20 >= stockJSON.ma60? '↘️🛡' : '↗🛡'
+    }
+  }catch(e){
+    Logger.log(e)
+    Logger.log(stockSymbol + ' failed to generate 60 ma support data')
+  }
+  stockJSON = weBullAnalystMark(stockJSON)
+  return stockJSON
+}

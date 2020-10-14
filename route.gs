@@ -24,6 +24,8 @@ function doGet(e){
         return indexController("selector")
       case 'superInvestor': 
         return indexController("superInvestor")
+      case 'test': 
+        return indexController("test")
       default:
         return indexController("stock")
     }

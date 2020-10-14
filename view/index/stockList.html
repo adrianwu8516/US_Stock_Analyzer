@@ -90,12 +90,14 @@
                                        <td style="text-align: center;"><?= catInfo[i]['price'] ?></td>
                                        
                                        <td style="text-align: center;">
-                                       <? if (catInfo[i]['volumeRatio'] > 200){ ?>
-                                           <span style="color: #339966;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
-                                       <? }else if (catInfo[i]['volumeRatio'] < 50){ ?>
-                                           <span style="color: #ff0000;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
-                                       <? }else{ ?>
-                                           <?= catInfo[i]['volumeRatio'] ?>%
+                                       <? if (catInfo[i]['volumeRatio']){ ?>
+                                           <? if (catInfo[i]['volumeRatio'] > 200){ ?>
+                                               <span style="color: #339966;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
+                                           <? }else if (catInfo[i]['volumeRatio'] < 50){ ?>
+                                               <span style="color: #ff0000;"><strong><?= catInfo[i]['volumeRatio'] ?>%</strong></span>
+                                           <? }else{ ?>
+                                               <?= catInfo[i]['volumeRatio'] ?>%
+                                           <? }?>
                                        <? }?>
                                        </td>
                                        
@@ -125,7 +127,7 @@
                                        <? }?>
                                        </strong></td>
                                        
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value']) ?></strong></td>
+                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong><?= Math.round(catInfo[i]['value'] / (10 ** 8)) ?></strong></td>
                                        
                                        <td style="text-align: center;"><strong>
                                        <? if (catInfo[i]['TTM'] > 0){ ?>
@@ -138,12 +140,14 @@
                                        </strong></td>
                                        
                                        <td style="text-align: center;"><strong>
-                                       <? if (catInfo[i]['forwardPe'] > 0){ ?>
-                                           <span style="color: #339966;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
-                                       <? }else if (catInfo[i]['forwardPe'] < 0){ ?>
-                                           <span style="color: #ff0000;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
-                                       <? }else{ ?>
-                                           <?= Math.round(catInfo[i]['forwardPe']) ?>
+                                       <? if (catInfo[i]['forwardPe']){ ?>
+                                           <? if (catInfo[i]['forwardPe'] > 0){ ?>
+                                               <span style="color: #339966;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
+                                           <? }else if (catInfo[i]['forwardPe'] < 0){ ?>
+                                               <span style="color: #ff0000;"><?= Math.round(catInfo[i]['forwardPe']) ?></span>
+                                           <? }else{ ?>
+                                               <?= Math.round(catInfo[i]['forwardPe']) ?>
+                                           <? }?>
                                        <? }?>
                                        </strong></td>
                                        
@@ -168,7 +172,11 @@
                                        </strong></td>
                                        
                                        <td style="height: 20px text-align: center;;"><strong><?= Math.round(catInfo[i]['p2tangible_bookNow']) ?></strong></td>
-                                       <td style="height: 20px text-align: center;"><strong><?= Math.round(catInfo[i]['ps']) ?></strong></td>
+                                       <td style="height: 20px text-align: center;"><strong>
+                                       <? if (catInfo[i]['pb']){ ?>
+                                           <?= Math.round(catInfo[i]['ps']) ?>
+                                       <? }?>
+                                       </strong></td>
                                        
                                        <td style="text-align: center;"><strong>
                                        <? if(catInfo[i]['thisEPS']){?>
@@ -223,14 +231,14 @@
                                            <span style="color: #ff0000;"><?= catInfo[i]['nextRevenue'] ?></span>
                                        <? }else if (catInfo[i]['nextRevenue'] > 30){ ?>
                                            <span style="color: #339966;"><?= catInfo[i]['nextRevenue'] ?></span>
-                                       <? }else{ ?>
+                                       <? }else{ ?> 
                                            <?= catInfo[i]['nextRevenue'] ?>
                                        <? }?>
                                        </strong></td>
                                        
                                        <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
-                                       <? if(catInfo[i]['yield'] != '0%'){ ?>
-                                           <?= catInfo[i]['yield'] ?>
+                                       <? if(catInfo[i]['yield'] !=0){ ?>
+                                           <?= Math.round(catInfo[i]['yield']*1000)/10 ?>%
                                        <? } ?>
                                        </strong></td>
                                        
