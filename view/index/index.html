@@ -29,9 +29,9 @@
       <? }else if (type=='selector'){ ?>
           google.script.run.withSuccessHandler(show).loadSelectorList();
        <? }else if (type=='test'){ ?>
-          google.script.run.withSuccessHandler(show).loadStockList();
+          google.script.run.withSuccessHandler(show).loadStockListLegacy();
       <? }else{ ?> 
-          google.script.run.withSuccessHandler(show).loadTestList();
+          google.script.run.withSuccessHandler(show).loadStockList();
       <? } ?>
       });
       function show(htmlPart) {

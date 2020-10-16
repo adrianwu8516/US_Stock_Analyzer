@@ -105,6 +105,7 @@ function REGENERATELOG(){
   loadSelectorList(read=false)
   loadMacroList(read=false)
   loadSuperInvestorList(read=false)
+  loadStockListLegacy(read=false)
   return
 }
 

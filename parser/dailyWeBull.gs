@@ -1,40 +1,3 @@
-function weBullAnalystMark(stockInfo){
-  // Analyst Marks
-  if(stockInfo['price'] < stockInfo['priceLow']){
-    stockInfo['sign'] = "🏆";
-    stockInfo['analysis'] = Math.round(((stockInfo['priceLow'] - stockInfo['price'])/stockInfo['priceLow'])*100) + "% 低於低標 " + stockInfo['priceLow']
-  }else if(stockInfo['price'] < stockInfo['priceMid']){
-    stockInfo['sign'] = "🔥";
-    stockInfo['analysis'] = Math.round(((stockInfo['priceMid'] - stockInfo['price'])/stockInfo['priceMid'])*100) + "% 低於均價 " + stockInfo['priceMid']
-  }else if((stockInfo['price'] > stockInfo['priceMid']) && (stockInfo['price'] < stockInfo['priceHigh'])){
-    stockInfo['sign'] = "❗";
-    stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceMid'])/stockInfo['priceMid'])*100) + "% 高於均價 " + stockInfo['priceMid']
-  }else{
-    stockInfo['sign'] = "🆘";
-    stockInfo['analysis'] = Math.round(((stockInfo['price'] - stockInfo['priceHigh'])/stockInfo['priceHigh'])*100) + "% 高於高標 " + stockInfo['priceHigh']
-  }
-  
-  // Volumn Marks - check if the volumn goes up
-  if(stockInfo['volume'] > stockInfo['volume10D']*2){
-    stockInfo['volumeMark'] = "⚔"
-  }
-  
-  // Post-Earning Announcement Effect, Get Fast / Positive News
-  var today = new Date()
-  if((today - stockInfo.latestEarningsDate < 86400000 * 10)&&(today > stockInfo.latestEarningsDate)){ // within 10 days
-    stockInfo['news'] = "🗞"
-    let forecastEPSLst = JSON.parse(stockInfo.forecastEps)['points']
-    let forecastLast = forecastEPSLst.pop()
-    let forecast2ndLast = forecastEPSLst.pop()
-    if(forecastLast.valueActual != null){
-      stockInfo['beatAnalyst'] = (forecastLast.valueActual >= forecastLast.valueForecast)? "😎" : "😨"
-    }else if(forecast2ndLast.valueActual != null){
-      stockInfo['beatAnalyst'] = (forecast2ndLast.valueActual >= forecast2ndLast.valueForecast)? "😎" : "😨"
-    }
-  }
-  return stockInfo
-}
-
 function getWeBullData(urlSymbol='nasdaq-bigc', category=''){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
@@ -97,7 +60,6 @@ function getWeBullData(urlSymbol='nasdaq-bigc', category=''){
   
   // Test
   stockInfo = weBullAnalystMark(stockInfo)
-  Logger.log(stockInfo)
   return stockInfo
 }
 

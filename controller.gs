@@ -6,28 +6,28 @@ function indexController(type){
   return render('view/index/index', {'type':type})
 }
 
-function loadTestList(read=true){
-  var html_file = readLog("static_testStock_list.txt")
+function loadStockList(read=true){
+  var html_file = readLog("static_stock_list.txt")
   if(html_file){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
-    html_page.noteObj = JSON.parse(readLog("LoggerTesting.txt"))
+    html_page.noteObj = JSON.parse(readLog("LoggerStockInfo.txt"))
     html_file = html_page.evaluate().getContent();
-    saveLog(html_file, "static_testStock_list.txt")
+    saveLog(html_file, "static_stock_list.txt")
     return html_file
   }else{
     Logger.log("Test Stock Log File Missed!")
   }
 }
 
-function loadStockList(read=true){
-  var html_file = readLog("static_stock_list.txt")
+function loadStockListLegacy(read=true){
+  var html_file = readLog("static_stockOld_list.txt")
   if(html_file){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
     html_page.noteObj = indexData()
     html_file = html_page.evaluate().getContent();
-    saveLog(html_file, "static_stock_list.txt")
+    saveLog(html_file, "static_stockOld_list.txt")
     return html_file
   }else{
     Logger.log("Stock Log File Missed!")
