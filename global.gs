@@ -61,30 +61,30 @@ function count(){
   Logger.log(total)
 }
 
-function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
-  // Replacing tbody tag because app script doesnt understand.
-  path = path.replace("/html/","").replace("/tbody","");
-  var tags = path.split("/");
-  try {
-    var root = xmlDoc.getRootElement();
-    for(var i in tags) {
-      var tag = tags[i];
-      var index = tag.indexOf("[");
-      if(index != -1) {
-        var val = parseInt(tag[index+1]);
-        tag = tag.substring(0,index);
-        root = root.getChildren(tag)[val-1];
-      }else{
-        root = root.getChild(tag);
-      }
-    }
-    var output = (target == 'text')?  root.getText().replace(/\n| +|,/g, '') : root.getAttribute(target).getValue()
-    if(removeDot) output = root.getText().replace(/\./g, '')
-  }catch (exception) {
-    return;
-  }
-  return output
-}
+//function getDataFromXpath(path, xmlDoc, target='text', removeDot = false) {
+//  // Replacing tbody tag because app script doesnt understand.
+//  path = path.replace("/html/","").replace("/tbody","");
+//  var tags = path.split("/");
+//  try {
+//    var root = xmlDoc.getRootElement();
+//    for(var i in tags) {
+//      var tag = tags[i];
+//      var index = tag.indexOf("[");
+//      if(index != -1) {
+//        var val = parseInt(tag[index+1]);
+//        tag = tag.substring(0,index);
+//        root = root.getChildren(tag)[val-1];
+//      }else{
+//        root = root.getChild(tag);
+//      }
+//    }
+//    var output = (target == 'text')?  root.getText().replace(/\n| +|,/g, '') : root.getAttribute(target).getValue()
+//    if(removeDot) output = root.getText().replace(/\./g, '')
+//  }catch (exception) {
+//    return;
+//  }
+//  return output
+//}
 
 function PARSER_PACKAGE(){
   dailyMacroRecord()
@@ -109,18 +109,18 @@ function REGENERATELOG(){
   return
 }
 
-function renewCache(){
-  CACHE.remove('index');
-  CACHE.remove('etfIndex');
-  //var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
-  //CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
-  for(var cat in STOCK_SYMBOLS){
-    for (var stockSymbol in STOCK_SYMBOLS[cat]){
-      var stockName = STOCK_SYMBOLS[cat][stockSymbol].split('-')[1]
-      CACHE.remove(stockName + '-history')
-    }
-  }
-}
+//function renewCache(){
+//  CACHE.remove('index');
+//  CACHE.remove('etfIndex');
+//  //var noteObj = JSON.parse(readLog("LoggerMailer.txt"))
+//  //CACHE.put('index', JSON.stringify(noteObj), CACHELIFETIME)
+//  for(var cat in STOCK_SYMBOLS){
+//    for (var stockSymbol in STOCK_SYMBOLS[cat]){
+//      var stockName = STOCK_SYMBOLS[cat][stockSymbol].split('-')[1]
+//      CACHE.remove(stockName + '-history')
+//    }
+//  }
+//}
 
 function onSearch(sheetName, searchString, searchTargetCol) {
   var values = sheetName.getDataRange().getValues();
@@ -131,24 +131,20 @@ function onSearch(sheetName, searchString, searchTargetCol) {
 
 function saveLog(contents, filename, folder = LOGFILE) {
   var children = folder.getFilesByName(filename);
-  var file = null;
-  if (children.hasNext()) {
-    file = children.next();
-    file.setContent(contents);
-  } else {
-    file = folder.createFile(filename, contents);
-  }
+  children.hasNext()? children.next().setContent(contents) :  folder.createFile(filename, contents);
+  return 
 }
 
 function readLog(filename, folder = LOGFILE) {
   var children = folder.getFilesByName(filename);
-  var file = null;
-  if (children.hasNext()) {
-    file = children.next();
-    return file.getBlob().getDataAsString();
-  } else {
-    Logger.log("No Logger File Found")
-  }
+  if (children.hasNext()) return children.next().getBlob().getDataAsString();;
+  return Logger.log("No Logger File Found")
+}
+
+function logUpdatedAt(filename, folder = LOGFILE){
+  var children = folder.getFilesByName(filename);
+  if (children.hasNext()) return children.next().getLastUpdated().toLocaleString('zh-TW', {timeZone: 'America/New_York'});
+  return Logger.log("No Logger File Found")
 }
 
 function deprecateLog(filename, folder = LOGFILE) {

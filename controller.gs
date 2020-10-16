@@ -12,6 +12,7 @@ function loadStockList(read=true){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
     html_page.noteObj = JSON.parse(readLog("LoggerStockInfo.txt"))
+    html_page.updated_at = logUpdatedAt("LoggerStockInfo.txt")
     html_file = html_page.evaluate().getContent();
     saveLog(html_file, "static_stock_list.txt")
     return html_file
@@ -67,6 +68,7 @@ function loadSelectorList(read=true){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
     html_page.noteObj = selectedIndexData()
+    html_page.updated_at = logUpdatedAt("LoggerStockInfo.txt")
     html_file = html_page.evaluate().getContent();
     saveLog(html_file, "static_selector_list.txt")
     return html_file
@@ -83,6 +85,7 @@ function loadMacroList(read=true, span=120){
     html_page.macroJSON = macroData(span)
     html_page.macroFED = macroFEDQuarterlyData(span=240)
     html_page.macroFEDMonthly = macroFEDMonthlyData(span=240)
+    html_page.updated_at = logUpdatedAt("MacroData")
     html_page.span = 240
     html_file = html_page.evaluate().getContent();
     saveLog(html_file, "static_macro_list.txt")
@@ -98,6 +101,7 @@ function loadSuperInvestorList(read=true){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/superInvestorList')
     html_page.superInvestorLst = superInvestorData()
+    html_page.updated_at = logUpdatedAt("superInvestorData")
     html_file = html_page.evaluate().getContent();
     saveLog(html_file, "static_superinvestor_list.txt")
     return html_file
