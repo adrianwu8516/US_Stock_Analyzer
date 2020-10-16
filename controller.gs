@@ -27,6 +27,7 @@ function loadStockListLegacy(read=true){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/stockList')
     html_page.noteObj = indexData()
+    html_page.updated_at = logUpdatedAt("LoggerMailer.txt")
     html_file = html_page.evaluate().getContent();
     saveLog(html_file, "static_stockOld_list.txt")
     return html_file
