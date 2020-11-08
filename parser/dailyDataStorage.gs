@@ -40,6 +40,15 @@ function dataRecord(stockInfo={'symbol':'KL'}){
     var targetRow = onSearch(stockDoc, todayStr, searchTargetCol=0)
     if(targetRow){
       Logger.log("Passover: " + fileName)
+      targetRow += 1
+      stockDoc.getRange('A' + targetRow + ':AU' + targetRow).setValues([[
+        todayStr, stockInfo['symbol'], stockInfo['companyName'], stockInfo['exchange'],  stockInfo['price'],  stockInfo['delta'], stockInfo['value'], stockInfo['TTM'], 
+        stockInfo['analystAttitiude'], stockInfo['analystPopularity'], stockInfo['priceHigh'], stockInfo['priceMid'], stockInfo['priceLow'], 
+        stockInfo['52weekHigh'], stockInfo['52weekLow'], stockInfo['cbsRanking'], 
+        stockInfo['tickerRT'], stockInfo['rating'], stockInfo['targetPrice'], stockInfo['forecastEps'], 
+        stockInfo['high'], stockInfo['low'], stockInfo['open'], stockInfo['volume'],
+        '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', // Make room for gurufocus data
+        stockInfo['holdingRatio'], stockInfo['holdingChangeRatio'], stockInfo['holding']]]);
     }else{
       // If data of today does not been recorded yet
       Logger.log("Recording: " + fileName)

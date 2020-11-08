@@ -1,6 +1,6 @@
 function genCrossDateLog(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  if(!checkifClosed()) return "Market Closed";
   var logObj = {}
   
   // Loading Yahoo Data
@@ -32,7 +32,9 @@ function genCrossDateLog(){
   // Log Compare
   logObj = dailyComparison(logObj, logObjOld)
   saveLog(JSON.stringify(logObj), "LoggerStockInfo.txt") 
-  return
+  Utilities.sleep(1000 * 30)
+  REGENERATELOG()
+  return "genCrossDateLog Done"
 }
 
 function collectLogDataFromSheet(stockId='nyse-de'){
@@ -68,7 +70,8 @@ function collectLogDataFromSheet(stockId='nyse-de'){
     "open":tickerJSON.open,
     "volume":tickerJSON.volume,
     "volume10D":tickerJSON.avgVol10D,
-    "volumeRatio":Math.round((tickerJSON.volume/tickerJSON.avgVol10D) * 100),
+    "volumeRatio":Math.round(tickerJSON.volume/tickerJSON.avgVol10D * 100),
+    "volumeRatio1":tickerJSON.volume/tickerJSON.avgVol10D * 100,
     "forwardPe":tickerJSON.forwardPe,
     "yield":tickerJSON.yield,
     "holdingRatio":dataToday[44],
@@ -104,6 +107,7 @@ function collectLogDataFromSheet(stockId='nyse-de'){
     Logger.log(stockSymbol + ' failed to generate 60 ma support data')
   }
   stockJSON = weBullAnalystMark(stockJSON)
+  Logger.log(stockJSON)
   return stockJSON
 }
 

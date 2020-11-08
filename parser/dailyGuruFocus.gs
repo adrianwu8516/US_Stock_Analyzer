@@ -73,29 +73,42 @@ function calculateFreeCashFlowValuation(symbol='hlf'){
   Logger.log('currentPrice: ' + factor.currentPrice)
 }
 
-function getGuruFocusData(symbol='lmnd') {
+function getGuruFocusData(symbol='msft') {
   var data = {}
   let url = 'https://www.gurufocus.com/term/wacc/' + symbol + '/WACC-Percentage'
   let xml = UrlFetchApp.fetch(url).getContentText();
+  //Logger.log("1")
   var waccXml = xml.match(/is <strong>[\s\S]*?<\/strong>/g).slice(0,2)
   data.wacc = parseFloat(waccXml[0].replace(/is <strong>([\s\S]*?)<\/strong>/, '$1'))/100
   data.roic = parseFloat(waccXml[1].replace(/is <strong>([\s\S]*?)<\/strong>/, '$1'))/100
-  
+  //Logger.log("2")
   url = 'https://www.gurufocus.com/term/zscore/' + symbol + '/Altman-Z-Score'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.zscore = parseFloat(xml.replace(/[\s\S]*Altman Z-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
-  
+  if(xml.match(/Altman Z-Score of ([\s\S]*) as of today/)){
+    data.zscore = parseFloat(xml.replace(/[\s\S]*Altman Z-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  }else{
+    data.zscore = null
+  }
+  //Logger.log("3")
   url = 'https://www.gurufocus.com/term/mscore/' + symbol + '/Beneish-M-Score'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.mscore = parseFloat(xml.replace(/[\s\S]*Beneish M-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
-  
+  if(xml.match(/Beneish M-Score of ([\s\S]*) as of today/)){
+    data.mscore = parseFloat(xml.replace(/[\s\S]*Beneish M-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  }else{
+    data.mscore = null
+  }
+  //Logger.log("4")
   url = 'https://www.gurufocus.com/term/fscore/' + symbol + '/Piotroski-F-Score'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.fscore = parseFloat(xml.replace(/[\s\S]*Piotroski F-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
-  //Logger.log("1")
+  if(xml.match(/Piotroski F-Score of ([\s\S]*) as of today/)){
+    data.fscore = parseFloat(xml.replace(/[\s\S]*Piotroski F-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  }else{
+    data.fscore = null
+  }
+  //Logger.log("5")
   url = 'https://www.gurufocus.com/term/ev2ebitda/' + symbol + '/EV-to-EBITDA'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.replace(/[\s\S]*EV-to-EBITDA of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
+  if(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1')==''){
     data.ev2ebitdaLow = NaN
     data.ev2ebitdaMid = NaN
     data.ev2ebitdaHigh = NaN
@@ -111,36 +124,36 @@ function getGuruFocusData(symbol='lmnd') {
     data.ev2ebitdaHigh = ev2ebitda[1]
     data.ev2ebitdaLow = ev2ebitda[3]
     data.ev2ebitdaMid = ev2ebitda[5]
-    data.ev2ebitdaNow = parseFloat(xml.replace(/[\s\S]*EV-to-EBITDA of ([\s\S]*) as of today[\s\S]*/, '$1'))
+    data.ev2ebitdaNow = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1'))
   }
-  //Logger.log("2")
+  //Logger.log("6")
   url = 'https://www.gurufocus.com/term/buyback_yield/' + symbol + '/Buyback-Yield-Percentage'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.buyback_yield = parseFloat(xml.replace(/[\s\S]*Buyback Yield % of ([\s\S]*) as of today[\s\S]*/, '$1'))
-  
+  data.buyback_yield = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1'))
+  //Logger.log("7")
   url = 'https://www.gurufocus.com/term/iv_dcf_share/' + symbol + '/Intrinsic-Value:-Projected-FCF'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.iv_dcf_share = parseFloat(xml.replace(/[\s\S]*FCF of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
+  data.iv_dcf_share = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
+  //Logger.log("8")
   url = 'https://www.gurufocus.com/term/iv_dcf/' + symbol + '/Intrinsic-Value:-DCF-(FCF-Based)'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.iv_dcf = parseFloat(xml.replace(/[\s\S]*DCF \(FCF Based\) of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
+  data.iv_dcf = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
+  //Logger.log("9")
   url = 'https://www.gurufocus.com/term/grahamnumber/' + symbol + '/Graham-Number'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.grahamnumber = parseFloat(xml.replace(/[\s\S]*Graham Number of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
+  data.grahamnumber = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
+  //Logger.log("10")
   url = 'https://www.gurufocus.com/term/lynchvalue/' + symbol + '/Peter-Lynch-Fair-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.lynchvalue = parseFloat(xml.replace(/[\s\S]*Peter Lynch Fair Value of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  
+  data.lynchvalue = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
+  //Logger.log("11")
   url = 'https://www.gurufocus.com/term/medpsvalue/' + symbol + '/Median-PS-Value'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.medpsvalue = parseFloat(xml.replace(/[\s\S]*Median PS Value of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
-  //Logger.log("3")
+  data.medpsvalue = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
+  //Logger.log("12")
   url = 'https://www.gurufocus.com/term/p2tangible_book/' + symbol + '/Price-to-Tangible-Book'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.replace(/[\s\S]*Price-to-Tangible-Book of ([\s\S]*) as of today[\s\S]*/, '$1')==''){
+  if(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1')==''){
     data.p2tangible_bookLow = NaN
     data.p2tangible_bookMid = NaN
     data.p2tangible_bookHigh = NaN
@@ -152,10 +165,10 @@ function getGuruFocusData(symbol='lmnd') {
     data.p2tangible_bookHigh = p2tangible_book[3]
     data.p2tangible_bookNow = p2tangible_book[4]
   }
-  //Logger.log("4")
+  //Logger.log("13")
   url = 'https://www.gurufocus.com/term/ROE/' + symbol + '/ROE-percentage'
   xml = UrlFetchApp.fetch(url).getContentText();
-  var checkStr = parseFloat(xml.replace(/[\s\S]*ROE \% of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  var checkStr = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1'))
   if(!checkStr || checkStr==0){
     data.roeLow = NaN
     data.roeMid = NaN
@@ -173,10 +186,10 @@ function getGuruFocusData(symbol='lmnd') {
     data.roeHigh = NaN
     data.roeNow = checkStr
   }
-  //Logger.log("5")
+  //Logger.log("14")
   url = 'https://www.gurufocus.com/term/NCAV/' + symbol + '/Net-Net-Working-Capital'
   xml = UrlFetchApp.fetch(url).getContentText();
-  data.nnwc = parseFloat(xml.replace(/[\s\S]*Net-Net Working Capital of \$?([\s\S]*) as of today[\s\S]*/, '$1').replace('USD', ''))
+  data.nnwc = parseFloat(xml.replace(/[\s\S]*\) is ([\s\S]*?)\. In[\s\S]*/, '$1').replace('USD', '').replace('$', ''))
   Logger.log(data)
   CACHE.put(symbol+'-Guru', JSON.stringify(data), CACHELIFETIME)
 }
@@ -218,7 +231,7 @@ function recordValuation(symbol, data){
 
 function dailyGuruFocus(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  if(!checkifClosed()) return "Market Closed";
   for(var cat in STOCK_SYMBOLS){
     for(var stockNo in STOCK_SYMBOLS[cat]){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
@@ -240,11 +253,12 @@ function dailyGuruFocus(){
       }
     }
   }
+  return "dailyGuruFocus Done"
 }
 
 function dailyGuruFocusRecord(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  if(!checkifClosed()) return "Market Closed";
   for(var cat in STOCK_SYMBOLS){
     for(var stockNo in STOCK_SYMBOLS[cat]){
       var symbol = STOCK_SYMBOLS[cat][stockNo].split(/-(.+)/)[1].replace('-', '.')
@@ -270,6 +284,7 @@ function dailyGuruFocusRecord(){
       }
     }
   }
+  return 'dailyGuruFocusRecord Done'
 }
 
 function buildSymbolPool(poolName='test'){

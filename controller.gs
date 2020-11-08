@@ -52,6 +52,7 @@ function loadETFList(read=true){
 
 function loadCompareList(read=true){
   var html_file = readLog("static_compare_list.txt")
+  Logger.log(html_file)
   if(html_file){
     if(read) return html_file
     var html_page = HtmlService.createTemplateFromFile('view/index/compareList')

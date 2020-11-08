@@ -48,9 +48,6 @@
                                      <th scope="col" style="text-align: center;"><strong>ROIC</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;;"><strong>分析師股票目標價追蹤</strong></th>
                                      <th scope="col" style="text-align: center; white-space: nowrap;;"><strong>關注度</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>FScore</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>ZScore</strong></th>
-                                     <th scope="col" style="text-align: center;"><strong>MScroe</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>DCF</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>預估FCF</strong></th>
                                      <th scope="col" style="text-align: center;"><strong>林奇估值</strong></th>
@@ -285,36 +282,6 @@
                                        <? }else{ ?>
                                            <td style="text-align: center; white-space: nowrap"><?= catInfo[i]['analystPopularity'] ?></td>
                                        <? }?>
-                                       
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
-                                       <?if(catInfo[i]['fscore']>6){?>
-                                         <span style="color: #339966;"><?=catInfo[i]['fscore']?></span>
-                                       <?}else if(catInfo[i]['fscore']>5){?>
-                                         <span style="color: #E19223;"><?=catInfo[i]['fscore']?></span>
-                                       <?}else{?>
-                                         <span style="color: #ff0000;"><?=catInfo[i]['fscore']?></span>
-                                       <?}?>
-                                       </strong></td>
-                                       
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
-                                       <?if(catInfo[i]['zscore']<=1.81){?>
-                                         <span style="color: #ff0000;"><?=catInfo[i]['zscore']?></span>
-                                       <?}else if(catInfo[i]['zscore']<=2.99){?>
-                                         <span style="color: #E19223;"><?=catInfo[i]['zscore']?></span>
-                                       <?}else{?>
-                                         <span style="color: #339966;"><?=catInfo[i]['zscore']?></span>
-                                       <?}?>
-                                       </strong></td>
-                                       
-                                       <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
-                                       <?if(catInfo[i]['mscore']>-2.22){?>
-                                         <span style="color: #ff0000;"><?=catInfo[i]['mscore']?></span>
-                                       <?}else if(catInfo[i]['mscore']>0){?>
-                                         <span style="color: #E19223;"><?=catInfo[i]['mscore']?></span>
-                                       <?}else{?>
-                                         <span style="color: #339966;"><?=catInfo[i]['mscore']?></span>
-                                       <?}?>
-                                       </strong></td>
                                        
                                        <td style="height: 20px text-align: center; white-space: nowrap;"><strong>
                                        <?if(catInfo[i]['price'] > catInfo[i]['iv_dcf']){?>

@@ -91,5 +91,5 @@ function logGenerateAndCrossDayCompare(){
   logObj = dailyComparison(logObj, logObjOld)
   saveLog(JSON.stringify(logObj), "LoggerMailer.txt") 
   // Use txt file instead of cache, so we can change to another mail server if we want to change the mailer
-  REGENERATELOG()
+  //REGENERATELOG()
 }

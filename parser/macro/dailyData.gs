@@ -66,19 +66,18 @@ function MMModule() {
   return MMObj
 }
 
-function FGModule() {
+function CNNModule() {
   var url = 'https://money.cnn.com/data/fear-and-greed/';
   var xml = UrlFetchApp.fetch(url).getContentText();
-  var xmlFGNow = xml.match(/Greed Now: [0-9]*? [\s\S]*?</)[0]
-  var FGNow = parseInt(xmlFGNow.match(/ [0-9]*? /)[0])
-  var FGNowSymbol = xmlFGNow.match(/\([\s\S]*?\)/)[0].replace(/\(|\)/g, '')
-  var FGYest = parseInt(xml.match(/Close: [0-9]*? [\s\S]*?</)[0].match(/ [0-9]*? /)[0])
-  var FGObj = {
-    now: FGNow,
-    symbol: FGNowSymbol,
-    change: Math.round((FGNow - FGYest)/FGYest * 100) + "%"
+  var CNNNow = parseInt(xml.replace(/[\s\S]*?Greed Now: ([0-9]*?) \(([\s\S]*?)\)[\s\S]*/, '$1'))
+  var CNNNowSymbol = xml.replace(/[\s\S]*?Greed Now: ([0-9]*?) \(([\s\S]*?)\)[\s\S]*/, '$2')
+  var CNNYest = parseInt(xml.replace(/[\s\S]*?Close: ([0-9]*?) [\s\S]*/, '$1'))
+  var CNNObj = {
+    now: CNNNow, 
+    symbol: CNNNowSymbol, 
+    change: Math.round((CNNNow - CNNYest)/CNNYest * 100) + "%"
   }
-  return FGObj
+  return CNNObj
 }
 
 
@@ -86,7 +85,7 @@ function dailyMacroRecord(){
   var macroDoc = SpreadsheetApp.openById(MACROSHEET_ID).getSheetByName('每日數據');
   var today = new Date();
   var todayStr = String(today.getFullYear()) + "-" + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-  var FGObj = FGModule()
+  var FGObj = CNNModule()
   var MMObj = MMModule()
   var targetRow = onSearch(macroDoc, todayStr, searchTargetCol=0)
   if(targetRow){

@@ -7,13 +7,6 @@ function fixMissingValueInSheet(){
       if(DriveApp.getFilesByName(fileName).hasNext()){
         var documentId = DriveApp.getFilesByName(fileName).next().getId()
         var doc = SpreadsheetApp.openById(documentId);
-        if(doc.getSheetValues(16,1,1,1)[0][0]==''){Logger.log(fileName + ": 16th row null"); doc.deleteRow(16)}
-        if(doc.getSheetValues(15,1,1,1)[0][0]==''){Logger.log(fileName + ": 15th row null"); doc.deleteRow(15)}
-        if(doc.getSheetValues(14,1,1,1)[0][0]==''){Logger.log(fileName + ": 14th row null"); doc.deleteRow(14)}
-        if(doc.getSheetValues(13,1,1,1)[0][0]==''){Logger.log(fileName + ": 13th row null"); doc.deleteRow(13)}
-        if(doc.getSheetValues(12,1,1,1)[0][0]==''){Logger.log(fileName + ": 12th row null"); doc.deleteRow(12)}
-        if(doc.getSheetValues(11,1,1,1)[0][0]==''){Logger.log(fileName + ": 11th row null"); doc.deleteRow(11)}
-        if(doc.getSheetValues(10,1,1,1)[0][0]==''){Logger.log(fileName + ": 10th row null"); doc.deleteRow(10)}
         if(doc.getSheetValues(9,1,1,1)[0][0]==''){Logger.log(fileName + ": 9th row null"); doc.deleteRow(9)}
         if(doc.getSheetValues(8,1,1,1)[0][0]==''){Logger.log(fileName + ": 8th row null"); doc.deleteRow(8)}
         if(doc.getSheetValues(7,1,1,1)[0][0]==''){Logger.log(fileName + ": 7th row null"); doc.deleteRow(7)}
@@ -27,5 +20,6 @@ function fixMissingValueInSheet(){
       }
     }
   }
-  return
+  //REGENERATELOG()
+  return 'fixMissingValue Done'
 }

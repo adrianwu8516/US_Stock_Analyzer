@@ -26,10 +26,17 @@ function doGet(e){
         return indexController("superInvestor")
       case 'test': 
         return indexController("test")
+      case 'missionControl': 
+        return e.parameter.task? remoteMission(e.parameter.task) : messageController("Task Not Found!!")
       default:
         return indexController("stock")
     }
   }else{
     return indexController("stock")
   }
+}
+
+function doPost(e) {
+  var msg = JSON.parse(e);
+  messageController(msg)
 }
