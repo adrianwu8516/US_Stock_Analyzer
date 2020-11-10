@@ -43,7 +43,7 @@ STOCK_SYMBOLS = {
 
 ETF_LIST = {
   'Index':['nysearca-spy', 'nysearca-voo', 'nysearca-vti', 'nysearca-ivv', 'nasdaq-qqq', 'nasdaq-tqqq', 'nasdaq-sqqq', 'nysearca-spxs'],
-  'US-Stock':['nysearca-gvip', 'nysearca-xlk', 'nysearca-vgt', 'nysearca-arkw', 'nysearca-arkk', 'nysearca-mj', 'nysearca-vym', 'nysearca-vnq', 'nasdaq-ibb', 'nysearca-xlf', 'nysearca-vtv', 'nysearca-pbw', 'nasdaq-icln', 'nasdaq-qcln', 'bats-ita', 'nysearca-betz', 'nysearca-schh', 'nasdaq-espo', 'bats-prnt'],
+  'US-Stock':['nysearca-gvip', 'nysearca-xlk', 'nysearca-vgt', 'nysearca-arkw', 'nysearca-arkk', 'nysearca-arkf', 'nysearca-mj', 'nysearca-vym', 'nysearca-vnq', 'nasdaq-ibb', 'nysearca-xlf', 'nysearca-vtv', 'nysearca-pbw', 'nasdaq-icln', 'nasdaq-qcln', 'bats-ita', 'nysearca-betz', 'nysearca-schh', 'nasdaq-espo', 'bats-prnt'],
   'Dividend':['nysearca-sphd', 'nysearca-spyd', 'nysearca-vig', 'nasdaq-pff'],
   'Emerging-Markets':['nysearca-vwo', 'nysearca-iemg', 'nysearca-eem', 'nysearca-ewz', 'nysearca-ewj', 'nasdaq-mchi', 'nysearca-eido', 'bats-inda', 'nysearca-ews', 'nysearca-efa'],
   'Bond':['nasdaq-tlt', 'nasdaq-iei', 'bats-govt', 'nysearca-lqd', 'nysearca-hyg', 'nysearca-jnk'],
@@ -87,8 +87,8 @@ function count(){
 //}
 
 function PARSER_PACKAGE(){
-  if(!checkifClosed()) return "Market Closed";
   dailyMacroRecord()
+  if(!checkifClosed()) return "Market Closed";
   collectDataFromWeBull()
   collectDataFromCBS()
   return 'PARSER_PACKAGE Done'

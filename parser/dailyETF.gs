@@ -1,4 +1,4 @@
-function getWeBullETFData(urlSymbol){
+function getWeBullETFData(urlSymbol = 'nysearca-efa'){
   Logger.log("Handling: " + urlSymbol)
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var retry = 1
@@ -7,30 +7,28 @@ function getWeBullETFData(urlSymbol){
       var xml = UrlFetchApp.fetch(url).getContentText();
       var etfInfo = {};
       
-      var xmlTickerRT = xml.match(/tickerRT:({[\s\S]*?}),newsData/)[0].replace(/tickerRT:({[\s\S]*?}),newsData/, '$1')                 
-      var tickerRTJSON = JSON.parse(xmlTickerRT.replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
-      etfInfo['symbol'] = tickerRTJSON.symbol
-      etfInfo['tickerRTJSON'] = tickerRTJSON
+      etfInfo['tickerRTJSON'] = JSON.parse(xml.replace(/[\s\S]*?"tickerRT":({[\s\S]*?}),"newsData"[\s\S]*/, '$1'))
+      etfInfo['symbol'] = etfInfo['tickerRTJSON'].symbol
+      etfInfo['briefJSON'] = JSON.parse(xml.replace(/[\s\S]*?"fundBrief":([\s\S]*?),"structs"[\s\S]*/, '$1}'))
       
-      var xmlBrief = xml.match(/fundBrief:[\s\S]*?,structs/g)[0]
-      var briefJSON = JSON.parse(xmlBrief.replace(/fundBrief:([\s\S]*?),structs/g, '$1}').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":'))
-      etfInfo['briefJSON'] = briefJSON
-      
-      var bonusBriefLst = xml.match(/bonusBrief:\[[\s\S]*?\]/g)[0].replace(/bonusBrief:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+      var bonusBriefLst = xml.replace(/[\s\S]*?"bonusBrief":\[([\s\S]*?)\],"splitBrief"[\s\S]*/, '$1').replace(/},{/g, '},,{').split(',,')
       etfInfo['bonusBrief'] = etfJSONArrange(bonusBriefLst)
       
-      var assetsStructureLst = xml.match(/assetsAnalysis:\[[\s\S]*?\]/g)[0].replace(/assetsAnalysis:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
-      etfInfo['assetsStructure'] = etfJSONArrange(assetsStructureLst)
+      if(xml.match(/"assetsAnalysis":\[([\s\S]*?)\]/)){
+        var assetsStructureLst = xml.replace(/[\s\S]*?"assetsAnalysis":\[([\s\S]*?)\][\s\S]*/, '$1').replace(/},{/g, '},,{').split(',,')
+        etfInfo['assetsStructure'] = etfJSONArrange(assetsStructureLst)
+      }
       
-      if(xml.match(/ratioDistrs:\[[\s\S]*?\]/g)){
-        var ratioDistrsLst = xml.match(/ratioDistrs:\[[\s\S]*?\]/g)[0].replace(/ratioDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+      if(xml.match(/"ratioDistrs":\[[\s\S]*?\]/g)){
+        var ratioDistrsLst = xml.replace(/[\s\S]*?"ratioDistrs":\[([\s\S]*?)\][\s\S]*/, '$1').replace(/},{/g, '},,{').split(',,')
         etfInfo['ratioDistrs'] = etfJSONArrange(ratioDistrsLst)
       }
       
-      if(xml.match(/frontDistrs:\[[\s\S]*?\]/g)){
-        var frontDistrsLst = xml.match(/frontDistrs:\[[\s\S]*?\]/g)[0].replace(/frontDistrs:\[([\s\S]*?)\]/g, '$1').replace(/{([\s\S]*?):/g, '{"\$1\":').replace(/,([a-zA-z0-9]*?):/g, ',"\$1\":').replace(/},{/g, '},,{').split(',,')
+      if(xml.match(/"frontDistrs":\[[\s\S]*?\]/g)){
+        var frontDistrsLst = xml.replace(/[\s\S]*?"frontDistrs":\[([\s\S]*?)\][\s\S]*/, '$1').replace(/},{/g, '},,{').split(',,')
         etfInfo['frontDistrs'] = etfJSONArrange(frontDistrsLst)
       }
+      Logger.log(etfInfo)
       ETFDataRecord(etfInfo)
       return etfInfo
     }catch(e){
@@ -69,21 +67,25 @@ function collectETFDataFromWeBull(){
     }
   }
   Logger.log(etfIndex)
-  saveLog(JSON.stringify(etfIndex), "ETFIndex.txt", folder = ETFFILE)
+  saveLog(JSON.stringify(etfIndex), "ETFIndex.txt", folder = LOGFILE)
   CACHE.put('etfIndex', JSON.stringify(etfIndex), CACHELIFETIME)
   return
 }
 
 
 function ETFDataRecord(etfInfo){
-  var fileName = etfInfo['symbol']
+  Logger.log("Record Started")
+  var fileName = etfInfo.symbol
   if(DriveApp.getFilesByName(fileName).hasNext()){
     var documentId = DriveApp.getFilesByName(fileName).next().getId()
+    var etfDoc = SpreadsheetApp.openById(documentId);
   }else{
-    var documentId = DriveApp.getFileById(ETF_TEMPLATE_ID).makeCopy(ETFFILE).getId();
+    var documentId = DriveApp.getFileById(ETF_TEMPLATE_ID).makeCopy(STOCKFILE).getId();
     DriveApp.getFileById(documentId).setName(fileName)
+    var googleSymbol = (etfInfo.tickerRTJSON.disExchangeCode + ':' + etfInfo.symbol).toUpperCase()
+    var etfDoc = SpreadsheetApp.openById(documentId);
+    insertGoogleHisETFData(etfDoc, googleSymbol)
   }
-  var etfDoc = SpreadsheetApp.openById(documentId);
   today = new Date();
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';
   var targetRow = onSearch(etfDoc, todayStr, searchTargetCol=0) 

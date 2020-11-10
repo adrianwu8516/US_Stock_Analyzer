@@ -99,7 +99,6 @@ function insertGoogleHisETFData(etfDoc, googleSymbol){
   }catch(e){
     Logger.log(e)
   }
-
 }
 
 function removeProblematicDateInfo(stockDoc, dateStr){

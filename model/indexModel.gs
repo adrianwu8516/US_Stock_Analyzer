@@ -4,7 +4,7 @@ function indexData(){
 }
 
 function etfIndexData(){
-  var etfIndexData = JSON.parse(readLog("ETFIndex.txt", ETFFILE))
+  var etfIndexData = JSON.parse(readLog("ETFIndex.txt"))
   return etfIndexData
 }
 
