@@ -41,7 +41,7 @@ function getWeBullETFData(urlSymbol = 'nysearca-efa'){
 
 function collectETFDataFromWeBull(){
   // Check if market closed
-  if(!checkifClosed()) return;
+  if(!checkifClosed()) return "Market Closed";
   Logger.log("Today Handling: " + JSON.stringify(ETF_LIST))
   var etfIndex = {}
   for (var catName in ETF_LIST){
@@ -69,7 +69,7 @@ function collectETFDataFromWeBull(){
   Logger.log(etfIndex)
   saveLog(JSON.stringify(etfIndex), "ETFIndex.txt", folder = LOGFILE)
   CACHE.put('etfIndex', JSON.stringify(etfIndex), CACHELIFETIME)
-  return
+  return 'collectETFData Done'
 }
 
 

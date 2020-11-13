@@ -15,11 +15,12 @@ function remoteMission(type) {
       var result = genCrossDateLog(); break;
     case 'fixMissingValueInSheet':
       var result = fixMissingValueInSheet(); break;
+    case 'collectETFData':
+      var result = collectETFDataFromWeBull(); break;
     default:
       var result = "Order Not Found"
   }
   var timePassed = millisToMinutesAndSeconds(new Date() - startTime)
-  Logger.log(result + ' (' + timePassed + ')')
   LinePusher(result + '(' + timePassed + ')')
 }
 
@@ -38,7 +39,7 @@ function LinePusher(message) {
       'to':  LINE_USER_ID,
       'messages': [{
         type:'text',
-        text:message
+        text: message
       }]
     }),
   });  

@@ -1,4 +1,4 @@
-function getWeBullData(urlSymbol='nyse-ntco', category=''){
+function getWeBullData(urlSymbol='otcmkts-mdxg', category=''){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   // If there's no rating for that stock
@@ -50,7 +50,7 @@ function getWeBullData(urlSymbol='nyse-ntco', category=''){
     stockInfo['holding'] = JSON.stringify(holdingJSON)
   }
   CACHE.put(stockInfo.symbol, JSON.stringify(stockInfo), CACHELIFETIME); // Cached for 3 hrs
-  Logger.log(stockInfo)
+  //Logger.log(stockInfo)
   return stockInfo
 }
 

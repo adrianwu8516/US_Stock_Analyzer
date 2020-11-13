@@ -16,7 +16,8 @@ function dataRecordandProcess(){
   }
 }
 
-function dataRecord(stockInfo={'symbol':'KL'}){
+function dataRecord(stockInfo){
+  //var stockInfo = JSON.parse(CACHE.get('MDXG'))
   var fileName = stockInfo['symbol']
   var today = new Date();
   var todayStr = String(today.getFullYear()) + "年" + String(today.getMonth() + 1).padStart(2, '0') + '月' + String(today.getDate()).padStart(2, '0') + '日';

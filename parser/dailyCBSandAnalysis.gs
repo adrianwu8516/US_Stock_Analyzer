@@ -25,7 +25,7 @@ function cbsDataCollectUnit(stockSymbol){
   if (stockInfoStr != null){
     var stockInfo = JSON.parse(stockInfoStr)
     stockInfo.cbsRanking = getCBSRanking(stockSymbol.replace('-', '.'))
-    Logger.log(stockInfo.cbsRanking)
+    //Logger.log(stockInfo.cbsRanking)
     stockSymbol = stockSymbol.split('-')[0] // In case some stock symbol might looks like RDS-A
     CACHE.put(stockSymbol, JSON.stringify(stockInfo), CACHELIFETIME)
   }else{
@@ -38,7 +38,7 @@ function collectDataFromCBS(){
   if(!checkifClosed()) return;
   
   var poolCache = CACHE.get("pool");
-  Logger.log(poolCache)
+  //Logger.log(poolCache)
   if (poolCache != null) {
     var poolLst = poolCache.split(',')
     while(poolLst[0] != ""){
