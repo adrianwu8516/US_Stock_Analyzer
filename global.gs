@@ -16,7 +16,7 @@ STOCK_SYMBOLS = {
   'Aerospace':['nyse-spce', 'nyse-ajrd', 'nyse-maxr', 'nyse-dal', 'nyse-ual','nyse-alk', 'nasdaq-aal', 'nyse-luv', 'nyse-spr', 'nyse-save', 'nyse-asr', 'nyse-pac', 'nasdaq-omab'],
   'Traveling':['nasdaq-bkng', 'nasdaq-expe', 'nasdaq-trip', 'nasdaq-mar', 'nyse-hlt', 'nyse-ccl', 'nasdaq-mmyt', 'nyse-mgm', 'nasdaq-wynn', 'nyse-lvs'],
   'IC':['nasdaq-amd', 'nasdaq-nvda', 'nasdaq-intc', 'nasdaq-avgo', 'nasdaq-qcom', 'nasdaq-mu', 'nasdaq-xlnx', 'nasdaq-nxpi', 'nasdaq-txn', 'nasdaq-asml', 'nasdaq-swks', 'nasdaq-qrvo', 'nasdaq-mrvl', 'nasdaq-lite', 'nasdaq-insg', 'nasdaq-lrcx'],
-  'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nasdaq-apha', 'nyse-cgc', 'nasdaq-tlry', 'otcmkts-cwbhf', 'nyse-mo', 'nyse-pm'],
+  'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nasdaq-apha', 'nasdaq-cgc', 'nasdaq-tlry', 'otcmkts-cwbhf', 'nyse-mo', 'nyse-pm'],
   'ArgiTech':['nasdaq-cvgw', 'otcmkts-bayry', 'nasdaq-bynd', 'nasdaq-ttcf', 'otcmkts-vryyf', 'nasdaq-opes'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy', 'nyse-et', 'nyse-ceqp', 'nyse-atco', 'nyse-tpl'],
   'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora', 'nyse-bep'], //VWSYF - Vestas Wind

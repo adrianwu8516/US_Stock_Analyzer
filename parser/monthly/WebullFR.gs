@@ -41,14 +41,17 @@ function fixingCertainWeBullFRData(symbol='nasdaq-pdd'){
 
 function webullFRDataDetailProcessing(dataPackage = {"quarterly":{'nasdaq-nxst':{}}, "yearly":{'nasdaq-nxst':{}}}, symbol='nasdaq-nxst', type='cash-flow'){
   var url = 'https://www.webull.com/' + type + '/' + symbol
-  Logger.log(url)
   let sleepDurationSec = 0.5
   let retry = 0
   while(retry < 3){
     try{
       var xml = UrlFetchApp.fetch(url).getContentText();
-      var xmlRaw = xml.replace(/[\s\S]*?datas:\[([\s\S]*?})\][\s\S]*/g, '$1')
-      var dataLst = xmlRaw.match(/({currencyName[\s\S]*?}}})/g).map(item => JSON.parse(item.replace(/{[\s\S]*?rows:{}},/g, '').replace(/:-*\./g, ':0.').replace(/{([\s\S]*?):/g, '{"$1":').replace(/,([a-zA-z0-9]*?):/g, ',"$1":')))
+      var xmlRaw = xml.replace(/[\s\S]*?"datas":\[([\s\S]*?})\][\s\S]*/g, '$1')
+      if(!xmlRaw.match(/({"currencyName"[\s\S]*?}}})/g)){
+        Logger.log("No Data Found in " + url)
+        return dataPackage
+      }
+      var dataLst = xmlRaw.match(/({"currencyName"[\s\S]*?}}})/g).map(item => JSON.parse(item.replace(/{[\s\S]*?"rows":{}},/g, '')))
       for(var i in dataLst){
         if(dataLst[i].reportType == 2){ // Quarterly
           var dateInfo = dataLst[i].reportEndDate.split('-')[0]
@@ -70,6 +73,7 @@ function webullFRDataDetailProcessing(dataPackage = {"quarterly":{'nasdaq-nxst':
   }
   return dataPackage
 }
+
 function weBullFRDataRecorder(dataPackage){
   var file = SpreadsheetApp.openById('1Vsz0aZ11kBd-c2OOa3S45_9jhmXfRf4vpQU47Ae7n_o')
   for(var recType in dataPackage){
