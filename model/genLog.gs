@@ -37,7 +37,7 @@ function genCrossDateLog(){
   return "genCrossDateLog Done"
 }
 
-function collectLogDataFromSheet(stockId='nyse-de'){
+function collectLogDataFromSheet(stockId='nasdaq-niu'){
   var stockSymbol = stockId.split(/-(.+)/)[1].toUpperCase()
   
   // Spreadsheet Data Prep
@@ -92,6 +92,7 @@ function collectLogDataFromSheet(stockId='nyse-de'){
     "iv_dcf_share":dataToday[34],
     "medpsvalue":dataToday[38],
     "wacc":dataToday[24],
+    "forecastEps": JSON.parse(dataToday[19])
   } 
   try{
     // Technical Analysis Part
@@ -186,9 +187,10 @@ function weBullAnalystMark(stockInfo){
   
   // Post-Earning Announcement Effect, Get Fast / Positive News
   var today = new Date()
+  stockInfo.latestEarningsDate = Date.parse(stockInfo.latestEarningsDate)
   if((today - stockInfo.latestEarningsDate < 86400000 * 10)&&(today > stockInfo.latestEarningsDate)){ // within 10 days
     stockInfo['news'] = "🗞"
-    let forecastEPSLst = JSON.parse(stockInfo.forecastEps)['points']
+    let forecastEPSLst = stockInfo.forecastEps.points
     let forecastLast = forecastEPSLst.pop()
     let forecast2ndLast = forecastEPSLst.pop()
     if(forecastLast.valueActual != null){
