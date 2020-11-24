@@ -24,10 +24,9 @@ STOCK_SYMBOLS = {
   'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'nasdaq-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg', 'nyse-vapo', 'nasdaq-srne', 'nasdaq-prsc', 'nasdaq-bli', 'nasdaq-txg', 'nasdaq-cort', 'nasdaq-inva', 'nyse-nvst', 'nyse-abbv', 'nyse-coo', 'nasdaq-abmd', 'nasdaq-gdrx'],//
   'Medicine':['nyse-mrk', 'nyse-jnj', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy', 'nasdaq-crsp', 'nasdaq-blue', 'nasdaq-ino'],
   'Telecom':['nyse-t', 'nyse-vz', 'nasdaq-tmus', 'otcmkts-sftby', 'nasdaq-eric', 'nyse-nok', 'nasdaq-comm', 'nyse-cien', 'nyse-jnpr', 'otcmkts-ifnny'],
-  'Fashion':['nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb','nyse-rvlv',  'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy', 'nyse-rvlv', 'nyse-tjx', 'nasdaq-rost'], 
+  'Fashion':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl', 'nyse-goos', 'nyse-rl', 'nasdaq-shoo', 'nyse-anf', 'nyse-aeo', 'nyse-gps', 'nyse-lb','nyse-rvlv',  'nyse-tif', 'nyse-tpr', 'nyse-deo', 'otcmkts-lvmuy', 'nyse-rvlv', 'nyse-tjx', 'nasdaq-rost'], 
   'Gaming':['nyse-u', 'nasdaq-atvi', 'nasdaq-ea', 'nasdaq-znga', 'nasdaq-ttwo', 'nasdaq-ntes', 'nasdaq-ttwo', 'nasdaq-dkng', 'nasdaq-penn', 'otcmkts-pdypy'],
   'Catering':['nyse-yum', 'nyse-qsr', 'nyse-dpz', 'nasdaq-pzza', 'nyse-mcd', 'nyse-cmg', 'nasdaq-cake', 'nyse-hsy', 'nyse-ko', 'nasdaq-pep', 'nasdaq-mnst', 'nasdaq-fizz', 'nasdaq-sbux', 'nyse-k', 'nyse-gis', 'nyse-usfd', 'nyse-tsn', 'nyse-sam', 'nyse-bud', 'nyse-stz', 'nasdaq-play'], 
-  'Sport':['nyse-nke', 'nyse-ua', 'nasdaq-lulu', 'nyse-skx', 'nyse-fl'],
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-nus', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc', 'nasdaq-grmn'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-jwn', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nasdaq-dltr', 'nyse-dg', 'nyse-azo', 'nasdaq-five'],
   'Transport':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv', 'nyse-hyln', 'nyse-nio', 'nasdaq-niu', 'nasdaq-li', 'nyse-xpev', 'nasdaq-gp', 'nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
