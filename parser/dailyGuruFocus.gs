@@ -82,26 +82,26 @@ function getGuruFocusData(symbol='msft') {
   data.wacc = parseFloat(waccXml[0].replace(/is <strong>([\s\S]*?)<\/strong>/, '$1'))/100
   data.roic = parseFloat(waccXml[1].replace(/is <strong>([\s\S]*?)<\/strong>/, '$1'))/100
   //Logger.log("2")
-  url = 'https://www.gurufocus.com/term/zscore/' + symbol + '/Altman-Z-Score'
+  url = 'https://www.gurufocus.cn/stock/' + symbol + '/term/zscore'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.match(/Altman Z-Score of ([\s\S]*) as of today/)){
-    data.zscore = parseFloat(xml.replace(/[\s\S]*Altman Z-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  if(xml.match(/两年破产风险 为([\s\S]*?) \(今日\)/)){
+    data.zscore = parseFloat(xml.replace(/[\s\S]*?两年破产风险 为([\s\S]*?) \(今日\)[\s\S]*/, '$1'))
   }else{
     data.zscore = null
   }
   //Logger.log("3")
-  url = 'https://www.gurufocus.com/term/mscore/' + symbol + '/Beneish-M-Score'
+  url = 'https://www.gurufocus.cn/stock/' + symbol + '/term/mscore'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.match(/Beneish M-Score of ([\s\S]*) as of today/)){
-    data.mscore = parseFloat(xml.replace(/[\s\S]*Beneish M-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  if(xml.match(/财务造假嫌疑 为([\s\S]*?) \(今日\)/)){
+    data.mscore = parseFloat(xml.replace(/[\s\S]*?财务造假嫌疑 为([\s\S]*?) \(今日\)[\s\S]*/, '$1'))
   }else{
     data.mscore = null
   }
   //Logger.log("4")
-  url = 'https://www.gurufocus.com/term/fscore/' + symbol + '/Piotroski-F-Score'
+  url = 'https://www.gurufocus.cn/stock/' + symbol + '/term/fscore'
   xml = UrlFetchApp.fetch(url).getContentText();
-  if(xml.match(/Piotroski F-Score of ([\s\S]*) as of today/)){
-    data.fscore = parseFloat(xml.replace(/[\s\S]*Piotroski F-Score of ([\s\S]*) as of today[\s\S]*/, '$1'))
+  if(xml.match(/基本面趋势 为([\s\S]*?) \(今日\)/)){
+    data.fscore = parseFloat(xml.replace(/[\s\S]*?基本面趋势 为([\s\S]*?) \(今日\)[\s\S]*/, '$1'))
   }else{
     data.fscore = null
   }
