@@ -10,7 +10,7 @@ function etfIndexData(){
 
 function selectedIndexData(){
   var indexData = JSON.parse(readLog("LoggerStockInfo.txt"))
-  var selectedItem = {'NewHight':{}, 'NicePEG':{}, 'Supporting':{}, 'HighVolume':{}, 'DCF':{}, 'Graham':{}, 'Lynch':{}, 'ROIC-WACC':{}}
+  var selectedItem = {'NewHight':{}, 'BeatEst':{}, 'FailEst':{}, 'NicePEG':{}, 'Supporting':{}, 'HighVolume':{}, 'DCF':{}, 'Graham':{}, 'Lynch':{}, 'ROIC-WACC':{}}
   for(var catName in indexData){
     for(var no in indexData[catName]){
       var data = indexData[catName][no]
@@ -22,6 +22,9 @@ function selectedIndexData(){
       var peBetter = data.forwardPe > data.TTM
       var roe15 = data.roeNow > 15
       var supporting = data.ma60support == '↘️🛡'
+      var news = data.news == "🗞"
+      var beatEst = data.beatAnalyst == "😎"
+      var failEst = data.beatAnalyst == "😨"
       var highVolume = data.volumeRatio > 200
       var DCF = data.price < data.iv_dcf && data.price < data.iv_dcf_share
       var Graham = data.price < data.grahamnumber
@@ -29,6 +32,8 @@ function selectedIndexData(){
       var roicWaccDiff = data.roic - data.wacc > 0.05
       // Setting Indicators
       if(newHigh && peBetter && roe15) selectedItem.NewHight[data.symbol] = data
+      if(news && beatEst) selectedItem.BeatEst[data.symbol] = data
+      if(news && failEst) selectedItem.FailEst[data.symbol] = data
       if(PEG && peBetter) selectedItem.NicePEG[data.symbol] = data
       if(supporting && peBetter) selectedItem.Supporting[data.symbol] = data
       if(highVolume) selectedItem.HighVolume[data.symbol] = data

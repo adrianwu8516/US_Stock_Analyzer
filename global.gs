@@ -19,7 +19,7 @@ STOCK_SYMBOLS = {
   'Cannabis':['nasdaq-gwph', 'nyse-acb', 'nasdaq-apha', 'nasdaq-cgc', 'nasdaq-tlry', 'otcmkts-cwbhf', 'nyse-mo', 'nyse-pm'],
   'ArgiTech':['nasdaq-cvgw', 'otcmkts-bayry', 'nasdaq-bynd', 'nasdaq-ttcf', 'otcmkts-vryyf', 'nasdaq-opes'],
   'Energy':['nyse-xom', 'nyse-psx', 'nyse-cvx', 'nyse-rds-a', 'nyse-rds-b', 'nyse-oxy', 'nyse-et', 'nyse-ceqp', 'nyse-atco', 'nyse-tpl'],
-  'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nyse-nee', 'nyse-ora', 'nyse-bep'], //VWSYF - Vestas Wind
+  'NewEnergy':['nasdaq-enph', 'nasdaq-sedg', 'nyse-gnrc', 'nasdaq-bldp', 'nasdaq-plug', 'nasdaq-fslr', 'nasdaq-spwr', 'nasdaq-run', 'nyse-nee', 'nyse-ora', 'nyse-bep', 'nyse-jks', 'nyse-dq', 'nyse-sol', 'nasdaq-aeis'], //VWSYF - Vestas Wind
   'Hardware':['nasdaq-logi', 'nasdaq-aapl', 'nasdaq-pi', 'nasdaq-irbt', 'nasdaq-vicr', 'nasdaq-gpro', 'nasdaq-wdc', 'nasdaq-stx', 'nasdaq-vldr'],
   'Health':['nasdaq-hqy', 'nasdaq-ppd', 'nyse-unh', 'nyse-lh', 'nyse-tmo', 'nasdaq-mtbc', 'nyse-tdoc', 'nasdaq-lvgo', 'nyse-mck', 'nyse-hca', 'nyse-cnc', 'nasdaq-algn', 'nasdaq-mdxg', 'nasdaq-ilmn', 'nyse-nvta', 'nasdaq-isrg', 'nyse-vapo', 'nasdaq-srne', 'nasdaq-prsc', 'nasdaq-bli', 'nasdaq-txg', 'nasdaq-cort', 'nasdaq-inva', 'nyse-nvst', 'nyse-abbv', 'nyse-coo', 'nasdaq-abmd', 'nasdaq-gdrx'],//
   'Medicine':['nyse-mrk', 'nyse-jnj', 'nasdaq-amgn', 'nyse-pfe', 'nyse-abt', 'nasdaq-biib', 'nasdaq-drrx', 'nasdaq-mrna', 'nasdaq-vygr', 'nasdaq-gild', 'nyse-rdy', 'nasdaq-crsp', 'nasdaq-blue', 'nasdaq-ino'],
@@ -31,7 +31,8 @@ STOCK_SYMBOLS = {
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-nus', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc', 'nasdaq-grmn'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-jwn', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nasdaq-dltr', 'nyse-dg', 'nyse-azo', 'nasdaq-five'],
   'Transport':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv', 'nyse-hyln', 'nyse-nio', 'nasdaq-niu', 'nasdaq-li', 'nyse-xpev', 'nasdaq-gp', 'nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
-  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-dow', 'nyse-mmm', 'nyse-mlm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw', 'nyse-vsto', 'nyse-trtn', 'nasdaq-peix'],
+  'Battery':['nyse-enr', 'nasdaq-fcel', 'nyse-be', 'nyse-kcac', 'nasdaq-flux', 'nasdaq-eose'],
+  'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-dow', 'nyse-mmm', 'nyse-mlm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw', 'nyse-vsto', 'nyse-trtn', 'nasdaq-peix', 'nasdaq-amat'],
   'Mining':['nyse-gold', 'nyse-nem', 'nyse-kl', 'nyse-lac', 'nyse-lthm', 'nasdaq-pll', 'nyse-alb', 'nyse-sqm', 'nyse-fmc'],
   'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig', 'nyse-hdb', 'nyse-ibn', 'nasdaq-cinf', 'nyse-pnc', 'nasdaq-slm'],
   'ITSolution':['nasdaq-csco', 'nyse-ibm', 'nyse-orcl', 'nyse-infy', 'nyse-sap', 'nyse-pltr', 'nasdaq-ctsh', 'nasdaq-nvee', 'nyse-wns', 'nyse-anet', 'nasdaq-adp', 'nyse-tnet', 'nyse-cday', 'nyse-payc', 'nasdaq-wday'],
