@@ -11,8 +11,10 @@ function genCrossDateLog(){
     logObj[catName] = {}
     for(var i in STOCK_SYMBOLS[catName]){
       var stockId = STOCK_SYMBOLS[catName][i]
+      Logger.log("Log Handling: " + stockId)
       var stockSymbol = stockId.split(/-(.+)/)[1].toUpperCase()
       var stockJSON = collectLogDataFromSheet(stockId)
+      if(!stockJSON) continue;
       stockJSON.category = catName
       // Yahoo Data Included
       var forecast = checkYahooForecast(YahooSheet, stockSymbol)
@@ -41,7 +43,14 @@ function collectLogDataFromSheet(stockId='nasdaq-niu'){
   var stockSymbol = stockId.split(/-(.+)/)[1].toUpperCase()
   
   // Spreadsheet Data Prep
-  var file = DriveApp.getFilesByName(stockSymbol).next();
+  try{
+    var file = DriveApp.getFilesByName(stockSymbol).next();
+  }catch(e){
+    Logger.log(e)
+    Logger.log("Cannot find file for: " + stockSymbol)
+    return
+  }
+  
   var Sheet = SpreadsheetApp.open(file);
   var dataToday = Sheet.getSheetValues(2, 1, 1, 51)[0]
   var tickerJSON = JSON.parse(dataToday[16])
@@ -108,7 +117,7 @@ function collectLogDataFromSheet(stockId='nasdaq-niu'){
     Logger.log(stockSymbol + ' failed to generate 60 ma support data')
   }
   stockJSON = weBullAnalystMark(stockJSON)
-  Logger.log(stockJSON)
+//  Logger.log(stockJSON)
   return stockJSON
 }
 
