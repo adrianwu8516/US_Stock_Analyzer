@@ -1,4 +1,4 @@
-function getWeBullData(urlSymbol='otcmkts-mdxg', category=''){
+function getWeBullData(urlSymbol='nasdaq-flux', category=''){
   var url = 'https://www.webull.com/zh/quote/' + urlSymbol;
   var xml = UrlFetchApp.fetch(url).getContentText();
   // If there's no rating for that stock
@@ -8,6 +8,7 @@ function getWeBullData(urlSymbol='otcmkts-mdxg', category=''){
     var holdingJSON = JSON.parse(xml.replace(/[\s\S]*?"institutionalHoldingData":{"institutionHolding":({[\s\S]*?}})[\s\S]*/, '$1'))
   }
   var stockInfo = {};
+  stockInfo['url'] = url
   stockInfo['category'] = category
   stockInfo['tickerId'] = tickerRTJSON.tickerId
   stockInfo['symbol'] = tickerRTJSON.symbol.replace(/ /g, '-')
@@ -21,17 +22,20 @@ function getWeBullData(urlSymbol='otcmkts-mdxg', category=''){
   stockInfo['TTM'] = parseFloat(tickerRTJSON.peTtm)
   stockInfo['pb'] = parseFloat(tickerRTJSON.pb)
   stockInfo['ps'] = parseFloat(tickerRTJSON.ps)
-  stockInfo['analystPopularity'] = ratingJSON.rating.ratingAnalysisTotals
-  stockInfo['analystAttitiude'] = ratingJSON.rating.ratingAnalysis
-  stockInfo['url'] = url
-  stockInfo['priceLow'] = ratingJSON.targetPrice.low
-  stockInfo['priceHigh'] = ratingJSON.targetPrice.high
-  stockInfo['priceMid']  = ratingJSON.targetPrice.mean
+  if(ratingJSON.rating){
+    stockInfo['analystPopularity'] = ratingJSON.rating.ratingAnalysisTotals
+    stockInfo['analystAttitiude'] = ratingJSON.rating.ratingAnalysis
+    stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
+  }
+  if(ratingJSON.targetPrice){
+    stockInfo['priceLow'] = ratingJSON.targetPrice.low
+    stockInfo['priceHigh'] = ratingJSON.targetPrice.high
+    stockInfo['priceMid']  = ratingJSON.targetPrice.mean
+    stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
+  }
+  if(ratingJSON.forecastEps) stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
   tickerRTJSON.name = stockInfo['companyName'] // From zh-CN to zh-TW
   stockInfo['tickerRT'] = JSON.stringify(tickerRTJSON)
-  stockInfo['rating'] = JSON.stringify(ratingJSON.rating)
-  stockInfo['targetPrice'] = JSON.stringify(ratingJSON.targetPrice)
-  stockInfo['forecastEps'] = JSON.stringify(ratingJSON.forecastEps)
   stockInfo['latestEarningsDate'] = Date.parse(tickerRTJSON.latestEarningsDate)
   stockInfo['high'] = parseFloat(tickerRTJSON.high)
   stockInfo['low'] = parseFloat(tickerRTJSON.low)
@@ -50,7 +54,7 @@ function getWeBullData(urlSymbol='otcmkts-mdxg', category=''){
     stockInfo['holding'] = JSON.stringify(holdingJSON)
   }
   CACHE.put(stockInfo.symbol, JSON.stringify(stockInfo), CACHELIFETIME); // Cached for 3 hrs
-  //Logger.log(stockInfo)
+  Logger.log(stockInfo)
   return stockInfo
 }
 

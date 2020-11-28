@@ -30,7 +30,7 @@ STOCK_SYMBOLS = {
   'Diet':['nyse-hlf', 'nasdaq-ww', 'nyse-nus', 'nyse-med', 'nyse-plnt', 'nasdaq-pton', 'nyse-vfc', 'nasdaq-grmn'],
   'Retailing':['nasdaq-cost', 'nyse-m', 'nyse-jwn', 'nyse-wmt', 'nyse-tgt', 'nyse-bby', 'nyse-hd', 'nyse-low', 'nyse-cvna', 'nasdaq-dltr', 'nyse-dg', 'nyse-azo', 'nasdaq-five'],
   'Transport':['nasdaq-tsla', 'nyse-tm', 'nyse-hmc', 'nyse-f', 'nyse-fcau', 'nyse-gm', 'nyse-aptv', 'nyse-hyln', 'nyse-nio', 'nasdaq-niu', 'nasdaq-li', 'nyse-xpev', 'nasdaq-gp', 'nyse-unp', 'nyse-nsc', 'nasdaq-csx'],
-  'Battery':['nyse-enr', 'nasdaq-fcel', 'nyse-be', 'nyse-kcac', 'nasdaq-flux', 'nasdaq-eose'],
+  'Battery':['nyse-enr', 'nasdaq-fcel', 'nyse-be', 'nyse-qs', 'nasdaq-flux', 'nasdaq-eose'],
   'Industry':['nyse-ge', 'nyse-de', 'nyse-cat', 'nyse-hon', 'nyse-mhk', 'nyse-dd', 'nyse-dow', 'nyse-mmm', 'nyse-mlm', 'nyse-keys', 'nasdaq-flir', 'nyse-glw', 'nyse-vsto', 'nyse-trtn', 'nasdaq-peix', 'nasdaq-amat'],
   'Mining':['nyse-gold', 'nyse-nem', 'nyse-kl', 'nyse-lac', 'nyse-lthm', 'nasdaq-pll', 'nyse-alb', 'nyse-sqm', 'nyse-fmc'],
   'Finance':['nyse-jpm', 'nyse-c', 'nyse-bac', 'nyse-usb', 'nyse-gs', 'nyse-ms', 'nyse-wfc', 'nyse-schw', 'nyse-ice', 'nasdaq-cme', 'nyse-spgi', 'nyse-aig', 'nyse-hdb', 'nyse-ibn', 'nasdaq-cinf', 'nyse-pnc', 'nasdaq-slm'],
